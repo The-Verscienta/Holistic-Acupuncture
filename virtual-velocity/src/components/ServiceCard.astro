@@ -1,0 +1,46 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  href: string;
+  icon?: string;
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  href,
+  icon,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`group relative bg-white p-6 md:p-8 rounded-[var(--radius-lg)] border border-sage-200 hover:border-sage-400 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] transition-all duration-300 hover:-translate-y-1 ${className}`}>
+  <!-- Icon -->
+  {icon && (
+    <div class="w-16 h-16 mb-6 bg-sage-100 rounded-full flex items-center justify-center group-hover:bg-sage-200 transition-colors">
+      <svg class="w-8 h-8 text-sage-600 group-hover:text-healing-blue transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icon}></path>
+      </svg>
+    </div>
+  )}
+
+  <!-- Content -->
+  <h3 class="text-xl font-heading font-semibold text-charcoal mb-3 group-hover:text-sage-700 transition-colors">
+    {title}
+  </h3>
+  <p class="text-gray-600 mb-6 leading-relaxed">
+    {description}
+  </p>
+
+  <a href={href} class="inline-flex items-center gap-2 text-sage-600 font-semibold hover:text-sage-700 transition-colors mt-auto">
+    <span>Learn More</span>
+    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+    </svg>
+  </a>
+
+  <!-- Additional slot for custom content -->
+  <slot />
+</div>

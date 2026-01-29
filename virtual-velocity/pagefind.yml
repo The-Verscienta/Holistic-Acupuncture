@@ -1,0 +1,28 @@
+# Pagefind Configuration
+# https://pagefind.app/docs/config-options/
+
+# Exclude paths from indexing
+exclude_selectors:
+  - "[data-pagefind-ignore]"
+  - "[data-pagefind-ignore] *"
+  - "header"
+  - "footer"
+  - "nav"
+  - ".pagefind-ignore"
+
+# Glob patterns for files to exclude
+glob: "**/*.html"
+
+# Exclude admin pages entirely
+exclude:
+  - "/admin/*"
+  - "/admin"
+  - "/api/*"
+  - "/404"
+  - "/components"
+
+# Keep index size small
+keep_index_url: false
+
+# Root element to search within
+root_selector: "[data-pagefind-body]"

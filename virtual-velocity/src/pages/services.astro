@@ -1,0 +1,401 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+
+const services = [
+  {
+    name: 'Initial Consultation & Treatment',
+    description: 'Comprehensive health assessment, diagnosis, and your first acupuncture treatment. Includes detailed health history review and personalized treatment plan.',
+    duration: '90 minutes',
+    price: 150,
+    popular: true,
+    includes: [
+      'Complete health history review',
+      'Traditional Chinese medicine diagnosis',
+      'Personalized treatment plan',
+      'First acupuncture session',
+      'Herbal recommendations if needed'
+    ]
+  },
+  {
+    name: 'Follow-up Acupuncture Session',
+    description: 'Standard acupuncture treatment session for returning patients. Includes brief check-in and adjustment of treatment as needed.',
+    duration: '60 minutes',
+    price: 95,
+    popular: false,
+    includes: [
+      'Progress evaluation',
+      'Acupuncture treatment',
+      'Treatment plan adjustment',
+      'Self-care recommendations'
+    ]
+  },
+  {
+    name: 'Extended Acupuncture Session',
+    description: 'Longer treatment session for complex conditions or those needing extra attention. Ideal for chronic pain or multiple concerns.',
+    duration: '90 minutes',
+    price: 125,
+    popular: false,
+    includes: [
+      'Extended consultation',
+      'Comprehensive acupuncture',
+      'Additional modalities as needed',
+      'Cupping or gua sha if appropriate'
+    ]
+  },
+  {
+    name: 'Herbal Consultation',
+    description: 'Personalized Chinese herbal medicine consultation. Custom formula created based on your specific health needs.',
+    duration: '45 minutes',
+    price: 65,
+    popular: false,
+    includes: [
+      'Herbal medicine assessment',
+      'Custom formula recommendation',
+      'Dosage instructions',
+      'Dietary guidance'
+    ],
+    note: 'Herbs purchased separately'
+  },
+  {
+    name: 'Cosmetic Acupuncture',
+    description: 'Natural facial rejuvenation using acupuncture to improve skin tone, reduce fine lines, and promote a healthy glow.',
+    duration: '75 minutes',
+    price: 135,
+    popular: false,
+    includes: [
+      'Facial acupuncture treatment',
+      'Body points for overall balance',
+      'Facial massage',
+      'Skincare recommendations'
+    ]
+  },
+  {
+    name: 'Cupping Therapy',
+    description: 'Traditional cupping therapy to relieve muscle tension, improve circulation, and promote healing. Can be standalone or added to acupuncture.',
+    duration: '30 minutes',
+    price: 45,
+    popular: false,
+    includes: [
+      'Assessment of treatment areas',
+      'Cupping application',
+      'Post-treatment care instructions'
+    ],
+    note: 'Add-on to acupuncture: $25'
+  }
+];
+
+const packages = [
+  {
+    name: 'New Patient Special',
+    description: 'Perfect for first-time patients wanting to experience acupuncture.',
+    sessions: 'Initial visit',
+    price: 29,
+    originalPrice: 150,
+    savings: 121,
+    highlight: true,
+    features: [
+      'Full initial consultation',
+      'First acupuncture treatment',
+      'Personalized treatment plan',
+      'Limited time offer'
+    ]
+  },
+  {
+    name: '5-Session Package',
+    description: 'Ideal for acute conditions or those starting their healing journey.',
+    sessions: '5 follow-up sessions',
+    price: 425,
+    originalPrice: 475,
+    savings: 50,
+    highlight: false,
+    features: [
+      '5 acupuncture sessions',
+      '10% savings',
+      'Flexible scheduling',
+      'Valid for 3 months'
+    ]
+  },
+  {
+    name: '10-Session Package',
+    description: 'Best value for chronic conditions requiring ongoing treatment.',
+    sessions: '10 follow-up sessions',
+    price: 800,
+    originalPrice: 950,
+    savings: 150,
+    highlight: false,
+    features: [
+      '10 acupuncture sessions',
+      '16% savings',
+      'Priority scheduling',
+      'Valid for 6 months'
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Services & Pricing"
+  description="Explore our acupuncture services and transparent pricing. From initial consultations to package deals, find the right treatment option for your health journey."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
+          Services & Pricing
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          Transparent pricing for quality acupuncture care. We believe in providing exceptional value and personalized treatment for every patient.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Special Offer Banner -->
+  <section class="bg-earth-orange text-white py-6">
+    <Container>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">🎉</div>
+          <div>
+            <div class="text-lg font-semibold">New Patient Special - Only $29!</div>
+            <div class="text-sm opacity-90">First visit includes full consultation & treatment (reg. $150)</div>
+          </div>
+        </div>
+        <Button variant="secondary" size="md" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+          Book Now
+        </Button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Individual Services -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+          Individual Services
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Choose the service that best fits your needs. All treatments are personalized to your unique health concerns.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {services.map(service => (
+          <Card variant="bordered" padding="none" class="flex flex-col h-full relative">
+            {service.popular && (
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                <Badge variant="success" size="md">Most Popular</Badge>
+              </div>
+            )}
+            <div class="p-6 flex-1 flex flex-col">
+              <h3 class="text-xl font-heading font-semibold text-charcoal mb-2">
+                {service.name}
+              </h3>
+              <p class="text-gray-600 text-sm mb-4 flex-1">
+                {service.description}
+              </p>
+
+              <div class="flex items-center gap-3 mb-4 text-sm text-gray-500">
+                <span class="flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  {service.duration}
+                </span>
+              </div>
+
+              <ul class="space-y-2 mb-4">
+                {service.includes.map(item => (
+                  <li class="flex items-start gap-2 text-sm text-gray-600">
+                    <svg class="w-4 h-4 text-sage-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {service.note && (
+                <p class="text-xs text-gray-500 italic mb-4">* {service.note}</p>
+              )}
+
+              <div class="mt-auto pt-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                  <div class="text-2xl font-heading font-bold text-sage-700">
+                    ${service.price}
+                  </div>
+                  <a
+                    href={JANE_BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sage-600 hover:text-sage-700 font-medium text-sm flex items-center gap-1"
+                  >
+                    Book Now
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Package Deals -->
+  <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
+    <Container>
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+          Package Deals
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Save money with our treatment packages. Ideal for ongoing care and chronic conditions.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {packages.map(pkg => (
+          <Card
+            variant={pkg.highlight ? "elevated" : "bordered"}
+            padding="none"
+            class={`flex flex-col h-full ${pkg.highlight ? 'ring-2 ring-earth-orange relative' : ''}`}
+          >
+            {pkg.highlight && (
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                <Badge variant="warning" size="lg">Best Value</Badge>
+              </div>
+            )}
+            <div class={`p-6 text-center ${pkg.highlight ? 'bg-earth-orange/5' : ''}`}>
+              <h3 class="text-xl font-heading font-semibold text-charcoal mb-1">
+                {pkg.name}
+              </h3>
+              <p class="text-sm text-gray-500 mb-4">{pkg.sessions}</p>
+
+              <div class="mb-2">
+                <span class="text-4xl font-heading font-bold text-sage-700">${pkg.price}</span>
+                {pkg.originalPrice > pkg.price && (
+                  <span class="text-lg text-gray-400 line-through ml-2">${pkg.originalPrice}</span>
+                )}
+              </div>
+
+              {pkg.savings > 0 && (
+                <Badge variant="success" size="sm">Save ${pkg.savings}</Badge>
+              )}
+            </div>
+
+            <div class="p-6 flex-1 flex flex-col border-t border-gray-200">
+              <p class="text-gray-600 text-sm mb-4">
+                {pkg.description}
+              </p>
+
+              <ul class="space-y-3 mb-6 flex-1">
+                {pkg.features.map(feature => (
+                  <li class="flex items-center gap-2 text-sm text-gray-700">
+                    <svg class="w-5 h-5 text-sage-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <Button
+                variant={pkg.highlight ? "primary" : "secondary"}
+                size="md"
+                href={JANE_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full justify-center"
+              >
+                Get Started
+              </Button>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Insurance & Payment -->
+  <section class="py-16 md:py-20 bg-white">
+    <Container>
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+            Insurance & Payment
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-charcoal mb-2">Insurance Coverage</h3>
+                <p class="text-gray-600 text-sm mb-3">
+                  Many insurance plans now cover acupuncture. We provide detailed receipts (superbills) for you to submit to your insurance for reimbursement.
+                </p>
+                <p class="text-gray-600 text-sm">
+                  Contact your insurance provider to check your acupuncture benefits before your visit.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-charcoal mb-2">Payment Options</h3>
+                <p class="text-gray-600 text-sm mb-3">
+                  We accept cash, all major credit cards, HSA/FSA cards, and Apple Pay/Google Pay for your convenience.
+                </p>
+                <p class="text-gray-600 text-sm">
+                  Payment is due at the time of service. Package payments can be split upon request.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 bg-gradient-to-br from-sage-600 to-sage-700 text-white">
+    <Container class="text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
+        Ready to Start Your Healing Journey?
+      </h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto opacity-90">
+        Book your appointment today and take the first step towards better health. New patients receive their first visit for only $29!
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant="secondary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+          Book Appointment
+        </Button>
+        <Button variant="outline" size="lg" icon="phone" href={`tel:${CONTACT.phone.replace(/[^0-9]/g, '')}`}>
+          Call {CONTACT.phone}
+        </Button>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Card from '../../components/Card.astro';
+import { isAuthenticated } from '../../lib/auth';
+
+export const prerender = false;
+
+// Redirect to admin dashboard if already authenticated
+if (isAuthenticated(Astro.request)) {
+  return Astro.redirect('/admin');
+}
+---
+
+<BaseLayout
+  title="Admin Login"
+  description="Login to the admin dashboard"
+>
+  <section class="min-h-screen bg-gradient-to-br from-sage-50 to-warm-white py-20">
+    <Container>
+      <div class="max-w-md mx-auto">
+        <Card variant="elevated" padding="lg">
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-sage-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+            </div>
+            <h1 class="text-2xl font-heading font-bold text-charcoal">Admin Login</h1>
+            <p class="text-gray-600 mt-2">Enter your credentials to access the dashboard</p>
+          </div>
+
+          <form id="login-form" class="space-y-6">
+            <div id="error-message" class="hidden p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            </div>
+
+            <div>
+              <label for="password" class="block text-sm font-medium text-charcoal mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-sage-500 transition-colors"
+                placeholder="Enter admin password"
+              />
+            </div>
+
+            <button
+              type="submit"
+              id="submit-btn"
+              class="w-full bg-sage-600 hover:bg-sage-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              <span id="btn-text">Sign In</span>
+              <svg id="btn-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+          </form>
+
+          <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+            <a href="/" class="text-sage-600 hover:text-sage-700 text-sm">
+              &larr; Back to website
+            </a>
+          </div>
+        </Card>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('login-form') as HTMLFormElement;
+  const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+  const btnSpinner = document.getElementById('btn-spinner') as Element;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Reset error state
+    errorMessage.classList.add('hidden');
+    errorMessage.textContent = '';
+
+    // Show loading state
+    submitBtn.disabled = true;
+    btnText.textContent = 'Signing in...';
+    btnSpinner.classList.remove('hidden');
+
+    const formData = new FormData(form);
+    const password = formData.get('password') as string;
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        window.location.href = '/admin';
+      } else {
+        errorMessage.textContent = data.error || 'Invalid credentials';
+        errorMessage.classList.remove('hidden');
+      }
+    } catch (error) {
+      errorMessage.textContent = 'An error occurred. Please try again.';
+      errorMessage.classList.remove('hidden');
+    } finally {
+      // Reset button state
+      submitBtn.disabled = false;
+      btnText.textContent = 'Sign In';
+      btnSpinner.classList.add('hidden');
+    }
+  });
+</script>

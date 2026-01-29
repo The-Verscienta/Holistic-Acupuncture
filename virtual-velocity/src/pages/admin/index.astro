@@ -1,0 +1,465 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Card from '../../components/Card.astro';
+import Badge from '../../components/Badge.astro';
+import {
+  getContactSubmissions,
+  getTestimonialSubmissions,
+  getNewsletterSubscribers
+} from '../../lib/database';
+
+export const prerender = false;
+
+// Authentication is handled by middleware - if we get here, user is authenticated
+
+// Fetch recent submissions using database abstraction
+const allContacts = await getContactSubmissions();
+const recentContacts = allContacts.slice(0, 10);
+
+const allTestimonials = await getTestimonialSubmissions();
+const pendingTestimonials = allTestimonials.filter((t: any) => t.status === 'pending');
+
+const allSubscribers = await getNewsletterSubscribers();
+const recentSubscribers = allSubscribers.filter((s: any) => s.active !== false).slice(0, 10);
+
+// Format date helper
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(date));
+};
+
+// Get status badge variant
+const getStatusVariant = (status: string) => {
+  switch (status) {
+    case 'new':
+    case 'pending':
+      return 'warning';
+    case 'contacted':
+    case 'approved':
+      return 'success';
+    case 'resolved':
+    case 'rejected':
+      return 'default';
+    default:
+      return 'default';
+  }
+};
+---
+
+<BaseLayout
+  title="Admin Dashboard"
+  description="Administrative dashboard for managing submissions"
+>
+  <!-- Dashboard Header -->
+  <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12">
+    <Container>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+            Admin Dashboard
+          </h1>
+          <p class="text-lg text-gray-600">
+            View and manage form submissions, testimonials, and newsletter subscribers
+          </p>
+        </div>
+        <button
+          id="logout-btn"
+          class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+          </svg>
+          Logout
+        </button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Statistics -->
+  <section class="py-8 bg-white border-b border-gray-200">
+    <Container>
+      <div class="grid md:grid-cols-3 gap-6">
+        <Card variant="bordered" padding="md" class="bg-sage-50">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 mb-1">Contact Submissions</p>
+              <p class="text-3xl font-bold text-charcoal">{recentContacts.length}</p>
+              <p class="text-xs text-gray-500 mt-1">Last 10 submissions</p>
+            </div>
+            <div class="w-12 h-12 bg-sage-600 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+          </div>
+        </Card>
+
+        <Card variant="bordered" padding="md" class="bg-earth-orange/10">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 mb-1">Pending Testimonials</p>
+              <p class="text-3xl font-bold text-charcoal">{pendingTestimonials.length}</p>
+              <p class="text-xs text-gray-500 mt-1">Awaiting approval</p>
+            </div>
+            <div class="w-12 h-12 bg-earth-orange rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              </svg>
+            </div>
+          </div>
+        </Card>
+
+        <Card variant="bordered" padding="md" class="bg-healing-blue/10">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-gray-600 mb-1">Active Subscribers</p>
+              <p class="text-3xl font-bold text-charcoal">{recentSubscribers.length}</p>
+              <p class="text-xs text-gray-500 mt-1">Last 10 subscribers</p>
+            </div>
+            <div class="w-12 h-12 bg-healing-blue rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Contact Submissions -->
+  <section class="py-12 bg-warm-white">
+    <Container>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-heading font-bold text-charcoal">
+          Recent Contact Submissions
+        </h2>
+        <Badge variant="default">{recentContacts.length} submissions</Badge>
+      </div>
+
+      <div class="space-y-4">
+        {recentContacts.length === 0 ? (
+          <Card variant="bordered" padding="lg" class="text-center">
+            <p class="text-gray-600">No contact submissions yet</p>
+          </Card>
+        ) : (
+          recentContacts.map((contact) => (
+            <Card variant="elevated" padding="md">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h3 class="font-semibold text-charcoal">{contact.name}</h3>
+                    <Badge variant={getStatusVariant(contact.status)} size="sm">
+                      {contact.status}
+                    </Badge>
+                  </div>
+                  <div class="space-y-1 text-sm">
+                    <p class="text-gray-600">
+                      <strong>Email:</strong> <a href={`mailto:${contact.email}`} class="text-sage-600 hover:text-sage-700">{contact.email}</a>
+                    </p>
+                    {contact.phone && (
+                      <p class="text-gray-600">
+                        <strong>Phone:</strong> <a href={`tel:${contact.phone}`} class="text-sage-600 hover:text-sage-700">{contact.phone}</a>
+                      </p>
+                    )}
+                    {contact.referralSource && (
+                      <p class="text-gray-600">
+                        <strong>Source:</strong> {contact.referralSource}
+                      </p>
+                    )}
+                    {contact.message && (
+                      <p class="text-gray-700 mt-2 p-3 bg-gray-50 rounded border border-gray-200">
+                        {contact.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div class="text-right text-xs text-gray-500 whitespace-nowrap">
+                  {formatDate(contact.submittedAt)}
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Pending Testimonials -->
+  <section class="py-12 bg-white">
+    <Container>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-heading font-bold text-charcoal">
+          Pending Testimonials
+        </h2>
+        <Badge variant="warning" data-pending-count>{pendingTestimonials.length} pending</Badge>
+      </div>
+
+      <div class="space-y-4" id="testimonial-container">
+        {pendingTestimonials.length === 0 ? (
+          <Card variant="bordered" padding="lg" class="text-center">
+            <p class="text-gray-600">No pending testimonials</p>
+          </Card>
+        ) : (
+          pendingTestimonials.map((testimonial) => (
+            <Card variant="elevated" padding="md" class="testimonial-card" data-id={testimonial.id}>
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <h3 class="font-semibold text-charcoal">{testimonial.name}</h3>
+                    {testimonial.rating && (
+                      <div class="flex items-center gap-1">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <svg
+                            class={`w-4 h-4 ${i < testimonial.rating! ? 'text-yellow-500' : 'text-gray-300'}`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                          </svg>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  <div class="space-y-1 text-sm">
+                    <p class="text-gray-600">
+                      <strong>Email:</strong> <a href={`mailto:${testimonial.email}`} class="text-sage-600 hover:text-sage-700">{testimonial.email}</a>
+                    </p>
+                    <p class="text-gray-600">
+                      <strong>Condition:</strong> {testimonial.condition}
+                    </p>
+                    <p class="text-gray-700 mt-2 p-3 bg-gray-50 rounded border border-gray-200 italic">
+                      "{testimonial.testimonial}"
+                    </p>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-200">
+                    <button
+                      class="approve-btn flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-sm"
+                      data-id={testimonial.id}
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      Approve
+                    </button>
+                    <button
+                      class="reject-btn flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors text-sm"
+                      data-id={testimonial.id}
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                      Reject
+                    </button>
+                    <button
+                      class="delete-btn flex items-center gap-2 px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors text-sm ml-auto"
+                      data-id={testimonial.id}
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                <div class="text-right text-xs text-gray-500 whitespace-nowrap">
+                  {formatDate(testimonial.submittedAt)}
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Newsletter Subscribers -->
+  <section class="py-12 bg-warm-white">
+    <Container>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-heading font-bold text-charcoal">
+          Recent Newsletter Subscribers
+        </h2>
+        <Badge variant="default">{recentSubscribers.length} subscribers</Badge>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {recentSubscribers.length === 0 ? (
+          <Card variant="bordered" padding="lg" class="text-center md:col-span-2 lg:col-span-3">
+            <p class="text-gray-600">No newsletter subscribers yet</p>
+          </Card>
+        ) : (
+          recentSubscribers.map((subscriber) => (
+            <Card variant="bordered" padding="md">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-healing-blue/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <svg class="w-5 h-5 text-healing-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-charcoal truncate">{subscriber.email}</p>
+                  <p class="text-xs text-gray-500">{formatDate(subscriber.subscribedAt)}</p>
+                </div>
+              </div>
+            </Card>
+          ))
+        )}
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script>
+  const logoutBtn = document.getElementById('logout-btn');
+
+  logoutBtn?.addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      if (response.ok) {
+        window.location.href = '/admin/login';
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  });
+
+  // Testimonial action handlers
+  const approveButtons = document.querySelectorAll('.approve-btn');
+  const rejectButtons = document.querySelectorAll('.reject-btn');
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+
+  async function updateTestimonialStatus(id: string, status: string, button: HTMLButtonElement) {
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = `
+      <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Processing...
+    `;
+
+    try {
+      const response = await fetch('/api/testimonial', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(id), status })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Remove the card from the UI with animation
+        const card = button.closest('.testimonial-card');
+        if (card) {
+          card.classList.add('opacity-50', 'scale-95', 'transition-all', 'duration-300');
+          setTimeout(() => {
+            card.remove();
+            // Update the pending count
+            const pendingBadge = document.querySelector('[data-pending-count]');
+            if (pendingBadge) {
+              const currentCount = parseInt(pendingBadge.textContent || '0');
+              pendingBadge.textContent = `${Math.max(0, currentCount - 1)} pending`;
+            }
+            // Check if there are no more pending testimonials
+            const remainingCards = document.querySelectorAll('.testimonial-card');
+            if (remainingCards.length === 0) {
+              const container = document.querySelector('#testimonial-container');
+              if (container) {
+                container.innerHTML = `
+                  <div class="p-6 bg-white rounded-lg border border-gray-200 text-center">
+                    <p class="text-gray-600">No pending testimonials</p>
+                  </div>
+                `;
+              }
+            }
+          }, 300);
+        }
+      } else {
+        alert('Failed to update testimonial: ' + (result.error || 'Unknown error'));
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    } catch (error) {
+      console.error('Error updating testimonial:', error);
+      alert('An error occurred while updating the testimonial');
+      button.disabled = false;
+      button.innerHTML = originalText;
+    }
+  }
+
+  async function deleteTestimonial(id: string, button: HTMLButtonElement) {
+    if (!confirm('Are you sure you want to delete this testimonial? This action cannot be undone.')) {
+      return;
+    }
+
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = `
+      <svg class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Deleting...
+    `;
+
+    try {
+      const response = await fetch(`/api/testimonial?id=${id}`, {
+        method: 'DELETE'
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Remove the card from the UI with animation
+        const card = button.closest('.testimonial-card');
+        if (card) {
+          card.classList.add('opacity-50', 'scale-95', 'transition-all', 'duration-300');
+          setTimeout(() => card.remove(), 300);
+        }
+      } else {
+        alert('Failed to delete testimonial: ' + (result.error || 'Unknown error'));
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    } catch (error) {
+      console.error('Error deleting testimonial:', error);
+      alert('An error occurred while deleting the testimonial');
+      button.disabled = false;
+      button.innerHTML = originalText;
+    }
+  }
+
+  approveButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const id = button.dataset.id;
+      if (id) updateTestimonialStatus(id, 'approved', button);
+    });
+  });
+
+  rejectButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const id = button.dataset.id;
+      if (id) updateTestimonialStatus(id, 'rejected', button);
+    });
+  });
+
+  deleteButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const id = button.dataset.id;
+      if (id) deleteTestimonial(id, button);
+    });
+  });
+</script>

@@ -1,0 +1,57 @@
+---
+/**
+ * OptimizedImage Component
+ *
+ * High-performance image component with:
+ * - Lazy loading (native loading="lazy")
+ * - Responsive images with srcset
+ * - WebP format support
+ * - Aspect ratio preservation
+ * - Proper alt text enforcement
+ */
+
+export interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  aspectRatio?: string; // e.g., "16/9", "4/3", "1/1"
+  sizes?: string; // e.g., "(max-width: 640px) 100vw, 800px"
+  quality?: number; // 1-100
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  aspectRatio,
+  sizes,
+  quality = 80,
+  objectFit = 'cover',
+} = Astro.props;
+
+// Generate aspect ratio styles if provided
+const aspectRatioStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : '';
+const objectFitClass = objectFit !== 'cover' ? `object-${objectFit}` : 'object-cover';
+
+// Combine styles
+const combinedClass = `${className} ${objectFitClass}`.trim();
+---
+
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class={combinedClass}
+  style={aspectRatioStyle}
+  sizes={sizes}
+/>

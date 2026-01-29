@@ -1,0 +1,326 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout
+  title="About Acupuncture"
+  description="Learn how acupuncture works, what to expect during treatment, and how this ancient healing art can help you achieve better health naturally."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
+          About Acupuncture
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          Discover how this time-tested healing art can help you achieve natural wellness and lasting health through the power of traditional Chinese medicine.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- What is Acupuncture -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-6">
+            What is Acupuncture?
+          </h2>
+          <div class="space-y-4 text-gray-700 leading-relaxed">
+            <p>
+              Acupuncture is a holistic healing practice that has been refined over 3,000 years of clinical use in China and Asia. It involves the insertion of ultra-fine, sterile needles into specific points on the body to stimulate healing and restore balance.
+            </p>
+            <p>
+              According to traditional Chinese medicine theory, acupuncture works by regulating the flow of Qi (pronounced "chee") - the vital energy that flows through pathways called meridians in your body. When Qi flows freely, you experience good health. When it's blocked or imbalanced, illness and pain can result.
+            </p>
+            <p>
+              Modern research has shown that acupuncture points correspond to areas of high electrical conductivity and increased concentrations of nerve endings. Stimulating these points triggers the release of endorphins, reduces inflammation, and activates the body's natural healing mechanisms.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <Card variant="elevated" padding="lg" class="bg-gradient-to-br from-sage-50 to-warm-white">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-4">
+              Scientific Evidence
+            </h3>
+            <ul class="space-y-3 text-gray-700 text-sm">
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Endorsed by the World Health Organization (WHO) for over 100 conditions</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Recognized by the National Institutes of Health (NIH) for pain management</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Backed by thousands of peer-reviewed research studies</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span>Covered by many insurance plans for specific conditions</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- How Acupuncture Works -->
+  <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
+    <Container>
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+          How Acupuncture Works
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          Understanding the mechanisms behind this powerful healing modality
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <Card variant="elevated" padding="lg" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+            Stimulates Nerves
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Needles activate nerve endings, sending healing signals to the brain and affected areas
+          </p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+            Releases Endorphins
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Natural pain-relieving chemicals flood your system, providing relief and promoting wellbeing
+          </p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+            Reduces Inflammation
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Anti-inflammatory chemicals are released, reducing swelling and promoting tissue healing
+          </p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+            Boosts Immunity
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            White blood cell production increases, strengthening your body's natural defenses
+          </p>
+        </Card>
+      </div>
+    </Container>
+  </section>
+
+  <!-- What to Expect -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12 md:mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+            What to Expect During Your Visit
+          </h2>
+          <p class="text-lg text-gray-600">
+            Your first acupuncture experience, step by step
+          </p>
+        </div>
+
+        <div class="space-y-6">
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
+                1
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+                  Initial Consultation (30-45 minutes)
+                </h3>
+                <p class="text-gray-700 leading-relaxed mb-3">
+                  We begin with a comprehensive health history and discussion of your main concerns. We'll ask about your symptoms, medical history, lifestyle, diet, and sleep patterns.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                  In traditional Chinese medicine, we also examine your tongue and take your pulse at multiple points, which provides valuable diagnostic information.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
+                2
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+                  Treatment Plan
+                </h3>
+                <p class="text-gray-700 leading-relaxed">
+                  Based on your consultation, we'll create a personalized treatment plan tailored to your specific needs and health goals. We'll explain which acupuncture points we'll use and what you can expect from treatment.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
+                3
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+                  Acupuncture Treatment (30-45 minutes)
+                </h3>
+                <p class="text-gray-700 leading-relaxed mb-3">
+                  You'll lie comfortably on a treatment table while we insert ultra-fine needles (thinner than a human hair) at specific points. Most people feel minimal to no discomfort.
+                </p>
+                <p class="text-gray-700 leading-relaxed">
+                  The needles remain in place for 20-30 minutes while you relax. Many patients find this time deeply relaxing and even fall asleep.
+                </p>
+              </div>
+            </div>
+          </Card>
+
+          <Card variant="bordered" padding="lg">
+            <div class="flex items-start gap-6">
+              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
+                4
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+                  Post-Treatment & Follow-Up
+                </h3>
+                <p class="text-gray-700 leading-relaxed">
+                  After removing the needles, we'll discuss your experience and provide recommendations for home care, diet, or lifestyle modifications that can enhance your results. We'll also schedule your follow-up appointments based on your treatment plan.
+                </p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
+    <Container>
+      <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12 md:mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+            Common Questions
+          </h2>
+          <p class="text-lg text-gray-600">
+            Answers to the most frequently asked questions about acupuncture
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <Card variant="elevated" padding="lg">
+            <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+              Does acupuncture hurt?
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Most people feel little to no pain. The needles are extremely thin - much finer than needles used for injections. You may feel a slight pinch upon insertion, followed by a sensation of warmth, tingling, or heaviness, which indicates the treatment is working.
+            </p>
+          </Card>
+
+          <Card variant="elevated" padding="lg">
+            <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+              How many treatments will I need?
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              This varies depending on your condition and how long you've had it. Acute conditions may resolve in 3-6 sessions, while chronic issues typically require 8-12 sessions for significant improvement. We'll discuss a treatment plan during your first visit.
+            </p>
+          </Card>
+
+          <Card variant="elevated" padding="lg">
+            <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+              Is acupuncture safe?
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Yes, when performed by a licensed practitioner. We use single-use, sterile needles and follow strict safety protocols. Side effects are rare and typically limited to minor bruising or temporary soreness at needle sites.
+            </p>
+          </Card>
+
+          <Card variant="elevated" padding="lg">
+            <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
+              Will my insurance cover acupuncture?
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Many insurance plans now cover acupuncture for specific conditions like chronic pain. We recommend calling your insurance provider to verify your coverage. We can provide documentation you may need for reimbursement.
+            </p>
+          </Card>
+
+          <div class="text-center pt-8">
+            <Button variant="tertiary" size="lg" href="/contact">
+              Have More Questions? Contact Us
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
+    <Container class="text-center">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
+        Experience the Benefits of Acupuncture
+      </h2>
+      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
+        Join thousands of patients who have found natural relief and lasting wellness through our expert acupuncture care.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant="secondary" size="lg" icon="calendar" href="/contact">
+          Book Your First Visit
+        </Button>
+        <Button variant="outline" size="lg" icon="phone" href="tel:+14145551234">
+          Call (414) 555-1234
+        </Button>
+      </div>
+      <p class="text-sm mt-6 opacity-75">
+        🎉 First Visit Special: Only $29 (regular $150) - Valid through March 31, 2026
+      </p>
+    </Container>
+  </section>
+</BaseLayout>

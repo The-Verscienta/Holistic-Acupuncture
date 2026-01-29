@@ -1,0 +1,56 @@
+---
+import { getCloudflareImageUrlWithOptions, type CloudflareImageOptions } from '../lib/cloudflare';
+
+interface Props {
+  imageId: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  fit?: 'scale-down' | 'contain' | 'cover' | 'crop' | 'pad';
+  quality?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  imageId,
+  alt,
+  width,
+  height,
+  fit = 'cover',
+  quality = 85,
+  class: className,
+  loading = 'lazy',
+} = Astro.props;
+
+// Generate optimized image URL
+const imageUrl = getCloudflareImageUrlWithOptions(imageId, 'public', {
+  width,
+  height,
+  fit,
+  quality,
+  format: 'auto', // Cloudflare auto-serves WebP/AVIF to supported browsers
+});
+
+// Generate srcset for responsive images
+const srcset = width
+  ? `${imageUrl} 1x, ${getCloudflareImageUrlWithOptions(imageId, 'public', {
+      width: width * 2,
+      height: height ? height * 2 : undefined,
+      fit,
+      quality,
+      format: 'auto',
+    })} 2x`
+  : undefined;
+---
+
+<img
+  src={imageUrl}
+  srcset={srcset}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class={className}
+/>

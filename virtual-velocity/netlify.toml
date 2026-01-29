@@ -1,0 +1,109 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Redirects and rewrites
+[[redirects]]
+  # Redirect www to non-www
+  from = "https://www.holisticacupuncture.net/*"
+  to = "https://holisticacupuncture.net/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  # Admin area requires authentication (when implemented)
+  from = "/admin/*"
+  to = "/admin/:splat"
+  status = 200
+
+[[redirects]]
+  # API endpoints
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  # WordPress to Astro blog post redirects (when migrating)
+  # Example: from = "/2023/01/15/blog-post-title/"
+  #          to = "/blog/blog-post-title"
+  #          status = 301
+
+[[redirects]]
+  # WordPress category redirects
+  from = "/category/:category"
+  to = "/blog"
+  status = 301
+
+[[redirects]]
+  # WordPress tag redirects
+  from = "/tag/:tag"
+  to = "/blog"
+  status = 301
+
+[[redirects]]
+  # Old WordPress URLs with trailing slash
+  from = "/*/"
+  to = "/:splat"
+  status = 301
+
+[[redirects]]
+  # Catch-all 404
+  from = "/*"
+  to = "/404"
+  status = 404
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Astro DB / Astro Studio integration
+[context.production.environment]
+  ASTRO_STUDIO_APP_TOKEN = "${ASTRO_STUDIO_APP_TOKEN}"
+  PUBLIC_SANITY_PROJECT_ID = "${PUBLIC_SANITY_PROJECT_ID}"
+  PUBLIC_SANITY_DATASET = "production"
+  SANITY_API_TOKEN = "${SANITY_API_TOKEN}"
+
+[context.deploy-preview.environment]
+  PUBLIC_SANITY_DATASET = "production"
+
+# Plugin for Astro
+[[plugins]]
+  package = "@netlify/plugin-astro"
+
+# Forms configuration
+[forms]
+  # All forms go to Netlify Forms by default

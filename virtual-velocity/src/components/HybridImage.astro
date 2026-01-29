@@ -1,0 +1,97 @@
+---
+/**
+ * HybridImage Component
+ *
+ * Intelligently uses Cloudflare Images when available, falls back to Sanity.
+ * This provides cost savings (Cloudflare: $5/month vs Sanity bandwidth costs)
+ * while maintaining compatibility during migration.
+ */
+
+import CloudflareImage from './CloudflareImage.astro';
+import SanityImage from './SanityImage.astro';
+import { getCloudflareIdFromSanityImage, hasCloudflareImage } from '../lib/imageMapping';
+import type { SanityImage as SanityImageType } from '../types/sanity';
+
+export interface Props {
+  image: SanityImageType;
+  alt?: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  aspectRatio?: string;
+  sizes?: string;
+  quality?: number;
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+  // Force source (useful for testing)
+  forceSource?: 'cloudflare' | 'sanity';
+}
+
+const {
+  image,
+  alt,
+  width = 800,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  aspectRatio,
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px',
+  quality = 80,
+  objectFit = 'cover',
+  forceSource,
+} = Astro.props;
+
+// Determine which image source to use
+let useCloudflare = false;
+let cloudflareId: string | null = null;
+
+if (forceSource === 'cloudflare') {
+  cloudflareId = getCloudflareIdFromSanityImage(image);
+  useCloudflare = cloudflareId !== null;
+} else if (forceSource === 'sanity') {
+  useCloudflare = false;
+} else {
+  // Auto-detect: use Cloudflare if available
+  if (hasCloudflareImage(image)) {
+    cloudflareId = getCloudflareIdFromSanityImage(image);
+    useCloudflare = true;
+  }
+}
+
+// Use alt from image metadata if not provided
+const imageAlt = alt || image.alt || '';
+
+// Map objectFit values for CloudflareImage
+const cloudflarefit = objectFit === 'scale-down' ? 'scale-down' :
+                     objectFit === 'contain' ? 'contain' :
+                     objectFit === 'fill' ? 'crop' :
+                     'cover';
+---
+
+{useCloudflare && cloudflareId ? (
+  <!-- Use Cloudflare Images (cost-effective, global CDN) -->
+  <CloudflareImage
+    imageId={cloudflareId}
+    alt={imageAlt}
+    width={width}
+    height={height}
+    fit={cloudflarefit}
+    quality={quality}
+    class={className}
+    loading={loading}
+  />
+) : (
+  <!-- Fallback to Sanity Images -->
+  <SanityImage
+    image={image}
+    alt={imageAlt}
+    width={width}
+    height={height}
+    class={className}
+    loading={loading}
+    aspectRatio={aspectRatio}
+    sizes={sizes}
+    quality={quality}
+    objectFit={objectFit}
+  />
+)}

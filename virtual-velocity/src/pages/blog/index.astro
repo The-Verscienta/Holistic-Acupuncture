@@ -1,0 +1,368 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Card from '../../components/Card.astro';
+import Badge from '../../components/Badge.astro';
+import HybridImage from '../../components/HybridImage.astro';
+import { getAllBlogPosts } from '../../lib/sanityQueries';
+import { formatDate } from '../../lib/sanity';
+import { categoryLabels } from '../../types/sanity';
+
+// Configuration
+const POSTS_PER_PAGE = 9;
+
+// Get page from URL query params (for client-side filtering)
+const url = new URL(Astro.request.url);
+const currentPage = parseInt(url.searchParams.get('page') || '1');
+const categoryFilter = url.searchParams.get('category') || 'All';
+
+// Fetch all blog posts from Sanity
+const allPosts = await getAllBlogPosts();
+
+// Filter posts by category if needed
+const filteredPosts = categoryFilter === 'All'
+  ? allPosts
+  : allPosts.filter(post => post.category === categoryFilter);
+
+// Calculate pagination
+const totalPosts = filteredPosts.length;
+const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+const endIndex = startIndex + POSTS_PER_PAGE;
+const posts = filteredPosts.slice(startIndex, endIndex);
+
+// Get unique categories from posts
+const uniqueCategories = [...new Set(allPosts.map(post => post.category))];
+const categories = ['All', ...uniqueCategories];
+
+// Generate page numbers for pagination
+const getPageNumbers = (current: number, total: number) => {
+  const pages: (number | string)[] = [];
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) pages.push(i);
+  } else {
+    if (current <= 3) {
+      pages.push(1, 2, 3, 4, '...', total);
+    } else if (current >= total - 2) {
+      pages.push(1, '...', total - 3, total - 2, total - 1, total);
+    } else {
+      pages.push(1, '...', current - 1, current, current + 1, '...', total);
+    }
+  }
+  return pages;
+};
+
+const pageNumbers = getPageNumbers(currentPage, totalPages);
+
+// Build URL with params
+const buildUrl = (page: number, category: string = categoryFilter) => {
+  const params = new URLSearchParams();
+  if (page > 1) params.set('page', page.toString());
+  if (category !== 'All') params.set('category', category);
+  const queryString = params.toString();
+  return queryString ? `/blog?${queryString}` : '/blog';
+};
+---
+
+<BaseLayout
+  title="Blog"
+  description="Learn about acupuncture, holistic health, wellness tips, and traditional Chinese medicine from our expert practitioners."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
+          Health & Wellness Blog
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          Expert insights on acupuncture, traditional Chinese medicine, and natural healing from our experienced practitioners.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Categories Filter -->
+  <section class="py-8 bg-white border-b border-sage-200">
+    <Container>
+      <div class="flex flex-wrap gap-3 justify-center">
+        {categories.map(category => (
+          <a
+            href={buildUrl(1, category)}
+            class={`px-4 py-2 rounded-[var(--radius-button)] font-medium transition-colors ${
+              category === categoryFilter
+                ? 'bg-sage-600 text-white'
+                : 'bg-sage-100 text-sage-700 hover:bg-sage-200'
+            }`}
+          >
+            {categoryLabels[category] || category}
+          </a>
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- Blog Posts Grid -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      {posts.length === 0 ? (
+        <div class="text-center py-12">
+          <p class="text-gray-600 text-lg">No posts found in this category.</p>
+          <a href="/blog" class="inline-block mt-4 text-sage-600 hover:text-sage-700 font-medium">
+            View all posts &rarr;
+          </a>
+        </div>
+      ) : (
+        <>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {posts.map(post => (
+              <Card variant="elevated" padding="none" hoverable href={`/blog/${post.slug.current}`}>
+                <!-- Featured Image -->
+                {post.featuredImage ? (
+                  <HybridImage
+                    image={post.featuredImage}
+                    alt={post.featuredImage.alt || post.title}
+                    width={800}
+                    height={450}
+                    aspectRatio="16/9"
+                    class="w-full"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div class="aspect-video bg-gradient-to-br from-sage-200 to-healing-blue flex items-center justify-center">
+                    <svg class="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                  </div>
+                )}
+
+                <!-- Content -->
+                <div class="p-6">
+                  <div class="flex items-center gap-3 mb-3">
+                    <Badge variant="default" size="sm">{categoryLabels[post.category] || post.category}</Badge>
+                    <span class="text-xs text-gray-500">{post.readTime} min read</span>
+                  </div>
+
+                  <h3 class="text-xl font-heading font-semibold text-charcoal mb-3 group-hover:text-sage-700 transition-colors">
+                    {post.title}
+                  </h3>
+
+                  <p class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+                    {post.excerpt}
+                  </p>
+
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>{formatDate(post.publishedAt)}</span>
+                    <span class="flex items-center gap-1 text-sage-600 font-semibold">
+                      Read More
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <!-- Pagination -->
+          {totalPages > 1 && (
+            <nav class="mt-12 flex justify-center items-center gap-2" aria-label="Blog pagination">
+              <!-- Previous Button -->
+              {currentPage > 1 ? (
+                <a
+                  href={buildUrl(currentPage - 1)}
+                  class="px-3 py-2 bg-sage-100 text-sage-700 hover:bg-sage-200 rounded-[var(--radius-md)] font-medium transition-colors"
+                  aria-label="Previous page"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </a>
+              ) : (
+                <span class="px-3 py-2 bg-gray-100 text-gray-400 rounded-[var(--radius-md)] cursor-not-allowed">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                </span>
+              )}
+
+              <!-- Page Numbers -->
+              {pageNumbers.map(pageNum => (
+                pageNum === '...' ? (
+                  <span class="px-3 py-2 text-gray-500">...</span>
+                ) : (
+                  <a
+                    href={buildUrl(pageNum as number)}
+                    class={`px-4 py-2 rounded-[var(--radius-md)] font-medium transition-colors ${
+                      pageNum === currentPage
+                        ? 'bg-sage-600 text-white'
+                        : 'bg-sage-100 text-sage-700 hover:bg-sage-200'
+                    }`}
+                    aria-current={pageNum === currentPage ? 'page' : undefined}
+                  >
+                    {pageNum}
+                  </a>
+                )
+              ))}
+
+              <!-- Next Button -->
+              {currentPage < totalPages ? (
+                <a
+                  href={buildUrl(currentPage + 1)}
+                  class="px-3 py-2 bg-sage-100 text-sage-700 hover:bg-sage-200 rounded-[var(--radius-md)] font-medium transition-colors"
+                  aria-label="Next page"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </a>
+              ) : (
+                <span class="px-3 py-2 bg-gray-100 text-gray-400 rounded-[var(--radius-md)] cursor-not-allowed">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                </span>
+              )}
+            </nav>
+          )}
+
+          <!-- Results Info -->
+          <p class="mt-6 text-center text-sm text-gray-500">
+            Showing {startIndex + 1}-{Math.min(endIndex, totalPosts)} of {totalPosts} articles
+            {categoryFilter !== 'All' && ` in ${categoryLabels[categoryFilter] || categoryFilter}`}
+          </p>
+        </>
+      )}
+    </Container>
+  </section>
+
+  <!-- Newsletter Signup -->
+  <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
+    <Container>
+      <Card variant="elevated" padding="lg" class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+          Stay Updated
+        </h2>
+        <p class="text-lg text-gray-600 mb-8">
+          Subscribe to our newsletter for health tips, wellness advice, and special offers.
+        </p>
+
+        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            class="flex-1 px-4 py-3 rounded-[var(--radius-md)] border border-gray-400 focus:border-sage-500 focus:ring-2 focus:ring-sage-500/20 focus:outline-none"
+            required
+          />
+          <button
+            type="submit"
+            class="px-8 py-3 bg-sage-600 text-white font-semibold rounded-[var(--radius-button)] hover:bg-sage-700 transition-colors whitespace-nowrap"
+          >
+            Subscribe
+          </button>
+        </form>
+
+        <p id="newsletter-message" class="text-sm mt-4 hidden"></p>
+        <p class="text-xs text-gray-500 mt-4">
+          We respect your privacy. Unsubscribe at any time.
+        </p>
+      </Card>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const message = document.getElementById('newsletter-message') as HTMLParagraphElement;
+  const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+  const emailInput = form?.querySelector('input[name="email"]') as HTMLInputElement;
+
+  // Email validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Real-time email validation
+  emailInput?.addEventListener('blur', () => {
+    const email = emailInput.value.trim();
+    if (email && !emailRegex.test(email)) {
+      emailInput.classList.add('border-red-500', 'focus:border-red-500');
+      emailInput.classList.remove('border-gray-400', 'focus:border-sage-500');
+      message.textContent = 'Please enter a valid email address';
+      message.className = 'text-sm mt-4 text-red-600';
+      message.classList.remove('hidden');
+    } else {
+      emailInput.classList.remove('border-red-500', 'focus:border-red-500');
+      emailInput.classList.add('border-gray-400', 'focus:border-sage-500');
+      message.classList.add('hidden');
+    }
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (new FormData(form).get('email') as string)?.trim();
+
+    // Client-side validation
+    if (!email || !emailRegex.test(email)) {
+      message.textContent = 'Please enter a valid email address';
+      message.className = 'text-sm mt-4 text-red-600';
+      message.classList.remove('hidden');
+      emailInput?.focus();
+      return;
+    }
+
+    // Show loading state
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+      <svg class="animate-spin -ml-1 mr-2 h-4 w-4 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Subscribing...
+    `;
+
+    try {
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Track newsletter signup
+        if (typeof (window as any).gtag === 'function') {
+          (window as any).gtag('event', 'newsletter_signup', {
+            form_name: 'newsletter',
+            source: 'blog_page',
+          });
+        }
+
+        message.textContent = data.message || 'Thanks for subscribing!';
+        message.className = 'text-sm mt-4 text-sage-600 font-medium';
+        form.reset();
+        // Reset button with success state briefly
+        submitButton.innerHTML = `
+          <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          Subscribed!
+        `;
+        setTimeout(() => {
+          submitButton.textContent = originalText;
+          submitButton.disabled = false;
+        }, 2000);
+      } else {
+        throw new Error(data.message || 'Subscription failed');
+      }
+    } catch (error) {
+      message.textContent = error instanceof Error ? error.message : 'An error occurred. Please try again.';
+      message.className = 'text-sm mt-4 text-red-600';
+      submitButton.textContent = originalText;
+      submitButton.disabled = false;
+    }
+    message.classList.remove('hidden');
+  });
+</script>

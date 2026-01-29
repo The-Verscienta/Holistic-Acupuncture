@@ -1,0 +1,2590 @@
+
+> virtual-velocity@0.0.1 migrate
+> node scripts/migration/index.js
+
+
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║       WordPress → Sanity Migration Script                ║
+║       Holistic Acupuncture Website                        ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+
+✅ Configuration validated
+
+📋 Configuration:
+   Batch size: 10
+   Concurrent uploads: 5
+   Retry attempts: 3
+   Rate limit delay: 100ms
+   Dry run: No
+
+🔍 Testing WordPress API connection...
+✅ Connection successful! Found 197 total posts
+
+🚀 Starting migration...
+
+════════════════════════════════════════════════════════════
+📰 BLOG POST MIGRATION
+════════════════════════════════════════════════════════════
+
+📥 Fetching WordPress content...
+
+📥 Fetching WordPress posts...
+📥 Fetching WordPress taxonomies...
+📥 Fetching WordPress categories...
+📥 Fetching WordPress tags...
+  ✓ Fetched page 1/1 (49 items)
+✅ Fetched 49 categories
+
+  ✓ Fetched page 1/2 (100 items)
+  ✓ Fetched page 1/2 (100 posts)
+  ✓ Fetched page 2/2 (90 items)
+✅ Fetched 190 tags
+
+  ✓ Fetched page 2/2 (97 posts)
+✅ Fetched 197 total posts
+
+Found 197 posts to migrate
+
+📊 Status breakdown:
+   Published: 197
+   Draft: 0
+   Other: 0
+
+📝 Migrating 197 posts...
+
+
+[1/197] Processing post...
+
+  📄 Processing: "Acupuncture for Winter Immunity: Boosting Defenses Against Colds"
+    Categories: Acupuncture, Chinese Medicine, Coronavirus, Flu, immune system, immunity, influenza
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-alexander-lunyov.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18977
+  Progress: 0.5%
+
+[2/197] Processing post...
+
+  📄 Processing: "New Year&#8217;s Resolutions Through Classical Chinese Medicine: Setting Intentions for Holistic Health"
+    Categories: Acupuncture, Acupuncture Treatment, immune system, immunity, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-ronnie-overgoor.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18972
+  Progress: 1.0%
+
+[3/197] Processing post...
+
+  📄 Processing: "Fortify Your Defenses: 5 Time-Tested Strategies from Classical Chinese Medicine to Prevent Illness"
+    Categories: Acupuncture, Coronavirus, COVID-19, Flu, Holidays, immune system, immunity, influenza
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-milada-vigerova.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18843
+  Progress: 1.5%
+
+[4/197] Processing post...
+
+  📄 Processing: "Why Being Grateful is Good Medicine"
+    Categories: Holidays
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18800
+  Progress: 2.0%
+
+[5/197] Processing post...
+
+  📄 Processing: "Food as Medicine: The Winter Months"
+    Categories: Lifestyle Suggestions, Nutrition Advice, Recipes
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1567
+  Progress: 2.5%
+
+[6/197] Processing post...
+
+  📄 Processing: "Acupuncture and Sciatic Pain"
+    Categories: Acupuncture, Health Care Articles, Sciatic Pain
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1537
+  Progress: 3.0%
+
+[7/197] Processing post...
+
+  📄 Processing: "Why Milwaukee Residents Are Choosing Acupuncture for Back Pain Relief"
+    Categories: Acupuncture, Acupuncture Treatment, Back Pain, Pain Management
+    Tags: Acupuncture, bayshore town center, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-kto4gt.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18545
+  Progress: 3.6%
+
+[8/197] Processing post...
+
+  📄 Processing: "Acupuncture for Degenerative Disc Disease"
+    Categories: Acupuncture, Acupuncture Treatment, Back Pain, Chinese Medicine, Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-julien-tromeur.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1705
+  Progress: 4.1%
+
+[9/197] Processing post...
+
+  📄 Processing: "The Yi &#8211; Spirit of Intelligence"
+    Categories: Acupuncture, Chinese Medicine
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-mailchimp.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18234
+  Progress: 4.6%
+
+[10/197] Processing post...
+
+  📄 Processing: "Zhi: The Willpower Housed in the Kidneys – Insights from Traditional Chinese Medicine"
+    Categories: Chinese Medicine
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-pixabay.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18017
+  Progress: 5.1%
+
+[11/197] Processing post...
+
+  📄 Processing: "The Po: The Body’s Soul in Chinese Medicine"
+    Categories: Chinese Medicine
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-wallace-henry.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-18009
+  Progress: 5.6%
+
+[12/197] Processing post...
+
+  📄 Processing: "Exploring the Depths of Acupuncture: Unraveling Its Mechanisms and Latest Scientific Insights"
+    Categories: Acupuncture, Chinese Medicine, health reports/ case studies, Stress
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17989
+  Progress: 6.1%
+
+[13/197] Processing post...
+
+  📄 Processing: "Exploring Colon Cleanses: Myths, Methods, and What Really Works"
+    Categories: Herbs, Lifestyle Suggestions, Nutrition Advice, Weight loss
+    Tags: Milwaukee
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-birgith-roosipuu.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17972
+  Progress: 6.6%
+
+[14/197] Processing post...
+
+  📄 Processing: "Oil Pulling: Ancient Wisdom for Modern Oral Health"
+    Categories: Chinese Medicine, Lifestyle Suggestions, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-skyler-ewing.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17634
+  Progress: 7.1%
+
+[15/197] Processing post...
+
+  📄 Processing: "Combining Acupuncture with Yoga: A Milwaukee Wellness Guide"
+    Categories: Acupuncture, Health Care Articles, yoga
+    Tags: Acupuncture, balance, yoga
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-bvjkrf.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17993
+  Progress: 7.6%
+
+[16/197] Processing post...
+
+  📄 Processing: "The Shen in Chinese Medicine: Nurturing the Spirit for Optimal Health"
+    Categories: Acupuncture, Herbs, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-greg-rakozy.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17446
+  Progress: 8.1%
+
+[17/197] Processing post...
+
+  📄 Processing: "The Role of the Hun in Chinese Medicine: Understanding the Ethereal Soul"
+    Categories: Chinese Medicine, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-teslariu-mihai.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17295
+  Progress: 8.6%
+
+[18/197] Processing post...
+
+  📄 Processing: "5 Common Myths About Acupuncture Debunked – Milwaukee, Wisconsin"
+    Categories: Acupuncture, Acupuncture Special, Acupuncture Treatment
+    Tags: Acupuncture, bayshore town center, chinese medicine, milwaukee acupuncture, natural, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-qwygup.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17459
+  Progress: 9.1%
+
+[19/197] Processing post...
+
+  📄 Processing: "Stevia: A Natural Sweetener Explored Through Chinese Medicine and Modern Medicine Lenses"
+    Categories: Chinese Medicine, Diabetes, Health Care Articles
+    Tags: 53217, Acupuncture Milwaukee, Artificial Sweetener alternatives, chinese herbs, curry chaudoir, herbs, holistic, Milwaukee
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-mathilde-langevin.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-743
+  Progress: 9.6%
+
+[20/197] Processing post...
+
+  📄 Processing: "Treating Fatty Liver Disease: A Holistic Chinese Medicine Approach"
+    Categories: Acupuncture, Herbs, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17150
+  Progress: 10.2%
+
+[21/197] Processing post...
+
+  📄 Processing: "The Four Golden Rules of Acupuncture"
+    Categories: Acupuncture, Chinese Medicine, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 4-pillars.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17082
+  Progress: 10.7%
+
+[22/197] Processing post...
+
+  📄 Processing: "Acupuncture for Digestive Issues: A Natural Approach in Milwaukee Wisconsin"
+    Categories: Acupuncture, Digestion, Health Care Articles
+    Tags: Acupuncture, chinese herbs, chinese medicine, functional acupuncture
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-84yexa.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-17090
+  Progress: 11.2%
+
+[23/197] Processing post...
+
+  📄 Processing: "Acupuncture vs. Chiropractic: Which Is Right for You in Milwaukee, Wisconsin?"
+    Categories: Acupuncture, Chinese Medicine, Chiropractic
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese medicine, health, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-aqht9s.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16926
+  Progress: 11.7%
+
+[24/197] Processing post...
+
+  📄 Processing: "Acupuncture for Fertility"
+    Categories: Acupuncture, Herbs, Success Stories
+    Tags: Fertility, herbal medicine, infertility
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-febe-vanermen.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16739
+  Progress: 12.2%
+
+[25/197] Processing post...
+
+  📄 Processing: "What Is Acupuncture and How Does It Work?  How Inserting Tiny Needles Can Relieve Pain, Reduce Stress, and Improve Overall Health in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Special, Acupuncture Treatment, immune system, Uncategorized
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese medicine, immune function, natural, self-healing
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-ofjlda.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16736
+  Progress: 12.7%
+
+[26/197] Processing post...
+
+  📄 Processing: "What Are Diabetes Symptoms? A Milwaukee Acupuncture Perspective"
+    Categories: Acupuncture, Chinese Medicine, Diabetes
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese medicine, Diabetes, natural, peripheral neuropathy
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-du1zmu.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16583
+  Progress: 13.2%
+
+[27/197] Processing post...
+
+  📄 Processing: "Chinese Herbs and YOU"
+    Categories: Acupuncture, Herbs
+    Tags: Acupuncture Milwaukee, bayshore town center, chinese herbs, featured, herbs, holistic, oriental medicine, remedy, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: herb-featured-image.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2135
+  Progress: 13.7%
+
+[28/197] Processing post...
+
+  📄 Processing: "How Acupuncture Can Help with Menstrual Pain in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Chinese Medicine
+    Tags: Acupuncture, acupuncturist milwaukee, chinese medicine, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-oacl4q.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16353
+  Progress: 14.2%
+
+[29/197] Processing post...
+
+  📄 Processing: "Can Acupuncture Help Treat Acne?"
+    Categories: Acupuncture, Nutrition Advice
+    Tags: acne, skin health, treating acne
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-muthia-ashifa-salsabella.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16262
+  Progress: 14.7%
+
+[30/197] Processing post...
+
+  📄 Processing: "Acupuncture for Stomach Issues"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-julien-tromeur.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16046
+  Progress: 15.2%
+
+[31/197] Processing post...
+
+  📄 Processing: "Why Choose Acupuncture Over Painkillers?"
+    Categories: Acupuncture, Pain Management
+    Tags: Acupuncture, Acupuncture Milwaukee, bayshore town center, chinese medicine, peripheral neuropathy
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-kstgof.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-16033
+  Progress: 15.7%
+
+[32/197] Processing post...
+
+  📄 Processing: "Is Acupuncture Safe? What You Need to Know"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Uncategorized
+    Tags: Acupuncture, acupuncturist milwaukee, Milwaukee
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-ynopil.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15904
+  Progress: 16.2%
+
+[33/197] Processing post...
+
+  📄 Processing: "How Acupuncture Improves Your Immune System During Spring Allergy Season in Milwaukee"
+    Categories: Acupuncture, Allergies, immune system, immunity
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-markus-kammermann.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15706
+  Progress: 16.8%
+
+[34/197] Processing post...
+
+  📄 Processing: "Acupuncture for Back Pain: A Comprehensive Guide"
+    Categories: Acupuncture, Back Pain, Pain Management
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-kindel-media.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15629
+  Progress: 17.3%
+
+[35/197] Processing post...
+
+  📄 Processing: "What You Didn’t Know About Acupuncture: FAQs Answered"
+    Categories: Acupuncture, Acupuncture Treatment, Chinese Medicine
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-l4cfe5.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15549
+  Progress: 17.8%
+
+[36/197] Processing post...
+
+  📄 Processing: "Acupuncture for Better Sleep: How to Create a Restful Routine"
+    Categories: Acupuncture, insomnia, Lifestyle Suggestions
+    Tags: Acupuncture, acupuncturist milwaukee, bayshore town center, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-njzcwv.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15436
+  Progress: 18.3%
+
+[37/197] Processing post...
+
+  📄 Processing: "Sun Safety (and a Natural Sunscreen Recipe)"
+    Categories: Health Care Articles, Lifestyle Suggestions, Recipes
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: adult-beach-enjoyment-319930.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3922
+  Progress: 18.8%
+
+[38/197] Processing post...
+
+  📄 Processing: "First Time Acupuncture in Milwaukee, Wisconsin? Here’s What to Expect"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Special, Chinese Medicine, New Patient Special
+    Tags: Acupuncture, Acupuncture Milwaukee, bayshore town center, health, holistic, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: your-first-acupuncture-appointment.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15145
+  Progress: 19.3%
+
+[39/197] Processing post...
+
+  📄 Processing: "Honoring Mothers Through the Wisdom of Chinese Medicine"
+    Categories: Holidays, Nutrition Advice
+    Tags: chinese medicine
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-guille-pozzi.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-15051
+  Progress: 19.8%
+
+[40/197] Processing post...
+
+  📄 Processing: "Acupuncture vs. Traditional Western Medicine: Benefits and Differences"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture, chinese medicine, milwaukee acupuncture, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-eq5xch.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14895
+  Progress: 20.3%
+
+[41/197] Processing post...
+
+  📄 Processing: "Rotator Cuff Injuries: Understanding the Role of Acupuncture"
+    Categories: Acupuncture, Acupuncture Treatment, Arm Pain
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-inge-poelman.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14772
+  Progress: 20.8%
+
+[42/197] Processing post...
+
+  📄 Processing: "Using Acupuncture to Overcome Stress, Overwhelm, and Anxiety"
+    Categories: Acupuncture, Stress
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-3lp88b.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14602
+  Progress: 21.3%
+
+[43/197] Processing post...
+
+  📄 Processing: "Unlocking the Power of Chinese Herbal Medicine: The Perfect Partner for Acupuncture"
+    Categories: Acupuncture, COVID-19, Herbs
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: bottle-of-herbs-on-a-table.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14449
+  Progress: 21.8%
+
+[44/197] Processing post...
+
+  📄 Processing: "Oriental Nutrition Secrets for Eating Healthy in the Spring Season: A Guide from Acupuncture and Holistic Health Associates in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions, Nutrition Advice
+    Tags: Acupuncture, balance, health, natural, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-4a8wf7.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14378
+  Progress: 22.3%
+
+[45/197] Processing post...
+
+  📄 Processing: "Embrace a Natural and Healthy Lifestyle: Simple Tips for Wellness in Milwaukee, WI!"
+    Categories: Health Care Articles, Lifestyle Suggestions, Nutrition Advice
+    Tags: Acupuncture, Acupuncture Milwaukee, health, holistic, holistic health Milwaukee, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-8destk.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14254
+  Progress: 22.8%
+
+[46/197] Processing post...
+
+  📄 Processing: "The Science Behind Acupuncture for Stress Relief"
+    Categories: Acupuncture, Chinese Medicine, Health Care Articles, Stress
+    Tags: Acupuncture, adrenal, chinese medicine, holistic, milwaukee acupuncture, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-gjpjss.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14141
+  Progress: 23.4%
+
+[47/197] Processing post...
+
+  📄 Processing: "The Role of Acupuncture in Weight Loss and Healthy Eating: A Natural Approach for Milwaukee Residents"
+    Categories: Acupuncture, Lifestyle Suggestions, Nutrition Advice, Weight loss
+    Tags: Acupuncture, Acupuncture for Weight Loss Milwaukee, Acupuncture Milwaukee, acupuncturist milwaukee, adrenal, chinese medicine, Healthy Eating Acupuncture, holistic health Milwaukee, oriental nutrition, weight loss, Weight Loss Acupuncture
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-8pftvi.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-14053
+  Progress: 23.9%
+
+[48/197] Processing post...
+
+  📄 Processing: "How Does Acupuncture Work? A Beginner’s Guide to Acupuncture in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Arm Pain, Back Pain, Finger Pain, Foot Pain, General Pain, Hand Pain, Health Care Articles, Leg Pain, Neck Pain, Pain Management, Sciatic Pain
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, health, holistic
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-kg7xmg.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13947
+  Progress: 24.4%
+
+[49/197] Processing post...
+
+  📄 Processing: "Acupuncture for Winter Health: Boost Your Immunity This Season in Milwaukee"
+    Categories: Acupuncture, Acupuncture Treatment, Health Care Articles, Herbs, immune system, immunity
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese medicine, immune function, natural, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-uscri5.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13863
+  Progress: 24.9%
+
+[50/197] Processing post...
+
+  📄 Processing: "Herbal Remedies and Acupuncture: The Perfect Duo for Healing in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Chinese Medicine, Herbs, immune system
+    Tags: Acupuncture, chinese medicine, herbs, immune function, natural
+    🖼️  Featured image...
+    ✓ Uploaded: herbal-remedies.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13665
+  Progress: 25.4%
+
+[51/197] Processing post...
+
+  📄 Processing: "What the Chinese Lunar New Year Means to You and Your Health in Milwaukee"
+    Categories: Acupuncture, Acupuncture Special, Acupuncture Treatment, Health Care Articles, Holidays, New Patient Special
+    Tags: acupuncture for health in Milwaukee, acupuncture for immunity, acupuncture in Milwaukee, Chinese New Year and your health in Milwaukee, Chinese New Year health reset, holistic health Milwaukee, seasonal health practices
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-c4ip6u.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13458
+  Progress: 25.9%
+
+[52/197] Processing post...
+
+  📄 Processing: "How Acupuncture Helps Athletes Recover Faster in Milwaukee, Wisconsin"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Athlete, Lifestyle Suggestions, Stress
+    Tags: Acupuncture, Acupuncture Milwaukee, health, holistic, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-whl3my.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13323
+  Progress: 26.4%
+
+[53/197] Processing post...
+
+  📄 Processing: "Acupuncture for Preventative Health: Keeping Your Body in Balance in Milwaukee"
+    Categories: Acupuncture, Acupuncture Special, Acupuncture Treatment
+    Tags: Acupuncture, Acupuncture Milwaukee, bayshore town center, health, holistic, immune function, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-vkctke.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13271
+  Progress: 26.9%
+
+[54/197] Processing post...
+
+  📄 Processing: "Acupuncture as a help for Diabetes Mellitus and Diabetic Peripheral Neuropathy"
+    Categories: Acupuncture
+    Tags: cancer, Diabetes, peripheral neuropathy
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-robert-anasch.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13134
+  Progress: 27.4%
+
+[55/197] Processing post...
+
+  📄 Processing: "Acupuncture for New Year’s Wellness: Tips for Staying Healthy in 2025"
+    Categories: Acupuncture, Acupuncture Special, Acupuncture Treatment, immunity, Pain Management, sleep disturbances, Stress
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese medicine, health, holistic, immune function, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-x0yqv4.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-13140
+  Progress: 27.9%
+
+[56/197] Processing post...
+
+  📄 Processing: "Using Acupuncture for Headaches and Migraines in Milwaukee: A Natural Approach to Pain Relief"
+    Categories: Acupuncture, Acupuncture Treatment, headaches, migraines
+    Tags: Acupuncture, chinese herbs, milwaukee acupuncture, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-orbet0.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-12927
+  Progress: 28.4%
+
+[57/197] Processing post...
+
+  📄 Processing: "How Acupuncture Helps Children with Allergies and Asthma in Milwaukee"
+    Categories: Acupuncture, Acupuncture Treatment, Allergies, Asthma, immune system, immunity
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-aptvf5.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-12851
+  Progress: 28.9%
+
+[58/197] Processing post...
+
+  📄 Processing: "How Acupuncture Helps with Chronic Pain Relief in Milwaukee"
+    Categories: Acupuncture, Acupuncture Treatment, Arm Pain, Back Pain, Chinese Medicine, Fibromyalgia, Finger Pain, Foot Pain, General Pain, Hand Pain, Leg Pain, Neck Pain, Pain Management, Sciatic Pain
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, bayshore town center, chinese herbs, Milwaukee, milwaukee acupuncture, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-y0zn9e.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-12792
+  Progress: 29.4%
+
+[59/197] Processing post...
+
+  📄 Processing: "Preparing for the Holidays"
+    Categories: Acupuncture, Holidays, Nutrition Advice, sleep disturbances, Stress
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-megan-watson.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-12407
+  Progress: 29.9%
+
+[60/197] Processing post...
+
+  📄 Processing: "Embracing Autumn: How Acupuncture Can Support Your Seasonal Transition"
+    Categories: Acupuncture, Lifestyle Suggestions, Nutrition Advice
+    Tags: 53217, Acupuncture Milwaukee, Glendale, immune function
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-jeremy-thomas.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-11959
+  Progress: 30.5%
+
+[61/197] Processing post...
+
+  📄 Processing: "The Difficulties of Diabetes"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions, Nutrition Advice, Uncategorized
+    Tags: 53217, Acupuncture, acupuncturist milwaukee, chinese herbs, chinese medicine, Diabetes, functional acupuncture, natural, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-afs0nb.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4618
+  Progress: 31.0%
+
+[62/197] Processing post...
+
+  📄 Processing: "Acupuncture for the Microbiome"
+    Categories: Acupuncture, Herbs
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-nadine-primeau.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-11368
+  Progress: 31.5%
+
+[63/197] Processing post...
+
+  📄 Processing: "Healthy Eating Starts With The Cookware!"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-tina-dawson.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-936
+  Progress: 32.0%
+
+[64/197] Processing post...
+
+  📄 Processing: "10 Tips for Staying Healthy Through Temperature Shifts"
+    Categories: immune system, immunity
+    Tags: Acupuncture Milwaukee, weather
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-babak-habibi.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-11085
+  Progress: 32.5%
+
+[65/197] Processing post...
+
+  📄 Processing: "Year of the Dragon"
+    Categories: Acupuncture, Chinese Medicine, Holidays
+    Tags: chinese new year, Happiness, Luck, Wealth
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-martin-woortman.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-11050
+  Progress: 33.0%
+
+[66/197] Processing post...
+
+  📄 Processing: "Seasonal Eating &#8211; A New Year&#8217;s Resolution"
+    Categories: Health Care Articles, Nutrition Advice
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, health, milwaukee acupuncture, oriental nutrition
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2221
+  Progress: 33.5%
+
+[67/197] Processing post...
+
+  📄 Processing: "Tea: The Key To Maintaining Immune Strength in Winter"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-qsitqc.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1792
+  Progress: 34.0%
+
+[68/197] Processing post...
+
+  📄 Processing: "Autumn &#038; Spring Cleansing (Detox)"
+    Categories: Herbs, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: detox.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3054
+  Progress: 34.5%
+
+[69/197] Processing post...
+
+  📄 Processing: "Influenza&#8230;."
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Chinese Medicine, Flu, Health Care Articles, immune system, immunity, influenza
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: new9.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4766
+  Progress: 35.0%
+
+[70/197] Processing post...
+
+  📄 Processing: "Oriental Nutrition: Things To Eat in Fall"
+    Categories: Lifestyle Suggestions, Nutrition Advice
+    Tags: 53217, Acupuncture Milwaukee, acupuncturist, fall recipes, garlic, ginger, lung function, milwaukee acupuncture, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: garlic-and-ginger.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2654
+  Progress: 35.5%
+
+[71/197] Processing post...
+
+  📄 Processing: "Stay Healthy This Autumn: 6 Tips To Keep You Active And Fit"
+    Categories: immune system, Lifestyle Suggestions, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: fall-colors-photo.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-10532
+  Progress: 36.0%
+
+[72/197] Processing post...
+
+  📄 Processing: "4 Common Conditions That Respond Well to Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: backup-8211-onsite-blogging-8211-post-content-4-co.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5655
+  Progress: 36.5%
+
+[73/197] Processing post...
+
+  📄 Processing: "Understanding the Difference Between Acupuncture and Acupressure for Better Health"
+    Categories: Acupuncture, Lifestyle Suggestions
+    Tags: acupressure, Acupuncture, Acupuncture Milwaukee, milwaukee acupuncture, natural, oriental medicine, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: acupressure-on-the-foot.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2207
+  Progress: 37.1%
+
+[74/197] Processing post...
+
+  📄 Processing: "Acupuncturist Quicktips:  simple steps to regulating your weight"
+    Categories: Acupuncture, Chinese Medicine, Health Care Articles, Lifestyle Suggestions, Nutrition Advice, Weight loss
+    Tags: Acupuncture, bayshore town center, chinese herbs, chinese medicine, oriental nutrition, weight loss
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-alvez8.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-10115
+  Progress: 37.6%
+
+[75/197] Processing post...
+
+  📄 Processing: "Nerve Pain:  not fun but solutions do exist"
+    Categories: Acupuncture, Acupuncture Treatment, Chinese Medicine, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, chinese medicine, natural
+    🖼️  Featured image...
+    ✓ Uploaded: young-woman-with-neck-and-shoulder-pain-close-up.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-9140
+  Progress: 38.1%
+
+[76/197] Processing post...
+
+  📄 Processing: "Everything You Need to Know About Using Acupuncture for Pain Management"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 1a94ed91-237e-44e8-a775-452d810c8e1a.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-8524
+  Progress: 38.6%
+
+[77/197] Processing post...
+
+  📄 Processing: "New to Acupuncture? 5 Commonly Asked Questions"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: acupuncture-treatment.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-7865
+  Progress: 39.1%
+
+[78/197] Processing post...
+
+  📄 Processing: "Top 5 Tips to Help You Choose the Best Acupuncturist"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 5086db77-ae5a-4396-b2af-8808b61c537b.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-7341
+  Progress: 39.6%
+
+[79/197] Processing post...
+
+  📄 Processing: "Signs That You Need Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ↻ Using cached: young-woman-with-neck-and-shoulder-pain-close-up.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-7016
+  Progress: 40.1%
+
+[80/197] Processing post...
+
+  📄 Processing: "Do You Suffer From Chronic Fatigue?"
+    Categories: sleep disturbances
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 7b177be9-17fe-4528-9894-15511d5f0d5c.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6461
+  Progress: 40.6%
+
+[81/197] Processing post...
+
+  📄 Processing: "Year of the Water Tiger is almost upon us!"
+    Categories: Holidays
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese new year, holistic, milwaukee acupuncture
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-e8xldy.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6370
+  Progress: 41.1%
+
+[82/197] Processing post...
+
+  📄 Processing: "Using Acupuncture for Mood Disorders"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: needle-for-acupuncture-on-spa-stones-on-table-clos.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6356
+  Progress: 41.6%
+
+[83/197] Processing post...
+
+  📄 Processing: "FAQs About Perimenopause, Treatment, and Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: beautiful-middle-aged-woman-smiling-outdoors.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6267
+  Progress: 42.1%
+
+[84/197] Processing post...
+
+  📄 Processing: "One of our acupuncturist weighs in on NFL football player Aaron Rodgers situation on the news recently"
+    Categories: COVID-19
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-qbueja.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6174
+  Progress: 42.6%
+
+[85/197] Processing post...
+
+  📄 Processing: "4 Things Seniors Should Know About Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: senior-group-friends-exercise-relax-concept.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6156
+  Progress: 43.1%
+
+[86/197] Processing post...
+
+  📄 Processing: "Acupuncture Treatment for Carpal Tunnel Syndrome: FAQ"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 91d0730c-6754-4cf9-aa2b-f376d733083f.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-6069
+  Progress: 43.7%
+
+[87/197] Processing post...
+
+  📄 Processing: "4 Commonly Asked Questions About Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: young-beautiful-woman-in-an-acupuncture-therapy-in.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5982
+  Progress: 44.2%
+
+[88/197] Processing post...
+
+  📄 Processing: "Acupuncture for Women&#8217;s Health Issues"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: beautiful-woman-feeling-sick-having-headache-painf.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5942
+  Progress: 44.7%
+
+[89/197] Processing post...
+
+  📄 Processing: "Acupuncture for Digestive Disorders"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: shot-of-unhealthy-young-woman-with-stomachache-lea.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5778
+  Progress: 45.2%
+
+[90/197] Processing post...
+
+  📄 Processing: "Acupuncture for Children: 4 Points for Parents"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: little-girl-smiling-on-floor.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5826
+  Progress: 45.7%
+
+[91/197] Processing post...
+
+  📄 Processing: "What to Know About Headaches and Acupuncture"
+    Categories: Acupuncture
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: 31317da9-70a1-4f5f-a0b7-dde90d87fb9f.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5548
+  Progress: 46.2%
+
+[92/197] Processing post...
+
+  📄 Processing: "Viral Protection"
+    Categories: Flu, immune system, immunity, influenza
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-1prawh.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4785
+  Progress: 46.7%
+
+[93/197] Processing post...
+
+  📄 Processing: "The usefulness of Five Element Theory"
+    Categories: Acupuncture, Acupuncture Special, Acupuncture Treatment, Chinese Medicine, Health Care Articles, Lifestyle Suggestions, Nutrition Advice
+    Tags: 53217, Acupuncture, acupuncturist milwaukee, balance, bayshore town center, chinese herbs, health, holistic, milwaukee acupuncture, natural, oriental medicine, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-w3gtui.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5434
+  Progress: 47.2%
+
+[94/197] Processing post...
+
+  📄 Processing: "The AMAZING human organ system"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Special, Acupuncture Treatment, Chinese Medicine, Health Care Articles
+    Tags: Acupuncture, acupuncturist milwaukee, adrenal, balance, health, holistic, natural, oriental medicine, weight loss
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-wzrrx8.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5399
+  Progress: 47.7%
+
+[95/197] Processing post...
+
+  📄 Processing: "Immunity:  what exactly is it and how is mine doing?"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Chinese Medicine, COVID-19, Health Care Articles, immune system, immunity, Lifestyle Suggestions
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, bayshore town center, chinese medicine, health, herbs, immune function, milwaukee acupuncture, natural
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-lmpnzd.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5294
+  Progress: 48.2%
+
+[96/197] Processing post...
+
+  📄 Processing: "Our patients ask:  to travel or not to travel?"
+    Categories: Acupuncture, COVID-19, Health Care Articles, Holidays, immune system, influenza, Lifestyle Suggestions
+    Tags: Acupuncture Milwaukee, chinese medicine, curry chaudoir, health, immune function, milwaukee acupuncture, natural, oriental medicine, remedy
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-grdime.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5223
+  Progress: 48.7%
+
+[97/197] Processing post...
+
+  📄 Processing: "The MOST basic effective way to protect yourself and others in a pandemic"
+    Categories: COVID-19, Featured, Flu, Health Care Articles, immune system, immunity, influenza, Lifestyle Suggestions
+    Tags: 53217, Acupuncture, bayshore town center, health, immune function
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-jtdzpi.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5192
+  Progress: 49.2%
+
+[98/197] Processing post...
+
+  📄 Processing: "Why symptoms?"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Chinese Medicine, Health Care Articles, Lifestyle Suggestions
+    Tags: Acupuncture, Acupuncture, Acupuncture Milwaukee, balance, center, health, holistic, Milwaukee, natural, oriental medicine, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-0njvuf.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5171
+  Progress: 49.7%
+
+[99/197] Processing post...
+
+  📄 Processing: "What is stress and exactly how does it affect the body?"
+    Categories: Acupuncture, Acupuncture Treatment, Chinese Medicine, Health Care Articles, immunity, Lifestyle Suggestions, Stress
+    Tags: Acupuncture, Acupuncture, Acupuncture Milwaukee, adrenal, chinese medicine, immune function, natural, oriental medicine, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: new10.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-5006
+  Progress: 50.3%
+
+[100/197] Processing post...
+
+  📄 Processing: "How sleeps affects your immune system"
+    Categories: Acupuncture, COVID-19, Health Care Articles, immune system, immunity, insomnia, Lifestyle Suggestions, sleep disturbances
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, adrenal, chinese herbs, health, holistic, immune function, natural, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-nvplzu.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4885
+  Progress: 50.8%
+
+[101/197] Processing post...
+
+  📄 Processing: "Diet and your immune function"
+    Categories: Acupuncture, Chinese Medicine, Lifestyle Suggestions, Nutrition Advice, Uncategorized
+    Tags: Acupuncture, acupuncturist milwaukee, chinese medicine, health, holistic, immune function, oriental medicine, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-eurohf.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4853
+  Progress: 51.3%
+
+[102/197] Processing post...
+
+  📄 Processing: "Viruses on your mind?"
+    Categories: Acupuncture, Chinese Medicine, Coronavirus, COVID-19, Flu, Health Care Articles, immune system, immunity, influenza, Lifestyle Suggestions, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-gvtavc.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4790
+  Progress: 51.8%
+
+[103/197] Processing post...
+
+  📄 Processing: "What does Acupuncture feel like exactly?"
+    Categories: Acupuncture, Acupuncture Needles, Acupuncture Treatment, Chinese Medicine, Health Care Articles, Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-imycvr.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4756
+  Progress: 52.3%
+
+[104/197] Processing post...
+
+  📄 Processing: "No one&#8217;s friend:  Insomina!"
+    Categories: Acupuncture, Health Care Articles, insomnia, Lifestyle Suggestions, sleep disturbances
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: new5.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4723
+  Progress: 52.8%
+
+[105/197] Processing post...
+
+  📄 Processing: "Neuropathy:  its complications and remedies"
+    Categories: Acupuncture
+    Tags: Acupuncture, bayshore town center, chinese herbs, chinese medicine, health, holistic, natural, Neuropathy, peripheral neuropathy, remedy, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-rhsmqr.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4683
+  Progress: 53.3%
+
+[106/197] Processing post...
+
+  📄 Processing: "WHAT IS CELIAC DISEASE?"
+    Categories: Acupuncture, Celiac disease, Health Care Articles, Lifestyle Suggestions, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-frlpve.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4657
+  Progress: 53.8%
+
+[107/197] Processing post...
+
+  📄 Processing: "Staying healthy during the holidays can be tough!"
+    Categories: Acupuncture, Health Care Articles, Holidays, Lifestyle Suggestions, Nutrition Advice
+    Tags: chinese medicine, health, holistic, natural, oriental medicine, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: qtq80-gzgwlz.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4590
+  Progress: 54.3%
+
+[108/197] Processing post...
+
+  📄 Processing: "Fast and Easy Chai Tea Recipe!"
+    Categories: Nutrition Advice, Recipes
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: chai.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4220
+  Progress: 54.8%
+
+[109/197] Processing post...
+
+  📄 Processing: "Pumpkin Power!"
+    Categories: Recipes
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: pumpkins.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4303
+  Progress: 55.3%
+
+[110/197] Processing post...
+
+  📄 Processing: "Yoga for your mind, body, and soul"
+    Categories: Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: yoga-exercise-14020804086s6.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4336
+  Progress: 55.8%
+
+[111/197] Processing post...
+
+  📄 Processing: "Trying to lose weight? Cut the Cheese!"
+    Categories: Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: cheese.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4238
+  Progress: 56.3%
+
+[112/197] Processing post...
+
+  📄 Processing: "The Dangers of MSG"
+    Categories: Health Care Articles, Nutrition Advice
+    Tags: chemicals, food additives, glutamate, monosodium, msg
+    🖼️  Featured image...
+    ✓ Uploaded: msg.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4327
+  Progress: 56.9%
+
+[113/197] Processing post...
+
+  📄 Processing: "5 Tips for Increasing Your Water Intake"
+    Categories: Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✗ Failed to upload undefined: Invalid URL
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4308
+  Progress: 57.4%
+
+[114/197] Processing post...
+
+  📄 Processing: "3 Electrolyte Packed Mocktail Recipes To Keep You Hydrated"
+    Categories: Nutrition Advice, Recipes, Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: mocktails.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4115
+  Progress: 57.9%
+
+[115/197] Processing post...
+
+  📄 Processing: "How Does Your Immune System Work?"
+    Categories: Health Care Articles, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: allergies.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4034
+  Progress: 58.4%
+
+[116/197] Processing post...
+
+  📄 Processing: "Should you buy organic? (Dirty Dozen and Clean 15)"
+    Categories: Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: veggies.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-4090
+  Progress: 58.9%
+
+[117/197] Processing post...
+
+  📄 Processing: "Tick Season and Lyme Disease"
+    Categories: Featured, Health Care Articles
+    Tags: bite, bullseye, fever, holistic, lyme disease, prevention, rash, tick
+    🖼️  Featured image...
+    ✓ Uploaded: tick-size.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3959
+  Progress: 59.4%
+
+[118/197] Processing post...
+
+  📄 Processing: "Quick and Easy Spring Noodle Soup"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: chicken-vegetable-soup-with-chicken-5.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3920
+  Progress: 59.9%
+
+[119/197] Processing post...
+
+  📄 Processing: "What is a Colonic?"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: digesetive.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3916
+  Progress: 60.4%
+
+[120/197] Processing post...
+
+  📄 Processing: "How Acupuncture Treats Allergies"
+    Categories: health reports/ case studies
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: allergies.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3893
+  Progress: 60.9%
+
+[121/197] Processing post...
+
+  📄 Processing: "Cleansing in The Spring"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ↻ Using cached: detox.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3768
+  Progress: 61.4%
+
+[122/197] Processing post...
+
+  📄 Processing: "Think you have a virus? Get a treatment ASAP"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ↻ Using cached: allergies.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3656
+  Progress: 61.9%
+
+[123/197] Processing post...
+
+  📄 Processing: "How Acupuncture treats Seasonal Affective Disorder (SAD)"
+    Categories: Acupuncture, Chinese Medicine
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: depression.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3631
+  Progress: 62.4%
+
+[124/197] Processing post...
+
+  📄 Processing: "How Weather Affects Your Health"
+    Categories: Uncategorized
+    Tags: arthritis, health, oriental medicine, weather
+    🖼️  Featured image...
+    ↻ Using cached: adult-beach-enjoyment-319930.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3622
+  Progress: 62.9%
+
+[125/197] Processing post...
+
+  📄 Processing: "Soup or Salad?"
+    Categories: Lifestyle Suggestions, Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: steamed-food.jpeg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3567
+  Progress: 63.5%
+
+[126/197] Processing post...
+
+  📄 Processing: "Fluid Metabolism in Chinese Medicine"
+    Categories: Acupuncture, Health Care Articles
+    Tags: acupuncturist milwaukee, balance, bodily fluids, fluid issues, functional acupuncture, Milwaukee, natural
+    🖼️  Featured image...
+    ✓ Uploaded: bodyfluids-300x.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3563
+  Progress: 64.0%
+
+[127/197] Processing post...
+
+  📄 Processing: "30 Days To Establishing Healthy Habits"
+    Categories: Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: calendar.png
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3485
+  Progress: 64.5%
+
+[128/197] Processing post...
+
+  📄 Processing: "Acupuncture plus Chiropractic: Making the best choices for your personal health"
+    Categories: Acupuncture, Chiropractic, Chiropractor, Health Care Articles, health reports/ case studies
+    Tags: 53217, Acupuncture, bayshore town center, chinese herbs, Chiropractor
+    🖼️  Featured image...
+    ✓ Uploaded: chiropractic-slider.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3481
+  Progress: 65.0%
+
+[129/197] Processing post...
+
+  📄 Processing: "Using Acupuncture and Physical Therapy to Speed Recovery"
+    Categories: Acupuncture, health reports/ case studies, Success Stories
+    Tags: Acupuncture Milwaukee, holistic, physical therapy, recovery, remedy, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: man-knee.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3443
+  Progress: 65.5%
+
+[130/197] Processing post...
+
+  📄 Processing: "Some Simple Truths about CBD oil: Separating Facts from the Hype"
+    Categories: Health Care Articles
+    Tags: cbd oil, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: cbd-oil.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3409
+  Progress: 66.0%
+
+[131/197] Processing post...
+
+  📄 Processing: "Functional Acupuncture vs. Community Acupuncture"
+    Categories: Acupuncture, Uncategorized
+    Tags: acupuncturist milwaukee, community acupuncture, function, functional acupuncture, health, japanese acupuncture
+    🖼️  Featured image...
+    ✓ Uploaded: acupuncture-needles.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3247
+  Progress: 66.5%
+
+[132/197] Processing post...
+
+  📄 Processing: "Caffeine"
+    Categories: Nutrition Advice
+    Tags: health, holistic, natural, oriental nutrition
+    🖼️  Featured image...
+    ✓ Uploaded: coffee1.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3201
+  Progress: 67.0%
+
+[133/197] Processing post...
+
+  📄 Processing: "Acupuncture and Back Pain"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, back pain, bayshore town center, natural, self-healing, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: back-pain.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3189
+  Progress: 67.5%
+
+[134/197] Processing post...
+
+  📄 Processing: "How do I get started with acupuncture?"
+    Categories: Acupuncture
+    Tags: 53217, Acupuncture, Acupuncture, acupuncturist milwaukee, bayshore town center, milwaukee acupuncture, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: small-acupuncture.png
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3165
+  Progress: 68.0%
+
+[135/197] Processing post...
+
+  📄 Processing: "Acupuncture and Alleriges"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: spring-1.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3117
+  Progress: 68.5%
+
+[136/197] Processing post...
+
+  📄 Processing: "Beginning on February 16th, we officially move into the year of the Dog."
+    Categories: Acupuncture, Acupuncture Special
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, bayshore town center, health, herbs, holistic, natural, remedy, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: 2018.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3107
+  Progress: 69.0%
+
+[137/197] Processing post...
+
+  📄 Processing: "Oriental Medicine and Summer Heat"
+    Categories: Recipes
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, bayshore town center, curry chaudoir, health, holistic, Milwaukee, milwaukee acupuncture, natural, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: fruit-salad.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3042
+  Progress: 69.5%
+
+[138/197] Processing post...
+
+  📄 Processing: "Dry Needling vs. Acupuncture"
+    Categories: Health Care Articles, Uncategorized
+    Tags: 53217, Acupuncture Milwaukee, acupuncturist milwaukee, bayshore town center, dry needling, milwaukee acupuncture, oriental medicine, physical therapy
+    🖼️  Featured image...
+    ↻ Using cached: small-acupuncture.png
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-3018
+  Progress: 70.1%
+
+[139/197] Processing post...
+
+  📄 Processing: "Maretes&#8217;s Acupuncture Experience"
+    Categories: Success Stories
+    Tags: 53217, Acupuncture, Acupuncture, acupuncturist milwaukee, bayshore town center, health, holistic, immune function, milwaukee acupuncture, natural, remedy, treatment, weight loss
+    🖼️  Featured image...
+    ✓ Uploaded: qi.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2992
+  Progress: 70.6%
+
+[140/197] Processing post...
+
+  📄 Processing: "The Five Branches of Oriental Medicine"
+    Categories: Acupuncture
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, bayshore town center, function, health, holistic, milwaukee acupuncture, natural, oriental medicine, self-healing, treatment
+    🖼️  Featured image...
+    ✓ Uploaded: k2wzrpq8-oldtree-catharinemacbride-gettyimagejpg-1.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2983
+  Progress: 71.1%
+
+[141/197] Processing post...
+
+  📄 Processing: "pH and Your Health"
+    Categories: Health Care Articles, Nutrition Advice
+    Tags: Acupuncture, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, alkaline, health, Milwaukee, pH, remedy, weight loss
+    🖼️  Featured image...
+    ✓ Uploaded: ph.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2962
+  Progress: 71.6%
+
+[142/197] Processing post...
+
+  📄 Processing: "Foods You Should Eat in Spring"
+    Categories: Nutrition Advice
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, bayshore town center, health, milwaukee acupuncture, oriental nutrition, spring diet, weight loss
+    🖼️  Featured image...
+    ✓ Uploaded: spring-1.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2969
+  Progress: 72.1%
+
+[143/197] Processing post...
+
+  📄 Processing: "About Your Gallbladder"
+    Categories: Lifestyle Suggestions, Nutrition Advice
+    Tags: Acupuncture, digestion, function, galbladder, gallbladder, health, holistic, Milwaukee, removed
+    🖼️  Featured image...
+    ✓ Uploaded: gallbladder.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2965
+  Progress: 72.6%
+
+[144/197] Processing post...
+
+  📄 Processing: "Quinoa"
+    Categories: Nutrition Advice
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: quinoabags.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2941
+  Progress: 73.1%
+
+[145/197] Processing post...
+
+  📄 Processing: "Menopause and Oriental Medicine"
+    Categories: Lifestyle Suggestions
+    Tags: Acupuncture, health, holistic, menopause, womens health
+    🖼️  Featured image...
+    ✓ Uploaded: healthy-women.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2934
+  Progress: 73.6%
+
+[146/197] Processing post...
+
+  📄 Processing: "One Skillet Mexican Quinoa"
+    Categories: Nutrition Advice, Recipes
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: quinoa.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2926
+  Progress: 74.1%
+
+[147/197] Processing post...
+
+  📄 Processing: "Castor Oil for Healing"
+    Categories: Lifestyle Suggestions, Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: castor-oil.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2918
+  Progress: 74.6%
+
+[148/197] Processing post...
+
+  📄 Processing: "Hydrotherapy for Inflammation"
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: hot-cold-water-image.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2904
+  Progress: 75.1%
+
+[149/197] Processing post...
+
+  📄 Processing: "Restoring yourself after the holidays"
+    Categories: Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: acupuncture-points-13656-1-1-7552.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2769
+  Progress: 75.6%
+
+[150/197] Processing post...
+
+  📄 Processing: "Chicken and Winter Vegetable Soup Recipe"
+    Categories: Nutrition Advice, Recipes
+    Tags: Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, chinese herbs, health, immune function, milwaukee acupuncture, oriental medicine, oriental nutrition, recipe, remedy
+    🖼️  Featured image...
+    ↻ Using cached: chicken-vegetable-soup-with-chicken-5.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2697
+  Progress: 76.1%
+
+[151/197] Processing post...
+
+  📄 Processing: "Healing Reaction: What is it?"
+    Categories: Acupuncture
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, health, immune function, milwaukee acupuncture, oriental medicine, treatment
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2621
+  Progress: 76.6%
+
+[152/197] Processing post...
+
+  📄 Processing: "Liver Function"
+    Categories: Acupuncture, Lifestyle Suggestions
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, function, Milwaukee, milwaukee acupuncture, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: digestion-303364-1280.png
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2601
+  Progress: 77.2%
+
+[153/197] Processing post...
+
+  📄 Processing: "The Dangers of MSG (monosodium glutamate)"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions, Nutrition Advice
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, acupuncturist milwaukee, health, milwaukee acupuncture, oriental medicine, oriental nutrition
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2593
+  Progress: 77.7%
+
+[154/197] Processing post...
+
+  📄 Processing: "Cell phones and your health"
+    Categories: Acupuncture, Lifestyle Suggestions
+    Tags: 53217, Acupuncture, Acupuncture, Acupuncture Milwaukee, health, immune function, milwaukee acupuncture, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: radiation.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2572
+  Progress: 78.2%
+
+[155/197] Processing post...
+
+  📄 Processing: "Soothe summer aches and pains"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions
+    Tags: Acupuncture Milwaukee, chronic, milwaukee acupuncture, oriental medicine, remedy
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2535
+  Progress: 78.7%
+
+[156/197] Processing post...
+
+  📄 Processing: "Stayed Hydrated in the Summer"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions
+    Tags: 53217, Acupuncture Milwaukee, milwaukee acupuncture, oriental medicine, remedy, self-healing
+    🖼️  Featured image...
+    ✓ Uploaded: group-chidren-drinking-water.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2540
+  Progress: 79.2%
+
+[157/197] Processing post...
+
+  📄 Processing: "How acupuncture treats sports injuries"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, function, milwaukee acupuncture, natural, oriental medicine, treatment
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2490
+  Progress: 79.7%
+
+[158/197] Processing post...
+
+  📄 Processing: "Cleansing in the Spring"
+    Categories: Acupuncture, Health Care Articles, Lifestyle Suggestions, Uncategorized
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, bayshore town center, chinese herbs, health, holistic, Milwaukee, milwaukee acupuncture, natural, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: spring-time-in-milwaukee.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2479
+  Progress: 80.2%
+
+[159/197] Processing post...
+
+  📄 Processing: "What is a &#8220;disease process?&#8221;"
+    Categories: Acupuncture, health reports/ case studies
+    Tags: Acupuncture, Acupuncture Milwaukee, disease process, high blood pressure, immune function, milwaukee acupuncture, natural, oriental medicine, treatment
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2422
+  Progress: 80.7%
+
+[160/197] Processing post...
+
+  📄 Processing: "What is a &#8220;symptom?&#8221;"
+    Categories: Acupuncture, health reports/ case studies
+    Tags: Acupuncture Milwaukee, bayshore town center, chinese herbs, curry chaudoir, health, Milwaukee, milwaukee acupuncture, oriental medicine
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-isabella-fischer.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2284
+  Progress: 81.2%
+
+[161/197] Processing post...
+
+  📄 Processing: "How to get the most out of supplements you take"
+    Categories: Lifestyle Suggestions
+    Tags: Acupuncture Milwaukee, chinese herbs, milwaukee acupuncture, oriental medicine, remedy, supplements
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2421
+  Progress: 81.7%
+
+[162/197] Processing post...
+
+  📄 Processing: "What is a TDP lamp and how does it work?"
+    Categories: Acupuncture
+    Tags: Acupuncture Milwaukee, heat lamp, holistic, milwaukee acupuncture, oriental medicine, TDP lamp
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2420
+  Progress: 82.2%
+
+[163/197] Processing post...
+
+  📄 Processing: "Chinese New Year"
+    Categories: Acupuncture Special, Holidays
+    Tags: Acupuncture Milwaukee, bayshore town center, chinese new year, milwaukee acupuncture, oriental medicine
+    🖼️  Featured image...
+    ↻ Using cached: 2018.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2241
+  Progress: 82.7%
+
+[164/197] Processing post...
+
+  📄 Processing: "Do antidepressants have limitations?"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture Milwaukee, chinese herbs, depression, function, health, natural, remedy, treatment
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2225
+  Progress: 83.2%
+
+[165/197] Processing post...
+
+  📄 Processing: "How Chinese Herbs Work"
+    Categories: Acupuncture
+    Tags: Acupuncture Milwaukee, chinese herbs, function, holistic, milwaukee acupuncture, oriental medicine
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2204
+  Progress: 83.8%
+
+[166/197] Processing post...
+
+  📄 Processing: "What is the difference between acupuncture and chirporactic"
+    Categories: Acupuncture, Chiropractic, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, chiropractic, holistic, milwaukee acupuncture
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2202
+  Progress: 84.3%
+
+[167/197] Processing post...
+
+  📄 Processing: "What To Eat in Winter"
+    Categories: Nutrition Advice
+    Tags: Acupuncture Milwaukee, holistic, milwaukee acupuncture, oriental nutrition, winter diet
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2198
+  Progress: 84.8%
+
+[168/197] Processing post...
+
+  📄 Processing: "GMO vs. Non-GMO foods."
+    Categories: Uncategorized
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2190
+  Progress: 85.3%
+
+[169/197] Processing post...
+
+  📄 Processing: "Brenda&#8217;s Easy Poached Pears"
+    Categories: Recipes
+    Tags: acupuncturist milwaukee, healthy sweets, Milwaukee, oriental medicine, oriental nutrition, recipe
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2185
+  Progress: 85.8%
+
+[170/197] Processing post...
+
+  📄 Processing: "Western Medicine and Your Health"
+    Categories: Uncategorized
+    Tags: Acupuncture, Acupuncture Milwaukee, curry chaudoir, health, oriental medicine
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2159
+  Progress: 86.3%
+
+[171/197] Processing post...
+
+  📄 Processing: "How to develop healthy habits"
+    Categories: Lifestyle Suggestions
+    Tags: Acupuncture Milwaukee, develop healthy habits, exercise, function, health, milwaukee acupuncture
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2157
+  Progress: 86.8%
+
+[172/197] Processing post...
+
+  📄 Processing: "Irregular and Painful Menstruation"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, bayshore town center, herbs, menstruation, painful periods
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2155
+  Progress: 87.3%
+
+[173/197] Processing post...
+
+  📄 Processing: "Acupuncture and &#8220;Qi&#8221;"
+    Categories: Acupuncture
+    Tags: Acupuncture, Acupuncture Milwaukee, meridians, oriental medicine, Qi
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2153
+  Progress: 87.8%
+
+[174/197] Processing post...
+
+  📄 Processing: "Acupuncture and Children"
+    Categories: Acupuncture
+    Tags: Acupuncture Milwaukee, acupuncture on children, function, health, holistic, milwaukee acupuncture, natural, oriental medicine, remedy
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2124
+  Progress: 88.3%
+
+[175/197] Processing post...
+
+  📄 Processing: "Should you eat a &#8220;raw food&#8221; diet?"
+    Categories: Acupuncture, Nutrition Advice
+    Tags: Acupuncture Milwaukee, healthy diet, milwaukee acupuncture, oriental medicine, paleo diet, raw diet, raw food
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2117
+  Progress: 88.8%
+
+[176/197] Processing post...
+
+  📄 Processing: "Is Lifestyle Causing Your Pain?"
+    Categories: Acupuncture, Lifestyle Suggestions
+    Tags: Acupuncture, Acupuncture Milwaukee, back pain, chronic pain, elbow pain, knee pain, lifestyle, milwaukee acupuncture, sports injury, tennis elbow
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2108
+  Progress: 89.3%
+
+[177/197] Processing post...
+
+  📄 Processing: "Ancient Acupuncturists&#8217; Theory on How to Live 120 Years"
+    Categories: Acupuncture, health reports/ case studies, Uncategorized
+    Tags: Acupuncture, Acupuncture Milwaukee, chinese herbs, health, life span, oriental medicine
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2100
+  Progress: 89.8%
+
+[178/197] Processing post...
+
+  📄 Processing: "Eating Before Bedtime: An Acupuncturist&#8217;s Point-of-View"
+    Categories: Acupuncture, Lifestyle Suggestions, Nutrition Advice
+    Tags: Acupuncture, Acupuncture Milwaukee, digestive function, eat late at night, holistic, milwaukee acupuncture, oriental medicine, upset stomach, yellow emperor's classic
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-2091
+  Progress: 90.4%
+
+[179/197] Processing post...
+
+  📄 Processing: "Cold and Flu Season"
+    Categories: Health Care Articles
+    Tags: Acupuncture, cold treatment, flu season, holistic cold treatment, immune system
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1946
+  Progress: 90.9%
+
+[180/197] Processing post...
+
+  📄 Processing: "Interview with Curry: Oriental Medicine and You"
+    Categories: Acupuncture
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, bayshore town center, curry chaudoir
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1948
+  Progress: 91.4%
+
+[181/197] Processing post...
+
+  📄 Processing: "Success Story: Anne&#8217;s Experience"
+    Categories: Acupuncture, Success Stories
+    Tags: Acupuncture, chinese herbs, Glendale, holistic, Milwaukee
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1894
+  Progress: 91.9%
+
+[182/197] Processing post...
+
+  📄 Processing: "Treating Acne Naturally"
+    Categories: Health Care Articles, Lifestyle Suggestions
+    Tags: Acupuncture, Acupuncture, Acupuncture Milwaukee, holistic, natural, natural skin care, probiotics, treating acne
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1859
+  Progress: 92.4%
+
+[183/197] Processing post...
+
+  📄 Processing: "One Hot Topic: Coffee"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1855
+  Progress: 92.9%
+
+[184/197] Processing post...
+
+  📄 Processing: "Oriental Medicine and your Emotions"
+    Categories: Acupuncture, Health Care Articles
+    Tags: Acupuncture, Acupuncture Milwaukee, anxiety, depression, emotions, oriental medicine, panic attacks
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1853
+  Progress: 93.4%
+
+[185/197] Processing post...
+
+  📄 Processing: "Sugar"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1851
+  Progress: 93.9%
+
+[186/197] Processing post...
+
+  📄 Processing: "Radiation and You"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1849
+  Progress: 94.4%
+
+[187/197] Processing post...
+
+  📄 Processing: "Cleansing for Health"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1847
+  Progress: 94.9%
+
+[188/197] Processing post...
+
+  📄 Processing: "AN INTRO TO THE CONCEPT OF YIN AND YANG IN LIFE AND IN MEDICINE"
+    Categories: Acupuncture, Health Care Articles
+    Tags: 53217, Acupuncture, Acupuncture Milwaukee, chinese medicine, holistic, yang, yin
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1826
+  Progress: 95.4%
+
+[189/197] Processing post...
+
+  📄 Processing: "Acupuncture Flu Shot"
+    Categories: Health Care Articles
+    Tags: 53217, Acupuncture, bayhore, bayshore town center, center, chinese, flu shot, function, Glendale, holistic, immune function, medicine, Milwaukee, natural, remedy, self-healing, town, treatment, vaccine
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1765
+  Progress: 95.9%
+
+[190/197] Processing post...
+
+  📄 Processing: "Heart Function Part 2"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1659
+  Progress: 96.4%
+
+[191/197] Processing post...
+
+  📄 Processing: "Heart Function: Natural Solutions to Heart-Related Health Problems"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1643
+  Progress: 97.0%
+
+[192/197] Processing post...
+
+  📄 Processing: "Healing Exercise: David&#8217;s Tips"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1576
+  Progress: 97.5%
+
+[193/197] Processing post...
+
+  📄 Processing: "Be Healthy: Coffee vs. Tea"
+    Categories: Health Care Articles, Nutrition Advice
+    Tags: Acupuncture, adrenal, chai, coffee, function, holistic, kidney, Milwaukee, tea
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1554
+  Progress: 98.0%
+
+[194/197] Processing post...
+
+  📄 Processing: "Fibromyalgia and Chronic Pain"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1508
+  Progress: 98.5%
+
+[195/197] Processing post...
+
+  📄 Processing: "Summer Health Tips from an Acupuncturist"
+    Categories: Health Care Articles, Lifestyle Suggestions
+    Tags: None
+    🖼️  Featured image...
+    ✓ Uploaded: photo-by-aleksandr-eremin.jpg
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-1324
+  Progress: 99.0%
+
+[196/197] Processing post...
+
+  📄 Processing: "Caution: contents hot. Our view on coffee"
+    Categories: Health Care Articles
+    Tags: 53217, Acupuncture, chinese, curry chaudoir, herbs, holistic, Milwaukee
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-732
+  Progress: 99.5%
+
+[197/197] Processing post...
+
+  📄 Processing: "Summer Health Tips:"
+    Categories: Health Care Articles
+    Tags: None
+    🖼️  Featured image...
+    📝 Converting content...
+  ⚠️  HTML conversion error: Cannot read properties of undefined (reading 'toLowerCase')
+    ✓ Converted to 1 blocks
+  ✅ Uploaded to Sanity: wp-post-663
+  Progress: 100.0%
+
+════════════════════════════════════════════════════════════
+📊 MIGRATION SUMMARY
+════════════════════════════════════════════════════════════
+✅ Successful: 197 posts
+❌ Failed: 0 posts
+📈 Success rate: 100.0%
+
+✨ Migration complete!
+
+════════════════════════════════════════════════════════════
+📊 FINAL STATISTICS
+════════════════════════════════════════════════════════════
+⏱️  Duration: 481.2s
+🖼️  Images uploaded: 144
+
+✨ All done!
+

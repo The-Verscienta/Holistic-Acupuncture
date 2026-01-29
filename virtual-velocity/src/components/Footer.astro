@@ -1,0 +1,145 @@
+---
+import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-sage-700 text-white mt-auto" data-pagefind-ignore>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+      <!-- About Section -->
+      <div>
+        <h3 class="text-xl font-heading font-semibold mb-4">
+          Acupuncture & Holistic Health
+        </h3>
+        <p class="text-sage-100 text-sm leading-relaxed mb-4">
+          Over 25 years of clinical excellence with 380,000+ successful treatments. Expert acupuncture and Chinese herbal medicine in Milwaukee.
+        </p>
+        <div class="flex items-center gap-2 text-sm text-sage-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>HIPAA Compliant</span>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="text-lg font-heading font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="/about" class="text-sage-100 hover:text-white transition-colors">
+              About Us
+            </a>
+          </li>
+          <li>
+            <a href="/conditions" class="text-sage-100 hover:text-white transition-colors">
+              Conditions We Treat
+            </a>
+          </li>
+          <li>
+            <a href="/acupuncture" class="text-sage-100 hover:text-white transition-colors">
+              About Acupuncture
+            </a>
+          </li>
+          <li>
+            <a href="/reviews" class="text-sage-100 hover:text-white transition-colors">
+              Patient Reviews
+            </a>
+          </li>
+          <li>
+            <a href="/blog" class="text-sage-100 hover:text-white transition-colors">
+              Blog
+            </a>
+          </li>
+          <li>
+            <a href="/faq" class="text-sage-100 hover:text-white transition-colors">
+              FAQ
+            </a>
+          </li>
+          <li>
+            <a href="/contact" class="text-sage-100 hover:text-white transition-colors">
+              Contact
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div>
+        <h3 class="text-lg font-heading font-semibold mb-4">Contact</h3>
+        <ul class="space-y-3 text-sage-100 text-sm">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span>
+              Bayshore Town Center<br>
+              Milwaukee, WI
+            </span>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+            </svg>
+            <a href={`tel:${CONTACT.phone.replace(/[^0-9]/g, '')}`} class="hover:text-white transition-colors">
+              {CONTACT.phone}
+            </a>
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            <a href="mailto:info@holisticacupuncture.net" class="hover:text-white transition-colors">
+              info@holisticacupuncture.net
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Hours & CTA -->
+      <div>
+        <h3 class="text-lg font-heading font-semibold mb-4">Office Hours</h3>
+        <ul class="space-y-2 text-sage-100 text-sm mb-6">
+          <li class="flex justify-between">
+            <span>Mon - Fri:</span>
+            <span>9:00 AM - 5:00 PM</span>
+          </li>
+          <li class="flex justify-between">
+            <span>Saturday:</span>
+            <span>By Appointment</span>
+          </li>
+          <li class="flex justify-between">
+            <span>Sunday:</span>
+            <span>Closed</span>
+          </li>
+        </ul>
+        <a
+          href={JANE_BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block w-full px-6 py-3 bg-earth-orange text-white font-semibold rounded-[var(--radius-button)] hover:bg-earth-terracotta transition-colors text-center"
+        >
+          Schedule Appointment
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-sage-600 mt-8 pt-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-sage-200">
+        <p>
+          &copy; {currentYear} Acupuncture & Holistic Health Associates. All rights reserved.
+        </p>
+        <div class="flex items-center gap-6">
+          <a href="/privacy" class="hover:text-white transition-colors">
+            Privacy Policy
+          </a>
+          <a href="/terms" class="hover:text-white transition-colors">
+            Terms of Service
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

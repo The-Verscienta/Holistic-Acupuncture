@@ -1,0 +1,297 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Button from '../components/Button.astro';
+
+const conditions = [
+  {
+    category: 'Pain Management',
+    items: [
+      {
+        name: 'Headaches & Migraines',
+        description: 'Reduce frequency and intensity of headaches and migraines through targeted acupuncture treatment.',
+        icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+      },
+      {
+        name: 'Back & Neck Pain',
+        description: 'Find lasting relief from chronic back and neck pain with natural, drug-free acupuncture therapy.',
+        icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+      },
+      {
+        name: 'Arthritis & Joint Pain',
+        description: 'Reduce inflammation and improve mobility in arthritic joints through acupuncture treatment.',
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+      },
+      {
+        name: 'Sciatica',
+        description: 'Alleviate sciatic nerve pain and improve range of motion with targeted acupuncture points.',
+        icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+      },
+      {
+        name: 'Fibromyalgia',
+        description: 'Manage chronic pain and fatigue associated with fibromyalgia through holistic treatment.',
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+      },
+      {
+        name: 'Sports Injuries',
+        description: 'Accelerate healing and recovery from sports-related injuries and strains.',
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+      },
+    ]
+  },
+  {
+    category: 'Mental Health & Wellness',
+    items: [
+      {
+        name: 'Stress & Anxiety',
+        description: 'Calm your nervous system and reduce stress through relaxing acupuncture treatments.',
+        icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+      },
+      {
+        name: 'Depression',
+        description: 'Support mental health and emotional balance with acupuncture therapy.',
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+      },
+      {
+        name: 'Insomnia & Sleep Disorders',
+        description: 'Restore healthy sleep patterns and overcome insomnia naturally with acupuncture.',
+        icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z'
+      },
+      {
+        name: 'Fatigue & Low Energy',
+        description: 'Boost your energy levels and overcome chronic fatigue through balancing treatments.',
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+      },
+    ]
+  },
+  {
+    category: 'Women\'s Health',
+    items: [
+      {
+        name: 'PMS & Menstrual Issues',
+        description: 'Regulate menstrual cycles and reduce PMS symptoms through hormone-balancing acupuncture.',
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+      },
+      {
+        name: 'Menopause Symptoms',
+        description: 'Manage hot flashes, night sweats, and other menopause symptoms naturally.',
+        icon: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z'
+      },
+      {
+        name: 'Fertility Support',
+        description: 'Support natural fertility and reproductive health with acupuncture therapy.',
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+      },
+      {
+        name: 'Pregnancy Support',
+        description: 'Manage pregnancy symptoms and prepare for labor with safe acupuncture treatments.',
+        icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+      },
+    ]
+  },
+  {
+    category: 'Digestive Health',
+    items: [
+      {
+        name: 'IBS & Digestive Disorders',
+        description: 'Improve digestive function and reduce IBS symptoms through acupuncture treatment.',
+        icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+      },
+      {
+        name: 'Acid Reflux & GERD',
+        description: 'Reduce acid reflux and heartburn naturally without long-term medication.',
+        icon: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z'
+      },
+      {
+        name: 'Nausea & Vomiting',
+        description: 'Relieve nausea and vomiting from various causes including pregnancy and treatment side effects.',
+        icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+      },
+      {
+        name: 'Constipation & Bloating',
+        description: 'Restore regular bowel function and reduce bloating through digestive acupuncture.',
+        icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+      },
+    ]
+  },
+  {
+    category: 'Respiratory & Allergies',
+    items: [
+      {
+        name: 'Seasonal Allergies',
+        description: 'Reduce allergy symptoms and build immune resilience naturally.',
+        icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z'
+      },
+      {
+        name: 'Asthma',
+        description: 'Improve breathing and reduce asthma symptoms through respiratory acupuncture.',
+        icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+      },
+      {
+        name: 'Sinus Issues',
+        description: 'Clear sinus congestion and reduce chronic sinusitis symptoms.',
+        icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+      },
+    ]
+  },
+  {
+    category: 'Other Conditions',
+    items: [
+      {
+        name: 'Weight Management',
+        description: 'Support healthy weight loss through metabolism-boosting acupuncture.',
+        icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+      },
+      {
+        name: 'Smoking Cessation',
+        description: 'Overcome nicotine cravings and quit smoking with acupuncture support.',
+        icon: 'M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636'
+      },
+      {
+        name: 'Immune Support',
+        description: 'Strengthen your immune system and improve overall health resilience.',
+        icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z'
+      },
+      {
+        name: 'Bell\'s Palsy',
+        description: 'Accelerate recovery and restore facial function following Bell\'s palsy.',
+        icon: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+      },
+    ]
+  },
+];
+---
+
+<BaseLayout
+  title="Conditions We Treat"
+  description="Discover how acupuncture can help with pain, stress, women's health, digestive issues, allergies, and many other conditions. Natural, effective healing solutions."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
+          Conditions We Treat
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
+          Acupuncture and Chinese herbal medicine can effectively treat a wide range of health conditions. Our experienced practitioners have helped thousands of patients find natural relief and lasting wellness.
+        </p>
+        <Button variant="primary" size="lg" icon="calendar" href="/contact">
+          Schedule Consultation
+        </Button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Conditions by Category -->
+  {conditions.map((category, index) => (
+    <section class={`py-16 md:py-20 lg:py-24 ${index % 2 === 0 ? 'bg-white' : 'bg-sage-50'}`}>
+      <Container>
+        <div class="mb-12 md:mb-16">
+          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+            {category.category}
+          </h2>
+          <div class="w-24 h-1 bg-sage-600 rounded-full"></div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {category.items.map(condition => (
+            <ServiceCard
+              title={condition.name}
+              description={condition.description}
+              href="/contact"
+              icon={condition.icon}
+            />
+          ))}
+        </div>
+      </Container>
+    </section>
+  ))}
+
+  <!-- How Acupuncture Helps -->
+  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-100 to-warm-white">
+    <Container>
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-8 text-center">
+          How Acupuncture Helps
+        </h2>
+
+        <div class="space-y-6">
+          <div class="bg-white p-6 md:p-8 rounded-[var(--radius-lg)] border border-sage-200">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+              Restores Balance
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Acupuncture works by stimulating specific points along energy pathways (meridians) to restore balance and harmony in the body. This ancient practice activates your body's natural healing mechanisms.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 md:p-8 rounded-[var(--radius-lg)] border border-sage-200">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+              Reduces Inflammation
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Research shows acupuncture can reduce inflammatory markers and promote healing. This makes it particularly effective for pain management and chronic inflammatory conditions.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 md:p-8 rounded-[var(--radius-lg)] border border-sage-200">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+              Regulates Hormones
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Acupuncture helps regulate the endocrine system, making it highly effective for hormone-related conditions like PMS, menopause, and fertility issues.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 md:p-8 rounded-[var(--radius-lg)] border border-sage-200">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
+              Strengthens Immunity
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+              Regular acupuncture treatments boost immune function, helping your body defend against illness and recover more quickly when you do get sick.
+            </p>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Not Listed Section -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-6">
+          Don't See Your Condition Listed?
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+          This list represents just some of the many conditions we treat. Acupuncture is effective for a wide range of health concerns. Contact us to discuss how we can help with your specific needs.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button variant="primary" size="lg" icon="phone" href="tel:+14145551234">
+            Call Us Today
+          </Button>
+          <Button variant="tertiary" size="lg" icon="mail" href="/contact">
+            Send a Message
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
+    <Container class="text-center">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
+        Ready to Find Natural Relief?
+      </h2>
+      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
+        Take the first step toward better health. Schedule your consultation today and discover how acupuncture can help you.
+      </p>
+      <Button variant="secondary" size="lg" icon="calendar" href="/contact">
+        Book Your Appointment
+      </Button>
+    </Container>
+  </section>
+</BaseLayout>

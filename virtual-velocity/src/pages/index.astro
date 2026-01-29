@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+import Button from '../components/Button.astro';
+import { getFeaturedTestimonials } from '../lib/sanityQueries';
+import { JANE_BOOKING_URL } from '../lib/config';
+
+// Fetch featured testimonials from Sanity
+const testimonials = await getFeaturedTestimonials(3);
+
+const conditions = [
+  {
+    name: 'Headaches & Migraines',
+    description: 'Natural, effective treatment to restore balance and promote healing from chronic headaches and migraines.',
+    icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+  },
+  {
+    name: 'Chronic Pain',
+    description: 'Find lasting relief from persistent pain through traditional acupuncture and holistic treatment approaches.',
+    icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+  },
+  {
+    name: 'Stress & Anxiety',
+    description: 'Calm your mind and reduce stress with proven acupuncture techniques that promote mental wellness.',
+    icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
+  },
+  {
+    name: 'Insomnia',
+    description: 'Restore healthy sleep patterns and overcome insomnia with natural acupuncture treatments.',
+    icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z'
+  },
+  {
+    name: 'Digestive Issues',
+    description: 'Address digestive concerns and restore gut health through targeted acupuncture therapy.',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+  },
+  {
+    name: 'Women\'s Health',
+    description: 'Support women\'s health through all life stages with specialized acupuncture care and treatment.',
+    icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+  },
+];
+---
+
+<BaseLayout
+  title="Home"
+  description="Acupuncture & Holistic Health Associates - Over 380,000 successful treatments in 25+ years. Expert acupuncture, Chinese herbal medicine, and holistic health care in Milwaukee."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 via-warm-white to-sage-100 py-16 md:py-24 lg:py-32 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-20 right-20 w-96 h-96 bg-sage-300 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-20 left-20 w-96 h-96 bg-healing-blue rounded-full blur-3xl"></div>
+    </div>
+
+    <Container class="relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <!-- Left Content -->
+        <div class="space-y-6 md:space-y-8">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-sage-100 rounded-full text-sage-700 text-sm font-medium">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+            <span>Milwaukee's Most Trusted Acupuncture Practice</span>
+          </div>
+
+          <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-heading font-bold text-charcoal leading-tight">
+            Healing Through
+            <span class="text-sage-600"> Balance</span> &
+            <span class="text-sage-600"> Nature</span>
+          </h1>
+
+          <p class="text-lg md:text-xl lg:text-2xl text-gray-600 leading-relaxed">
+            Experience the transformative power of acupuncture and Chinese herbal medicine.
+            <strong class="text-charcoal">25+ years</strong> of clinical excellence,
+            <strong class="text-charcoal">380,000+</strong> successful treatments.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 pt-2">
+            <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+              Book Your Appointment
+            </Button>
+            <Button variant="tertiary" size="lg" icon="info" href="/acupuncture">
+              Learn More
+            </Button>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="grid grid-cols-3 gap-4 md:gap-6 pt-6 md:pt-8 border-t border-sage-200">
+            <div>
+              <div class="text-2xl md:text-3xl font-heading font-bold text-sage-700">25+</div>
+              <div class="text-xs md:text-sm text-gray-600">Years Experience</div>
+            </div>
+            <div>
+              <div class="text-2xl md:text-3xl font-heading font-bold text-sage-700">380K+</div>
+              <div class="text-xs md:text-sm text-gray-600">Treatments</div>
+            </div>
+            <div>
+              <div class="text-2xl md:text-3xl font-heading font-bold text-sage-700">4.9★</div>
+              <div class="text-xs md:text-sm text-gray-600">Patient Rating</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Image Placeholder -->
+        <div class="relative hidden lg:block">
+          <div class="aspect-[4/5] bg-gradient-to-br from-sage-200 to-healing-blue rounded-[var(--radius-2xl)] shadow-2xl overflow-hidden">
+            <div class="w-full h-full flex items-center justify-center text-sage-600 opacity-40">
+              <svg class="w-32 h-32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+          </div>
+          <!-- Decorative element -->
+          <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-earth-orange opacity-20 rounded-full blur-3xl"></div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Special Offer Banner -->
+  <section class="bg-gradient-to-r from-earth-orange to-earth-terracotta text-white py-4 md:py-6">
+    <Container>
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-center sm:text-left">
+          <div class="text-base md:text-lg font-semibold">🎉 Winter 2026 Special</div>
+          <div class="text-xl md:text-2xl font-heading font-bold">First Visit Only $29</div>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-3 md:gap-4">
+          <span class="text-sm opacity-90">Valid through March 31, 2026</span>
+          <a
+            href={JANE_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 bg-white text-earth-terracotta font-semibold rounded-[var(--radius-button)] hover:bg-sage-50 transition-colors whitespace-nowrap"
+          >
+            Book Now
+          </a>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Conditions We Treat -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-charcoal mb-4 md:mb-6">
+          Conditions We Treat
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          Experience natural relief and healing for a wide range of health concerns through traditional acupuncture.
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
+        {conditions.map(condition => (
+          <ServiceCard
+            title={condition.name}
+            description={condition.description}
+            href="/conditions"
+            icon={condition.icon}
+          />
+        ))}
+      </div>
+
+      <div class="text-center">
+        <Button variant="primary" size="lg" icon="arrow-right" iconPosition="right" href="/conditions">
+          View All Conditions
+        </Button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
+    <Container>
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-charcoal mb-4 md:mb-6">
+          What Our Patients Say
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600">
+          Real stories from real people who have experienced healing.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {testimonials.map(testimonial => (
+          <TestimonialCard
+            quote={testimonial.quote}
+            author={testimonial.author}
+            condition={testimonial.condition}
+            rating={testimonial.rating}
+          />
+        ))}
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 via-sage-700 to-healing-blue text-white">
+    <Container class="text-center">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
+        Ready to Begin Your Healing Journey?
+      </h2>
+      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
+        Take the first step towards better health and wellness. Our experienced team is here to help you achieve your health goals.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant="secondary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+          Schedule Appointment
+        </Button>
+        <Button variant="outline" size="lg" icon="phone" href="tel:+14143328888">
+          Call Us (414) 332-8888
+        </Button>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

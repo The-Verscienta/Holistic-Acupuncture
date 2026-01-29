@@ -1,0 +1,123 @@
+---
+// Structured Data for LocalBusiness (Acupuncture Clinic)
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalBusiness", "LocalBusiness"],
+  "@id": "https://holisticacupuncture.net/#organization",
+  name: "Acupuncture & Holistic Health Associates",
+  description: "Expert acupuncture and traditional Chinese medicine in Milwaukee. Over 25 years of experience treating chronic pain, stress, fertility issues, and more.",
+  url: "https://holisticacupuncture.net",
+  logo: {
+    "@type": "ImageObject",
+    url: "https://holisticacupuncture.net/logo.png",
+    width: 250,
+    height: 250
+  },
+  image: {
+    "@type": "ImageObject",
+    url: "https://holisticacupuncture.net/og-image.jpg",
+    width: 1200,
+    height: 630
+  },
+  telephone: "+14145551234",
+  email: "info@holisticacupuncture.net",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "5800 N Bayshore Drive",
+    addressLocality: "Glendale",
+    addressRegion: "WI",
+    postalCode: "53217",
+    addressCountry: "US"
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 43.145805,
+    longitude: -87.888920
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "09:00",
+      closes: "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "09:00",
+      closes: "15:00"
+    }
+  ],
+  priceRange: "$$",
+  paymentAccepted: ["Cash", "Credit Card", "Insurance"],
+  currenciesAccepted: "USD",
+  areaServed: {
+    "@type": "City",
+    name: "Milwaukee",
+    containedIn: {
+      "@type": "State",
+      name: "Wisconsin"
+    }
+  },
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "MedicalProcedure",
+        name: "Acupuncture Treatment",
+        description: "Traditional acupuncture for various conditions including chronic pain, stress, and wellness"
+      }
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "MedicalProcedure",
+        name: "Chinese Herbal Medicine",
+        description: "Traditional Chinese herbal consultations and prescriptions"
+      }
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "MedicalProcedure",
+        name: "Cupping Therapy",
+        description: "Traditional cupping therapy for pain relief and circulation"
+      }
+    }
+  ],
+  medicalSpecialty: [
+    "Acupuncture",
+    "Traditional Chinese Medicine",
+    "Pain Management",
+    "Integrative Medicine"
+  ],
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "500",
+    bestRating: "5",
+    worstRating: "1"
+  },
+  founder: {
+    "@type": "Person",
+    name: "Dr. David Curry",
+    jobTitle: "Licensed Acupuncturist",
+    description: "Over 25 years of experience in acupuncture and traditional Chinese medicine"
+  },
+  sameAs: [
+    "https://www.facebook.com/holisticacupuncture",
+    "https://www.instagram.com/holisticacupuncture",
+    "https://www.linkedin.com/company/holisticacupuncture"
+  ],
+  hasCredential: {
+    "@type": "EducationalOccupationalCredential",
+    credentialCategory: "license",
+    recognizedBy: {
+      "@type": "Organization",
+      name: "National Certification Commission for Acupuncture and Oriental Medicine (NCCAOM)"
+    }
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

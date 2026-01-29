@@ -1,0 +1,343 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import { getAllFAQs } from '../lib/sanityQueries';
+import { faqCategories as categoryMapping } from '../types/sanity';
+
+// Fetch all FAQs from Sanity
+const allFAQs = await getAllFAQs();
+
+// Group FAQs by category
+const faqCategoryIcons: Record<string, string> = {
+  'about-acupuncture': 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+  'treatment-process': 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4',
+  'insurance-payment': 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z',
+  'appointments-policies': 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+  'safety-side-effects': 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z',
+  'our-practice': 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+};
+
+const faqCategories = Object.keys(categoryMapping).map(categoryKey => {
+  const categoryFAQs = allFAQs.filter(faq => faq.category === categoryKey);
+  return {
+    category: categoryMapping[categoryKey],
+    categoryKey,
+    icon: faqCategoryIcons[categoryKey] || '',
+    questions: categoryFAQs,
+  };
+}).filter(cat => cat.questions.length > 0);
+
+// Legacy static data below will be removed
+const _oldFaqCategories = [
+  {
+    category: "About Acupuncture",
+    icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+    questions: [
+      {
+        question: "What is acupuncture?",
+        answer: "Acupuncture is a 3,000-year-old healing technique from Traditional Chinese Medicine. It involves inserting very thin needles at specific points on the body to stimulate the body's natural healing abilities, restore balance, and promote overall wellness."
+      },
+      {
+        question: "How does acupuncture work?",
+        answer: "From a traditional perspective, acupuncture balances the flow of energy (Qi) through pathways called meridians. From a modern scientific view, acupuncture stimulates nerves, muscles, and connective tissue, which boosts your body's natural painkillers and increases blood flow."
+      },
+      {
+        question: "Is acupuncture scientifically proven?",
+        answer: "Yes! Numerous research studies have demonstrated acupuncture's effectiveness for various conditions. The National Institutes of Health (NIH) and the World Health Organization (WHO) recognize acupuncture as a valid treatment for over 40 medical conditions, including chronic pain, headaches, anxiety, and digestive issues."
+      },
+      {
+        question: "What conditions can acupuncture treat?",
+        answer: "Acupuncture effectively treats a wide range of conditions including chronic pain, headaches and migraines, stress and anxiety, insomnia, digestive issues, allergies, women's health concerns (PMS, menopause, fertility), and more. Visit our Conditions page for a complete list."
+      }
+    ]
+  },
+  {
+    category: "Treatment & Process",
+    icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+    questions: [
+      {
+        question: "Does acupuncture hurt?",
+        answer: "Most people feel minimal to no pain. Acupuncture needles are hair-thin—much finer than needles used for injections or blood draws. You may feel a slight pinch or tingling sensation as the needle is inserted, followed by a dull ache or warm sensation. Many patients find the treatment deeply relaxing."
+      },
+      {
+        question: "What should I expect during my first visit?",
+        answer: "Your first visit typically lasts 60-90 minutes. We'll discuss your health history, current symptoms, lifestyle, and treatment goals. After a thorough consultation, we'll perform your first acupuncture treatment, which usually lasts 20-30 minutes. Plan to wear comfortable, loose-fitting clothing."
+      },
+      {
+        question: "How long does each treatment take?",
+        answer: "Initial consultations last 60-90 minutes. Follow-up treatments typically take 45-60 minutes, including consultation time. The needles usually stay in place for 20-30 minutes while you rest comfortably."
+      },
+      {
+        question: "How many treatments will I need?",
+        answer: "This varies depending on your condition. Acute issues may resolve in 3-5 sessions, while chronic conditions often require 8-12 sessions or more. Many patients notice improvements after just a few treatments. We'll create a personalized treatment plan and adjust it based on your progress."
+      },
+      {
+        question: "How often should I come for treatments?",
+        answer: "For chronic conditions, we typically recommend weekly sessions for the first 6-8 weeks. As you improve, we'll space treatments to bi-weekly or monthly maintenance sessions. Acute conditions may require more frequent initial visits."
+      },
+      {
+        question: "What should I do before my appointment?",
+        answer: "Eat a light meal 1-2 hours before your appointment (don't come on an empty stomach). Wear loose, comfortable clothing that allows easy access to your arms and legs. Avoid caffeine and alcohol for a few hours before treatment. Arrive with an open mind and ready to relax!"
+      },
+      {
+        question: "What should I do after treatment?",
+        answer: "Drink plenty of water, avoid strenuous exercise for the rest of the day, and give yourself time to rest. Some people feel energized after treatment while others feel relaxed and sleepy—both are normal. Avoid alcohol for 24 hours to maximize the treatment benefits."
+      }
+    ]
+  },
+  {
+    category: "Insurance & Payment",
+    icon: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
+    questions: [
+      {
+        question: "Do you accept insurance?",
+        answer: "Yes! We are in-network with several major insurance providers including Blue Cross Blue Shield, United Healthcare, Cigna, and Aetna. We can also provide superbills for out-of-network reimbursement. Contact us to verify your specific coverage."
+      },
+      {
+        question: "How much does treatment cost?",
+        answer: "Initial consultations are $150-$175, and follow-up treatments range from $85-$120 depending on the services provided. Many insurance plans cover acupuncture, which can significantly reduce your out-of-pocket costs. We also offer package deals for multiple sessions paid in advance."
+      },
+      {
+        question: "Will my insurance cover acupuncture?",
+        answer: "Many insurance plans now cover acupuncture, especially for pain management. Coverage varies by plan, so we recommend calling your insurance company to verify your benefits. We're happy to help you understand your coverage and submit claims on your behalf."
+      },
+      {
+        question: "Do you offer payment plans?",
+        answer: "Yes, we offer package deals where you can prepay for multiple sessions at a discounted rate. We also accept HSA and FSA cards. For patients with financial hardship, please speak with our office manager about payment arrangements."
+      },
+      {
+        question: "What forms of payment do you accept?",
+        answer: "We accept cash, checks, and all major credit cards (Visa, MasterCard, American Express, Discover). We also accept HSA and FSA cards. Payment is due at the time of service."
+      }
+    ]
+  },
+  {
+    category: "Appointments & Policies",
+    icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+    questions: [
+      {
+        question: "How do I schedule an appointment?",
+        answer: "You can schedule by phone at (414) 555-1234, email us at info@holisticacupuncture.net, or use our online booking system. We typically have same-week availability and offer early morning and evening appointments for your convenience."
+      },
+      {
+        question: "What is your cancellation policy?",
+        answer: "We require 24 hours' notice for cancellations or rescheduling. Late cancellations (less than 24 hours' notice) may be charged 50% of the session fee. No-shows will be charged the full session fee. We understand emergencies happen—please call us to discuss your situation."
+      },
+      {
+        question: "Do you offer evening or weekend appointments?",
+        answer: "Yes! We offer appointments Monday-Friday from 8am-7pm, and Saturday from 9am-3pm. We're closed on Sundays. Evening appointments fill up quickly, so we recommend booking in advance."
+      },
+      {
+        question: "Can I bring a friend or family member to my appointment?",
+        answer: "For your first visit, you're welcome to bring someone for support during the consultation. However, during the treatment itself, we recommend coming alone to maximize relaxation and therapeutic benefits. Parents/guardians must accompany minors."
+      }
+    ]
+  },
+  {
+    category: "Safety & Side Effects",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    questions: [
+      {
+        question: "Is acupuncture safe?",
+        answer: "Yes, acupuncture is extremely safe when performed by licensed, trained practitioners. We use sterile, single-use, disposable needles and follow strict safety protocols. Serious side effects are extremely rare—much rarer than complications from medications or surgery."
+      },
+      {
+        question: "Are there any side effects?",
+        answer: "Most people experience no side effects. Occasionally, patients may have minor bruising or soreness at needle sites, temporary fatigue, or mild lightheadedness. These effects are typically short-lived. Some people experience an initial worsening of symptoms before improvement—this is a positive sign that your body is responding."
+      },
+      {
+        question: "Are your needles sterile?",
+        answer: "Absolutely. We only use FDA-approved, sterile, single-use, disposable needles. Each needle is individually packaged and discarded immediately after use. We maintain the highest standards of cleanliness and safety."
+      },
+      {
+        question: "Can I get acupuncture if I'm pregnant?",
+        answer: "Yes! Acupuncture is safe during pregnancy and can help with nausea, back pain, anxiety, and preparation for labor. However, certain acupuncture points are avoided during pregnancy. Always inform us if you are or might be pregnant."
+      },
+      {
+        question: "Can children receive acupuncture?",
+        answer: "Yes, children can safely receive acupuncture. We use gentler techniques, fewer needles, and shorter treatment times for pediatric patients. Parental consent and presence is required for patients under 18."
+      },
+      {
+        question: "Are there any situations where acupuncture isn't recommended?",
+        answer: "Acupuncture is safe for most people, but we'll discuss your full medical history during your consultation. Inform us if you have a pacemaker, bleeding disorders, are on blood thinners, have metal allergies, or have active infections. We may need to modify treatment or obtain clearance from your physician in certain cases."
+      }
+    ]
+  },
+  {
+    category: "Our Practice",
+    icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    questions: [
+      {
+        question: "What are your practitioners' qualifications?",
+        answer: "All our practitioners are licensed acupuncturists (L.Ac.) with extensive training in Traditional Chinese Medicine. Our lead practitioner, Dr. David Curry, has over 25 years of experience and holds certifications from the National Certification Commission for Acupuncture and Oriental Medicine (NCCAOM)."
+      },
+      {
+        question: "Where are you located?",
+        answer: "We're conveniently located in the Bayshore Town Center at 5800 N Bayshore Drive, Glendale, WI 53217. We offer free parking and are easily accessible from anywhere in the Milwaukee area."
+      },
+      {
+        question: "Do you offer virtual consultations?",
+        answer: "While acupuncture requires in-person treatment, we do offer virtual consultations for initial assessments, follow-up discussions, lifestyle counseling, and herbal medicine consultations. Contact us to schedule a virtual appointment."
+      },
+      {
+        question: "Can you work with my other healthcare providers?",
+        answer: "Absolutely! We believe in integrative care and are happy to communicate with your physicians, chiropractors, physical therapists, or other healthcare providers (with your written consent). Acupuncture complements conventional medical treatment beautifully."
+      },
+      {
+        question: "What makes your practice different?",
+        answer: "We combine 25+ years of experience with a commitment to individualized, compassionate care. We take time to truly listen to your concerns, create personalized treatment plans, and support your entire wellness journey. Our patients often comment on our peaceful office environment and the genuine care they receive."
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Frequently Asked Questions"
+  description="Find answers to common questions about acupuncture, our treatments, insurance coverage, and what to expect at Acupuncture & Holistic Health Associates."
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
+          Frequently Asked Questions
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+          Have questions about acupuncture or our practice? Find answers to the most common questions below. Don't see your question? Feel free to contact us!
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="py-12 md:py-16 bg-white border-b border-sage-200">
+    <Container>
+      <div class="max-w-4xl mx-auto">
+        <p class="text-center text-gray-600 mb-6">Jump to a category:</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          {faqCategories.map((cat) => (
+            <a
+              href={`#${cat.category.toLowerCase().replace(/\s+/g, '-')}`}
+              class="px-4 py-2 bg-sage-50 text-sage-700 rounded-[var(--radius-button)] hover:bg-sage-100 transition-colors font-medium text-sm"
+            >
+              {cat.category}
+            </a>
+          ))}
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- FAQ Categories -->
+  {faqCategories.map((category, categoryIndex) => (
+    <section
+      id={category.category.toLowerCase().replace(/\s+/g, '-')}
+      class={`py-16 md:py-20 ${categoryIndex % 2 === 0 ? 'bg-white' : 'bg-sage-50'}`}
+    >
+      <Container>
+        <div class="max-w-4xl mx-auto">
+          <!-- Category Header -->
+          <div class="flex items-center gap-4 mb-8 md:mb-12">
+            <div class="w-14 h-14 bg-sage-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg class="w-7 h-7 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={category.icon}></path>
+              </svg>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal">
+              {category.category}
+            </h2>
+          </div>
+
+          <!-- Questions -->
+          <div class="space-y-4">
+            {category.questions.map((faq, index) => (
+              <Card variant="bordered" padding="none" class="bg-white overflow-hidden">
+                <details class="group">
+                  <summary class="flex items-center justify-between cursor-pointer p-6 hover:bg-sage-50 transition-colors list-none">
+                    <h3 class="text-lg md:text-xl font-heading font-semibold text-charcoal pr-4">
+                      {faq.question}
+                    </h3>
+                    <svg
+                      class="w-6 h-6 text-sage-600 flex-shrink-0 transition-transform group-open:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </summary>
+                  <div class="px-6 pb-6 pt-2">
+                    <p class="text-gray-700 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </details>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </Container>
+    </section>
+  ))}
+
+  <!-- Still Have Questions CTA -->
+  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
+    <Container>
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
+          Still Have Questions?
+        </h2>
+        <p class="text-lg md:text-xl mb-8 md:mb-10 opacity-90 leading-relaxed">
+          We're here to help! Contact us directly and we'll be happy to answer any questions you have about acupuncture or our services.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button variant="secondary" size="lg" icon="phone" href="tel:+14145551234">
+            Call (414) 555-1234
+          </Button>
+          <Button variant="secondary" size="lg" icon="mail" href="/contact">
+            Send Us a Message
+          </Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- New Patient Special -->
+  <section class="py-16 md:py-20 bg-white">
+    <Container>
+      <Card variant="elevated" padding="lg" class="max-w-3xl mx-auto bg-gradient-to-br from-warm-white to-sage-50">
+        <div class="text-center">
+          <div class="inline-block px-4 py-2 bg-earth-orange text-white font-semibold rounded-[var(--radius-button)] text-sm mb-4">
+            New Patient Special
+          </div>
+          <h3 class="text-2xl md:text-3xl font-heading font-bold text-charcoal mb-4">
+            Ready to Experience the Benefits of Acupuncture?
+          </h3>
+          <p class="text-lg text-gray-700 mb-6">
+            Book your first consultation and receive <strong>$30 off</strong> your initial visit. That's comprehensive assessment and first treatment for just $120!
+          </p>
+          <Button variant="primary" size="lg" icon="calendar" href="/contact">
+            Schedule Your Consultation
+          </Button>
+          <p class="text-sm text-gray-600 mt-4">
+            *New patients only. Cannot be combined with insurance. Expires January 31, 2026.
+          </p>
+        </div>
+      </Card>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Remove default disclosure triangle in some browsers */
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details summary::marker {
+    display: none;
+  }
+</style>

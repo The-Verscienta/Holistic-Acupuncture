@@ -1,0 +1,83 @@
+---
+/**
+ * SanityImage Component
+ *
+ * Optimized image component for Sanity CMS images with:
+ * - Automatic WebP conversion
+ * - Responsive srcset generation
+ * - Lazy loading
+ * - Proper aspect ratios
+ * - Quality optimization
+ */
+
+import { urlFor } from '../lib/sanity';
+import type { SanityImage as SanityImageType } from '../types/sanity';
+
+export interface Props {
+  image: SanityImageType;
+  alt?: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  aspectRatio?: string; // e.g., "16/9", "4/3", "1/1"
+  sizes?: string;
+  quality?: number;
+  objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+}
+
+const {
+  image,
+  alt,
+  width = 800,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  aspectRatio,
+  sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px',
+  quality = 80,
+  objectFit = 'cover',
+} = Astro.props;
+
+// Use alt from image metadata if not provided
+const imageAlt = alt || image.alt || '';
+
+// Build base image URL with auto format (WebP with fallback)
+const baseUrl = urlFor(image)
+  .width(width)
+  .quality(quality)
+  .auto('format');
+
+// Add height if provided
+const imageUrl = height
+  ? baseUrl.height(height).url()
+  : baseUrl.url();
+
+// Generate responsive srcset for different screen sizes
+const srcset = [
+  `${urlFor(image).width(400).quality(quality).auto('format').url()} 400w`,
+  `${urlFor(image).width(800).quality(quality).auto('format').url()} 800w`,
+  `${urlFor(image).width(1200).quality(quality).auto('format').url()} 1200w`,
+  `${urlFor(image).width(1600).quality(quality).auto('format').url()} 1600w`,
+].join(', ');
+
+// Generate aspect ratio styles if provided
+const aspectRatioStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : '';
+const objectFitClass = objectFit !== 'cover' ? `object-${objectFit}` : 'object-cover';
+
+// Combine classes
+const combinedClass = `${className} ${objectFitClass}`.trim();
+---
+
+<img
+  src={imageUrl}
+  srcset={srcset}
+  sizes={sizes}
+  alt={imageAlt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  class={combinedClass}
+  style={aspectRatioStyle}
+/>

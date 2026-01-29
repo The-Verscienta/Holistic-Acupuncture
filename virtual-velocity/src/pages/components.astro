@@ -1,0 +1,422 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import Badge from '../components/Badge.astro';
+import TextInput from '../components/TextInput.astro';
+import TextArea from '../components/TextArea.astro';
+import Select from '../components/Select.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TestimonialCard from '../components/TestimonialCard.astro';
+---
+
+<BaseLayout
+  title="Component Showcase"
+  description="Design system components for Holistic Acupuncture"
+>
+  <Container class="py-12 md:py-16 lg:py-20">
+    <div class="space-y-16 md:space-y-20">
+      <!-- Header -->
+      <div>
+        <h1 class="text-5xl font-heading font-bold text-charcoal mb-4">
+          Component Showcase
+        </h1>
+        <p class="text-xl text-gray-600">
+          Reusable UI components built with the 2026 design system
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Buttons</h2>
+          <p class="text-gray-600">Various button styles and sizes with icons</p>
+        </div>
+
+        <div class="space-y-8">
+          <!-- Primary Buttons -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Primary Variant</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button variant="primary" size="sm">Small Button</Button>
+              <Button variant="primary" size="md">Medium Button</Button>
+              <Button variant="primary" size="lg">Large Button</Button>
+              <Button variant="primary" size="md" icon="calendar">Book Appointment</Button>
+              <Button variant="primary" size="md" icon="arrow-right" iconPosition="right">Continue</Button>
+              <Button variant="primary" size="md" disabled>Disabled</Button>
+            </div>
+          </div>
+
+          <!-- Secondary Buttons -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Secondary Variant</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button variant="secondary" size="md">Learn More</Button>
+              <Button variant="secondary" size="md" icon="phone">Call Us</Button>
+              <Button variant="secondary" size="lg" icon="mail">Email Us</Button>
+            </div>
+          </div>
+
+          <!-- Tertiary Buttons -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Tertiary Variant</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button variant="tertiary" size="md">Cancel</Button>
+              <Button variant="tertiary" size="md" icon="info">Learn More</Button>
+            </div>
+          </div>
+
+          <!-- Outline Buttons (for dark backgrounds) -->
+          <div class="bg-sage-700 p-8 rounded-[var(--radius-lg)]">
+            <h3 class="text-lg font-semibold mb-4 text-white">Outline Variant (Dark Background)</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button variant="outline" size="md">Learn More</Button>
+              <Button variant="outline" size="md" icon="phone">Call Us</Button>
+            </div>
+          </div>
+
+          <!-- Button as Link -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Buttons as Links</h3>
+            <div class="flex flex-wrap gap-4">
+              <Button variant="primary" size="md" href="/contact" icon="calendar">Book Now</Button>
+              <Button variant="tertiary" size="md" href="/about">About Us</Button>
+            </div>
+          </div>
+
+          <!-- Full Width -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Full Width</h3>
+            <Button variant="primary" size="lg" fullWidth icon="calendar">
+              Schedule Appointment
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cards -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Cards</h2>
+          <p class="text-gray-600">Different card styles for various use cases</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <Card variant="default" padding="md">
+            <h3 class="text-xl font-heading font-semibold mb-2">Default Card</h3>
+            <p class="text-gray-600">Basic card with border and white background.</p>
+          </Card>
+
+          <Card variant="bordered" padding="md">
+            <h3 class="text-xl font-heading font-semibold mb-2">Bordered Card</h3>
+            <p class="text-gray-600">Card with thicker border for emphasis.</p>
+          </Card>
+
+          <Card variant="elevated" padding="md">
+            <h3 class="text-xl font-heading font-semibold mb-2">Elevated Card</h3>
+            <p class="text-gray-600">Card with shadow for depth.</p>
+          </Card>
+
+          <Card variant="flat" padding="md">
+            <h3 class="text-xl font-heading font-semibold mb-2">Flat Card</h3>
+            <p class="text-gray-600">Card with colored background, no border.</p>
+          </Card>
+
+          <Card variant="elevated" padding="lg" hoverable>
+            <h3 class="text-xl font-heading font-semibold mb-2">Hoverable Card</h3>
+            <p class="text-gray-600">Hover over this card to see the effect!</p>
+          </Card>
+
+          <Card variant="elevated" padding="md" hoverable href="/about">
+            <h3 class="text-xl font-heading font-semibold mb-2">Card as Link</h3>
+            <p class="text-gray-600">This entire card is clickable.</p>
+          </Card>
+        </div>
+      </section>
+
+      <!-- Badges -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Badges</h2>
+          <p class="text-gray-600">Small labels for status, categories, or tags</p>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Variants</h3>
+            <div class="flex flex-wrap gap-3">
+              <Badge variant="default">Default</Badge>
+              <Badge variant="success">Success</Badge>
+              <Badge variant="warning">Warning</Badge>
+              <Badge variant="error">Error</Badge>
+              <Badge variant="info">Info</Badge>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Sizes</h3>
+            <div class="flex flex-wrap items-center gap-3">
+              <Badge size="sm">Small</Badge>
+              <Badge size="md">Medium</Badge>
+              <Badge size="lg">Large</Badge>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-semibold mb-4">With Icon</h3>
+            <div class="flex flex-wrap gap-3">
+              <Badge variant="success" icon>Verified</Badge>
+              <Badge variant="default" icon>Featured</Badge>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Form Inputs -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Form Inputs</h2>
+          <p class="text-gray-600">Input fields with validation states</p>
+        </div>
+
+        <div class="max-w-2xl space-y-6">
+          <TextInput
+            id="name"
+            name="name"
+            label="Full Name"
+            placeholder="Enter your name"
+            required
+            helpText="Please enter your first and last name"
+          />
+
+          <TextInput
+            id="email"
+            name="email"
+            type="email"
+            label="Email Address"
+            placeholder="you@example.com"
+            required
+          />
+
+          <TextInput
+            id="phone"
+            name="phone"
+            type="tel"
+            label="Phone Number"
+            placeholder="(414) 555-1234"
+            helpText="We'll only use this to confirm your appointment"
+          />
+
+          <TextInput
+            id="error-example"
+            name="error-example"
+            label="Input with Error"
+            error="This field is required"
+            required
+          />
+
+          <Select
+            id="referral"
+            name="referral"
+            label="How did you hear about us?"
+            options={[
+              { value: 'google', label: 'Google Search' },
+              { value: 'social', label: 'Social Media' },
+              { value: 'referral', label: 'Friend/Family Referral' },
+              { value: 'other', label: 'Other' },
+            ]}
+            required
+          />
+
+          <TextArea
+            id="message"
+            name="message"
+            label="Message"
+            placeholder="Tell us about your health concerns..."
+            rows={5}
+            maxLength={500}
+            helpText="Please provide details about what brings you to our practice"
+          />
+        </div>
+      </section>
+
+      <!-- Service Cards -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Service Cards</h2>
+          <p class="text-gray-600">Cards for displaying conditions and services</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ServiceCard
+            title="Headaches & Migraines"
+            description="Natural, effective treatment to restore balance and promote healing for chronic headaches."
+            href="/conditions/headaches"
+            icon="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+          />
+
+          <ServiceCard
+            title="Chronic Pain"
+            description="Find relief from persistent pain through traditional acupuncture and holistic treatment."
+            href="/conditions/chronic-pain"
+            icon="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+
+          <ServiceCard
+            title="Stress & Anxiety"
+            description="Calm your mind and reduce stress with proven acupuncture techniques."
+            href="/conditions/stress-anxiety"
+            icon="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+          />
+        </div>
+      </section>
+
+      <!-- Testimonial Cards -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Testimonial Cards</h2>
+          <p class="text-gray-600">Patient reviews and success stories</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <TestimonialCard
+            quote="After years of chronic migraines, I finally found relief through acupuncture. The care and expertise at this practice is unmatched."
+            author="Sarah M."
+            condition="Chronic Migraines"
+            rating={5}
+          />
+
+          <TestimonialCard
+            quote="I was skeptical at first, but the results speak for themselves. My back pain has significantly improved and I feel like myself again."
+            author="Michael R."
+            condition="Back Pain"
+            rating={5}
+          />
+
+          <TestimonialCard
+            quote="The team here is compassionate and knowledgeable. They took the time to understand my concerns and created a personalized treatment plan."
+            author="Jennifer L."
+            condition="Stress & Anxiety"
+            rating={5}
+          />
+
+          <TestimonialCard
+            quote="Excellent experience from start to finish. Professional, clean facility and truly effective treatments."
+            author="David K."
+            rating={4}
+          />
+        </div>
+      </section>
+
+      <!-- Typography -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Typography</h2>
+          <p class="text-gray-600">Font styles and hierarchy</p>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <h1 class="mb-2">Heading 1 - Sora Bold</h1>
+            <p class="text-gray-600 text-sm">Font: Sora 700, Size: clamp(2.75rem → 4.25rem)</p>
+          </div>
+          <div>
+            <h2 class="mb-2">Heading 2 - Sora Semibold</h2>
+            <p class="text-gray-600 text-sm">Font: Sora 600, Size: clamp(1.875rem → 2.625rem)</p>
+          </div>
+          <div>
+            <h3 class="mb-2">Heading 3 - Sora Semibold</h3>
+            <p class="text-gray-600 text-sm">Font: Sora 600, Size: clamp(1.5rem → 2rem)</p>
+          </div>
+          <div>
+            <h4 class="mb-2">Heading 4 - Sora Semibold</h4>
+            <p class="text-gray-600 text-sm">Font: Sora 600, Size: clamp(1.25rem → 1.625rem)</p>
+          </div>
+          <div>
+            <p class="mb-2">Body text uses the Inter font family for excellent readability. This is the default paragraph style with a line height of 1.7 for comfortable reading.</p>
+            <p class="text-gray-600 text-sm">Font: Inter 400, Size: clamp(1rem → 1.125rem)</p>
+          </div>
+          <div>
+            <p class="font-serif italic text-lg mb-2">
+              "Testimonials and quotes use the Crimson Pro serif font in italic for a distinctive, elegant appearance."
+            </p>
+            <p class="text-gray-600 text-sm">Font: Crimson Pro 400 Italic, Size: clamp(1.125rem → 1.375rem)</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Color Palette -->
+      <section class="space-y-6">
+        <div>
+          <h2 class="text-3xl font-heading font-bold text-charcoal mb-2">Color Palette</h2>
+          <p class="text-gray-600">2026 wellness-focused color system</p>
+        </div>
+
+        <div class="space-y-8">
+          <!-- Sage Colors -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Sage Green (Primary)</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+              {[50, 100, 200, 300, 500, 600, 700].map(shade => (
+                <div>
+                  <div class={`h-20 rounded-[var(--radius-md)] bg-sage-${shade} border border-gray-200`}></div>
+                  <p class="text-sm mt-2 font-mono">sage-{shade}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Earth Tones -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Earth Tones (Accent)</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-earth-orange"></div>
+                <p class="text-sm mt-2 font-mono">earth-orange</p>
+              </div>
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-earth-terracotta"></div>
+                <p class="text-sm mt-2 font-mono">earth-terracotta</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Healing Blue -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Healing Blue (Trust)</h3>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-healing-blue"></div>
+                <p class="text-sm mt-2 font-mono">healing-blue</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Neutrals -->
+          <div>
+            <h3 class="text-lg font-semibold mb-4">Neutrals</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-warm-white border border-gray-200"></div>
+                <p class="text-sm mt-2 font-mono">warm-white</p>
+              </div>
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-charcoal"></div>
+                <p class="text-sm mt-2 font-mono">charcoal</p>
+              </div>
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-gray-600"></div>
+                <p class="text-sm mt-2 font-mono">gray-600</p>
+              </div>
+              <div>
+                <div class="h-20 rounded-[var(--radius-md)] bg-gray-400"></div>
+                <p class="text-sm mt-2 font-mono">gray-400</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </Container>
+</BaseLayout>
