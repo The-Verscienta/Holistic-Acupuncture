@@ -34,8 +34,10 @@ Coolify supports two deployment methods for this project:
 |---------|-------|
 | Build Pack | **Dockerfile** |
 | Dockerfile Location | `Dockerfile` |
-| Base Directory | `/` |
+| Base Directory | **`/virtual-velocity`** |
 | Publish Directory | (leave empty) |
+
+> **Important:** The project files are in the `virtual-velocity/` subdirectory. You must set the Base Directory to `/virtual-velocity` for the build to work correctly.
 
 ### Step 3: Configure Environment Variables
 
@@ -115,9 +117,12 @@ If you prefer automatic detection without Docker:
 | Setting | Value |
 |---------|-------|
 | Build Pack | **Nixpacks** |
+| Base Directory | **`/virtual-velocity`** |
 | Build Command | `npm run build` |
 | Start Command | `node ./dist/server/entry.mjs` |
 | Install Command | `npm install` |
+
+> **Important:** Set the Base Directory to `/virtual-velocity` since the project files are in that subdirectory.
 
 ### Step 3: Add Environment Variables
 
@@ -195,7 +200,17 @@ Recommended resource configuration:
 
 ## Troubleshooting
 
-### Build Fails
+### Build Fails - Missing package-lock.json
+
+**Issue:** Build fails with "npm ci can only install with an existing package-lock.json"
+```
+npm error The `npm ci` command can only install with an existing package-lock.json
+```
+**Solution:**
+1. Ensure **Base Directory** is set to `/virtual-velocity` in Coolify settings
+2. The Dockerfile now includes a fallback to `npm install` if the lock file is missing
+
+### Build Fails - Node Version
 
 **Issue:** Build fails during `npm install`
 ```bash
