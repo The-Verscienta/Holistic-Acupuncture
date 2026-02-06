@@ -26,6 +26,7 @@ export default defineConfig({
         platformProxy: {
           enabled: false, // Disable local platform proxy
         },
+        imageService: 'compile', // Optimize images at build time (sharp not available at runtime)
       })
     : node({
         mode: 'standalone',
