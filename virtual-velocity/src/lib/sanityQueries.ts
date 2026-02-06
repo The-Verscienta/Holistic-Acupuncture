@@ -8,10 +8,10 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     title,
     slug,
     "author": author->{name, slug, photo, role},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured,
     seo
@@ -25,10 +25,10 @@ export async function getFeaturedBlogPosts(limit: number = 3): Promise<BlogPost[
     title,
     slug,
     "author": author->{name, slug, photo, role},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured,
     seo
@@ -42,12 +42,12 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     title,
     slug,
     "author": author->{_id, name, slug, photo, role, credentials},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
     body,
     tags,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured,
     seo,
@@ -57,15 +57,15 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
 }
 
 export async function getBlogPostsByCategory(category: string): Promise<BlogPost[]> {
-  const query = `*[_type == "blog" && category == $category] | order(publishedAt desc) {
+  const query = `*[_type == "blog" && (category == $category || $category in categories)] | order(publishedAt desc) {
     _id,
     title,
     slug,
     "author": author->{name, slug, photo, role},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured
   }`;
@@ -73,15 +73,15 @@ export async function getBlogPostsByCategory(category: string): Promise<BlogPost
 }
 
 export async function getRelatedBlogPosts(currentSlug: string, category: string, limit: number = 3): Promise<BlogPost[]> {
-  const query = `*[_type == "blog" && slug.current != $currentSlug && category == $category] | order(publishedAt desc) [0...${limit}] {
+  const query = `*[_type == "blog" && slug.current != $currentSlug && (category == $category || $category in categories)] | order(publishedAt desc) [0...${limit}] {
     _id,
     title,
     slug,
     "author": author->{name, slug, photo, role},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured
   }`;
@@ -97,10 +97,10 @@ export async function getPaginatedBlogPosts(page: number = 1, pageSize: number =
     title,
     slug,
     "author": author->{name, slug, photo, role},
-    category,
+    "category": coalesce(category, categories[0]),
     excerpt,
     featuredImage,
-    readTime,
+    "readTime": coalesce(readTime, round(length(pt::text(body)) / 5 / 200) + 1),
     publishedAt,
     featured,
     seo

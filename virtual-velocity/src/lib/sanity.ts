@@ -46,6 +46,25 @@ export function formatRelativeDate(dateString: string): string {
   return `${Math.floor(diffDays / 365)} years ago`;
 }
 
+// Decode HTML entities from WordPress content
+export function decodeHtmlEntities(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8212;/g, '—')
+    .replace(/&#038;/g, '&')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+}
+
 // Portable Text serializer for rendering content
 export function toPlainText(blocks: any[] = []): string {
   return (

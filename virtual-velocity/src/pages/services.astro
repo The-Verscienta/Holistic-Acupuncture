@@ -157,7 +157,7 @@ const packages = [
   </section>
 
   <!-- Special Offer Banner -->
-  <section class="bg-earth-orange text-white py-6">
+  <section class="bg-tcm-red text-white py-6">
     <Container>
       <div class="flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-4">
@@ -188,13 +188,13 @@ const packages = [
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map(service => (
-          <Card variant="bordered" padding="none" class="flex flex-col h-full relative">
-            {service.popular && (
-              <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Badge variant="success" size="md">Most Popular</Badge>
-              </div>
-            )}
+          <Card variant="bordered" padding="none" class="flex flex-col h-full">
             <div class="p-6 flex-1 flex flex-col">
+              {service.popular && (
+                <div class="mb-3">
+                  <Badge variant="success" size="md">Most Popular</Badge>
+                </div>
+              )}
               <h3 class="text-xl font-heading font-semibold text-charcoal mb-2">
                 {service.name}
               </h3>
@@ -268,14 +268,14 @@ const packages = [
           <Card
             variant={pkg.highlight ? "elevated" : "bordered"}
             padding="none"
-            class={`flex flex-col h-full ${pkg.highlight ? 'ring-2 ring-earth-orange relative' : ''}`}
+            class={`flex flex-col h-full ${pkg.highlight ? 'ring-2 ring-tcm-red' : ''}`}
           >
-            {pkg.highlight && (
-              <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-                <Badge variant="warning" size="lg">Best Value</Badge>
-              </div>
-            )}
-            <div class={`p-6 text-center ${pkg.highlight ? 'bg-earth-orange/5' : ''}`}>
+            <div class={`p-6 text-center ${pkg.highlight ? 'bg-tcm-red/5' : ''}`}>
+              {pkg.highlight && (
+                <div class="mb-3">
+                  <Badge variant="warning" size="lg">Best Value</Badge>
+                </div>
+              )}
               <h3 class="text-xl font-heading font-semibold text-charcoal mb-1">
                 {pkg.name}
               </h3>

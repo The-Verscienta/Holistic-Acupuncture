@@ -559,6 +559,156 @@ holisticacupuncture.net
 }
 
 /**
+ * Send newsletter welcome email to new subscriber
+ */
+export async function sendNewsletterWelcomeEmail(to: string): Promise<boolean> {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          line-height: 1.6;
+          color: #2d3436;
+          background-color: #fafaf8;
+          margin: 0;
+          padding: 0;
+        }
+        .container {
+          max-width: 600px;
+          margin: 40px auto;
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          background: linear-gradient(135deg, #7a9063 0%, #657a52 100%);
+          color: white;
+          padding: 40px 30px;
+          text-align: center;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 28px;
+          font-weight: 600;
+        }
+        .content {
+          padding: 40px 30px;
+        }
+        .content p {
+          margin: 15px 0;
+          font-size: 16px;
+        }
+        .footer {
+          background: #f6f7f3;
+          padding: 30px;
+          text-align: center;
+          font-size: 14px;
+          color: #636e72;
+        }
+        .highlight {
+          background: #f6f7f3;
+          padding: 20px;
+          border-radius: 6px;
+          margin: 20px 0;
+        }
+        .highlight ul {
+          margin: 10px 0;
+          padding-left: 20px;
+        }
+        .button {
+          display: inline-block;
+          background: #657a52;
+          color: white;
+          padding: 14px 28px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: 600;
+          margin-top: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>Welcome to Our Newsletter!</h1>
+        </div>
+        <div class="content">
+          <p>Thank you for subscribing to the Acupuncture & Holistic Health Associates newsletter!</p>
+
+          <p>You'll now receive:</p>
+
+          <div class="highlight">
+            <ul>
+              <li>Health tips and wellness advice</li>
+              <li>Information about acupuncture and Traditional Chinese Medicine</li>
+              <li>Special offers and promotions</li>
+              <li>Updates on our services and practice</li>
+            </ul>
+          </div>
+
+          <p>We're committed to helping you on your wellness journey. If you ever have questions about acupuncture or how we can help you, don't hesitate to reach out.</p>
+
+          <div style="text-align: center;">
+            <a href="https://holisticacupuncture.net/blog" class="button">
+              Read Our Latest Articles
+            </a>
+          </div>
+
+          <p style="margin-top: 30px;">
+            To your health,<br>
+            <strong>Acupuncture & Holistic Health Associates</strong>
+          </p>
+        </div>
+        <div class="footer">
+          <p>Acupuncture & Holistic Health Associates</p>
+          <p>Bayshore Town Center | Glendale, WI 53217</p>
+          <p style="font-size: 12px; margin-top: 15px;">
+            <a href="https://holisticacupuncture.net" style="color: #657a52; text-decoration: none;">
+              holisticacupuncture.net
+            </a>
+          </p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const text = `
+Welcome to Our Newsletter!
+
+Thank you for subscribing to the Acupuncture & Holistic Health Associates newsletter!
+
+You'll now receive:
+- Health tips and wellness advice
+- Information about acupuncture and Traditional Chinese Medicine
+- Special offers and promotions
+- Updates on our services and practice
+
+We're committed to helping you on your wellness journey. If you ever have questions about acupuncture or how we can help you, don't hesitate to reach out.
+
+Visit our blog for the latest articles: https://holisticacupuncture.net/blog
+
+To your health,
+Acupuncture & Holistic Health Associates
+
+---
+Bayshore Town Center | Glendale, WI 53217
+holisticacupuncture.net
+  `.trim();
+
+  return sendEmail({
+    to,
+    subject: 'Welcome to the Acupuncture & Holistic Health Newsletter!',
+    text,
+    html,
+  });
+}
+
+/**
  * Escape HTML to prevent XSS
  */
 function escapeHtml(unsafe: string): string {

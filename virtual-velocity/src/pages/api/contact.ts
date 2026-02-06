@@ -1,30 +1,59 @@
 import type { APIRoute } from 'astro';
-import { insertContactSubmission } from '../../lib/database';
 import { sendContactFormNotification, sendConfirmationEmail } from '../../lib/email';
-import {
-  checkRateLimit,
-  getClientIp,
-  RATE_LIMITS,
-  rateLimitExceededResponse,
-  createRateLimitHeaders
-} from '../../lib/security';
 
 export const prerender = false;
+
+// Simple in-memory rate limiting (resets on worker restart, but good enough for basic protection)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 5; // 5 requests per minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
 
 /**
  * Contact Form API Endpoint
  *
- * This endpoint handles contact form submissions, stores them in Astro DB,
- * and sends email notifications.
+ * Handles contact form submissions and sends email notifications.
+ * No database storage - emails only.
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Rate limiting
     const clientIp = getClientIp(request);
-    const rateLimit = checkRateLimit(clientIp, 'contact', RATE_LIMITS.contact);
-
-    if (!rateLimit.allowed) {
-      return rateLimitExceededResponse(rateLimit.resetIn);
+    if (!checkRateLimit(clientIp)) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Too many requests. Please try again in a minute.'
+        }),
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     // Parse request body
@@ -39,10 +68,7 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.contact.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
@@ -57,22 +83,10 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.contact.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
-
-    // Insert into database
-    await insertContactSubmission({
-      name: data.name,
-      email: data.email,
-      phone: data.phone || null,
-      referralSource: data.referralSource || null,
-      message: data.message,
-    });
 
     // Send notification email to admin
     try {
@@ -85,7 +99,16 @@ export const POST: APIRoute = async ({ request }) => {
       });
     } catch (emailError) {
       console.error('Contact notification email error:', emailError);
-      // Continue - form was still saved
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Failed to send message. Please try again or call us directly.'
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     // Send confirmation email to user
@@ -93,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
       await sendConfirmationEmail(data.email, data.name);
     } catch (emailError) {
       console.error('Confirmation email error:', emailError);
-      // Continue - form was still saved
+      // Continue - main notification was sent
     }
 
     // Return success response
@@ -104,10 +127,7 @@ export const POST: APIRoute = async ({ request }) => {
       }),
       {
         status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.contact.maxRequests)
-        }
+        headers: { 'Content-Type': 'application/json' }
       }
     );
 

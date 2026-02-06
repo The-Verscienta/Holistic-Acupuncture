@@ -2,35 +2,34 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
-// NOTE: Astro DB import is conditionally included based on environment
-// The libsql module doesn't support Windows ARM64, so db is disabled locally
-// Production builds in Docker (Coolify) will work with db enabled
 import tailwindcss from '@tailwindcss/vite';
 import node from '@astrojs/node';
 
-// Check if we should include db (not on Windows ARM64)
-const isWindowsArm = process.platform === 'win32' && process.arch === 'arm64';
-const integrations = [sitemap(), react()];
-
-// Only add db on supported platforms
-if (!isWindowsArm) {
-  try {
-    const { default: db } = await import('@astrojs/db');
-    // @ts-ignore - db() returns AstroIntegration, push is valid
-    integrations.push(db());
-  } catch (e) {
-    console.warn('Astro DB not available, running without database support');
-  }
+// Conditionally import Cloudflare adapter
+// On Windows ARM64, workerd is not supported, so we use Node adapter for local builds
+// Cloudflare Pages will use the correct adapter when deploying (via wrangler.toml)
+let cloudflare;
+try {
+  cloudflare = (await import('@astrojs/cloudflare')).default;
+} catch {
+  console.warn('Cloudflare adapter not available (expected on Windows ARM64). Using Node adapter for local builds.');
+  cloudflare = null;
 }
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://holisticacupuncture.net',
-  integrations,
-  output: 'static', // Static mode with on-demand SSR for routes with prerender = false
-  adapter: node({
-    mode: 'standalone'
-  }),
+  integrations: [sitemap(), react()],
+  output: 'static', // Static by default, use prerender = false for SSR routes
+  adapter: cloudflare
+    ? cloudflare({
+        platformProxy: {
+          enabled: false, // Disable local platform proxy
+        },
+      })
+    : node({
+        mode: 'standalone',
+      }),
   vite: {
     plugins: [tailwindcss()],
     build: {

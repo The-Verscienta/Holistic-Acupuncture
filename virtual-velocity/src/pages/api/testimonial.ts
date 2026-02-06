@@ -1,35 +1,60 @@
 import type { APIRoute } from 'astro';
-import {
-  insertTestimonialSubmission,
-  getTestimonialSubmissions,
-  updateTestimonialStatus,
-  deleteTestimonial
-} from '../../lib/database';
 import { sendTestimonialNotification } from '../../lib/email';
-import {
-  checkRateLimit,
-  getClientIp,
-  RATE_LIMITS,
-  rateLimitExceededResponse,
-  createRateLimitHeaders
-} from '../../lib/security';
 
 export const prerender = false;
+
+// Simple in-memory rate limiting
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 2; // 2 requests per minute (testimonials should be rare)
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
 
 /**
  * Testimonial Submission API Endpoint
  *
- * This endpoint handles patient testimonial submissions.
- * Testimonials are stored with status 'pending' for staff review.
+ * Handles patient testimonial submissions by sending an email notification.
+ * No database storage - for testimonial management, integrate with
+ * Sanity CMS or add them manually.
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Rate limiting
     const clientIp = getClientIp(request);
-    const rateLimit = checkRateLimit(clientIp, 'testimonial', RATE_LIMITS.testimonial);
-
-    if (!rateLimit.allowed) {
-      return rateLimitExceededResponse(rateLimit.resetIn);
+    if (!checkRateLimit(clientIp)) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Too many requests. Please try again in a minute.'
+        }),
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     // Parse request body
@@ -44,10 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.testimonial.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
@@ -62,10 +84,7 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.testimonial.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
@@ -79,22 +98,10 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.testimonial.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
-
-    // Insert into database with pending status
-    await insertTestimonialSubmission({
-      name: data.name,
-      email: data.email,
-      condition: data.condition || 'General',
-      testimonial: data.testimonial,
-      rating: data.rating || null,
-    });
 
     // Send notification email to admin
     try {
@@ -107,7 +114,16 @@ export const POST: APIRoute = async ({ request }) => {
       });
     } catch (emailError) {
       console.error('Testimonial notification email error:', emailError);
-      // Continue - testimonial was still saved
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Failed to send testimonial. Please try again or contact us directly.'
+        }),
+        {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     // Return success response
@@ -118,10 +134,7 @@ export const POST: APIRoute = async ({ request }) => {
       }),
       {
         status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.testimonial.maxRequests)
-        }
+        headers: { 'Content-Type': 'application/json' }
       }
     );
 
@@ -132,150 +145,6 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({
         success: false,
         error: 'An error occurred while processing your testimonial'
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
-};
-
-// GET endpoint to retrieve pending testimonials (protected by middleware)
-export const GET: APIRoute = async () => {
-  try {
-    const testimonials = await getTestimonialSubmissions();
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        testimonials
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-
-  } catch (error) {
-    console.error('Error fetching testimonials:', error);
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'An error occurred while fetching testimonials'
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
-};
-
-// PATCH endpoint to update testimonial status (protected by middleware)
-export const PATCH: APIRoute = async ({ request }) => {
-  try {
-    const data = await request.json();
-
-    // Validate required fields
-    if (!data.id || !data.status) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Testimonial ID and status are required'
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
-    // Validate status value
-    const validStatuses = ['pending', 'approved', 'rejected'];
-    if (!validStatuses.includes(data.status)) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Invalid status. Must be: pending, approved, or rejected'
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
-    // Update testimonial status
-    await updateTestimonialStatus(data.id, data.status);
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: `Testimonial ${data.status === 'approved' ? 'approved' : 'rejected'} successfully`
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-
-  } catch (error) {
-    console.error('Error updating testimonial:', error);
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'An error occurred while updating the testimonial'
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
-};
-
-// DELETE endpoint to remove a testimonial (protected by middleware)
-export const DELETE: APIRoute = async ({ request }) => {
-  try {
-    const url = new URL(request.url);
-    const id = url.searchParams.get('id');
-
-    if (!id) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: 'Testimonial ID is required'
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
-    await deleteTestimonial(parseInt(id));
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Testimonial deleted successfully'
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-
-  } catch (error) {
-    console.error('Error deleting testimonial:', error);
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'An error occurred while deleting the testimonial'
       }),
       {
         status: 500,

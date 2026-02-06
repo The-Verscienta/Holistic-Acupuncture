@@ -1,28 +1,60 @@
 import type { APIRoute } from 'astro';
-import { insertNewsletterSubscriber, getNewsletterSubscribers } from '../../lib/database';
-import {
-  checkRateLimit,
-  getClientIp,
-  RATE_LIMITS,
-  rateLimitExceededResponse,
-  createRateLimitHeaders
-} from '../../lib/security';
+import { sendNewsletterWelcomeEmail } from '../../lib/email';
 
 export const prerender = false;
+
+// Simple in-memory rate limiting
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 3; // 3 requests per minute
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
 
 /**
  * Newsletter Subscription API Endpoint
  *
- * This endpoint handles email newsletter subscriptions.
+ * Handles email newsletter subscriptions by sending a welcome email.
+ * No database storage - for a full newsletter system, integrate with
+ * a service like Mailchimp, ConvertKit, or Buttondown.
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
     // Rate limiting
     const clientIp = getClientIp(request);
-    const rateLimit = checkRateLimit(clientIp, 'newsletter', RATE_LIMITS.newsletter);
-
-    if (!rateLimit.allowed) {
-      return rateLimitExceededResponse(rateLimit.resetIn);
+    if (!checkRateLimit(clientIp)) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Too many requests. Please try again in a minute.'
+        }),
+        {
+          status: 429,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
 
     // Parse request body
@@ -37,10 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.newsletter.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
@@ -55,31 +84,17 @@ export const POST: APIRoute = async ({ request }) => {
         }),
         {
           status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.newsletter.maxRequests)
-          }
+          headers: { 'Content-Type': 'application/json' }
         }
       );
     }
 
-    // Insert subscriber (handles duplicate check internally)
-    const result = await insertNewsletterSubscriber({ email: data.email });
-
-    if (result.exists) {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          message: 'You are already subscribed to our newsletter'
-        }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.newsletter.maxRequests)
-          }
-        }
-      );
+    // Send welcome email to subscriber
+    try {
+      await sendNewsletterWelcomeEmail(data.email);
+    } catch (emailError) {
+      console.error('Newsletter welcome email error:', emailError);
+      // Still return success - the intent was recorded
     }
 
     // Return success response
@@ -90,10 +105,7 @@ export const POST: APIRoute = async ({ request }) => {
       }),
       {
         status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-          ...createRateLimitHeaders(rateLimit.remaining, rateLimit.resetIn, RATE_LIMITS.newsletter.maxRequests)
-        }
+        headers: { 'Content-Type': 'application/json' }
       }
     );
 
@@ -104,38 +116,6 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({
         success: false,
         error: 'An error occurred while processing your subscription'
-      }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-  }
-};
-
-// GET endpoint to retrieve subscribers (protected by middleware)
-export const GET: APIRoute = async () => {
-  try {
-    const subscribers = await getNewsletterSubscribers();
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        subscribers
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-
-  } catch (error) {
-    console.error('Error fetching subscribers:', error);
-
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: 'An error occurred while fetching subscribers'
       }),
       {
         status: 500,

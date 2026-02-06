@@ -12,10 +12,12 @@ RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
 # Copy source files
 COPY . .
 
-# Enable Astro DB for production build
-# Replace the integrations line to include db()
-RUN sed -i 's/integrations: \[sitemap(), react()\]/integrations: [sitemap(), react(), db()]/' astro.config.mjs && \
-    sed -i 's|// import db from|import db from|' astro.config.mjs
+# Create data directory for SQLite database
+# Note: astro.config.mjs automatically includes db() on Linux (non-Windows-ARM64)
+RUN mkdir -p /app/data
+
+# Set database file location for build
+ENV ASTRO_DATABASE_FILE=/app/data/astro.db
 
 # Build the application
 RUN npm run build
@@ -29,10 +31,14 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 astro
 
+# Create data directory for persistent storage
+RUN mkdir -p /app/data
+
 # Copy built assets
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/data ./data
 
 # Set ownership
 RUN chown -R astro:nodejs /app
@@ -45,6 +51,7 @@ EXPOSE 4321
 ENV HOST=0.0.0.0
 ENV PORT=4321
 ENV NODE_ENV=production
+ENV ASTRO_DATABASE_FILE=/app/data/astro.db
 
 # Start the server
 CMD ["node", "./dist/server/entry.mjs"]

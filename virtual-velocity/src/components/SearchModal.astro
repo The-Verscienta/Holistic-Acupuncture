@@ -204,9 +204,10 @@
       cssLink.href = '/pagefind/pagefind-ui.css';
       document.head.appendChild(cssLink);
 
-      // Load Pagefind UI JS
+      // Load Pagefind UI JS - use dynamic path to prevent Vite from resolving at dev time
+      const pagefindPath = '/pagefind/pagefind-ui.js';
       // @ts-ignore - Pagefind is loaded dynamically
-      const { PagefindUI } = await import('/pagefind/pagefind-ui.js');
+      const { PagefindUI } = await import(/* @vite-ignore */ pagefindPath);
 
       // Initialize Pagefind UI
       new PagefindUI({

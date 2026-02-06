@@ -5,7 +5,7 @@ import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
 import HybridImage from '../../components/HybridImage.astro';
 import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../lib/sanityQueries';
-import { formatDate } from '../../lib/sanity';
+import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
 import { PortableText } from '@portabletext/react';
 
@@ -114,8 +114,8 @@ const contentHtml = post.body ? renderPortableText(post.body) : '';
 ---
 
 <BaseLayout
-  title={post.title}
-  description={post.excerpt}
+  title={decodeHtmlEntities(post.title)}
+  description={decodeHtmlEntities(post.excerpt)}
 >
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
@@ -134,7 +134,7 @@ const contentHtml = post.body ? renderPortableText(post.body) : '';
       </Badge>
 
       <h1 class="text-4xl md:text-5xl font-heading font-bold text-charcoal mb-6 leading-tight">
-        {post.title}
+        {decodeHtmlEntities(post.title)}
       </h1>
 
       <div class="flex flex-wrap items-center gap-4 text-gray-600 mb-8">
@@ -251,10 +251,10 @@ const contentHtml = post.body ? renderPortableText(post.body) : '';
                   {categoryLabels[relatedPost.category] || relatedPost.category}
                 </Badge>
                 <h3 class="text-lg font-heading font-semibold text-charcoal mb-2 group-hover:text-sage-700 transition-colors line-clamp-2">
-                  {relatedPost.title}
+                  {decodeHtmlEntities(relatedPost.title)}
                 </h3>
                 <p class="text-gray-600 text-sm line-clamp-2 mb-3">
-                  {relatedPost.excerpt}
+                  {decodeHtmlEntities(relatedPost.excerpt)}
                 </p>
                 <div class="flex items-center justify-between text-xs text-gray-500">
                   <span>{formatDate(relatedPost.publishedAt)}</span>
