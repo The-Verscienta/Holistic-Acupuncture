@@ -8,6 +8,9 @@ import { getAllBlogPosts } from '../../lib/sanityQueries';
 import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
 
+// Enable SSR for this page to support dynamic pagination and filtering
+export const prerender = false;
+
 // Configuration
 const POSTS_PER_PAGE = 9;
 
