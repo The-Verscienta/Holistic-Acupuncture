@@ -6,6 +6,7 @@ import TextInput from '../components/TextInput.astro';
 import TextArea from '../components/TextArea.astro';
 import Select from '../components/Select.astro';
 import Button from '../components/Button.astro';
+import { CONTACT } from '../lib/config';
 ---
 
 <BaseLayout
@@ -273,7 +274,7 @@ import Button from '../components/Button.astro';
                 </svg>
                 <div>
                   <h3 class="font-semibold text-error">Failed to Send Message</h3>
-                  <p class="text-sm text-gray-700 mt-1">Please try again or call us at (414) 555-1234.</p>
+                  <p class="text-sm text-gray-700 mt-1">Please try again or call us at {CONTACT.phone}.</p>
                 </div>
               </div>
             </div>

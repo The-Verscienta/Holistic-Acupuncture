@@ -7,6 +7,7 @@ import Button from '../../components/Button.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import { getAllTeamMembers, getTeamMemberBySlug } from '../../lib/sanityQueries';
 import { JANE_BOOKING_URL, CONTACT } from '../../lib/config';
+import { escapeHtml } from '../../lib/sanitize';
 
 export async function getStaticPaths() {
   const members = await getAllTeamMembers();
@@ -39,7 +40,7 @@ const initials = member.name
   .toUpperCase()
   .slice(0, 2);
 
-// Render portable text to HTML
+// Render portable text to HTML (escape text for XSS safety)
 function renderPortableText(blocks: any[]) {
   if (!blocks) return '';
   return blocks
@@ -47,7 +48,7 @@ function renderPortableText(blocks: any[]) {
       if (block._type === 'block') {
         let content = block.children
           .map((child: any) => {
-            let text = child.text || '';
+            let text = escapeHtml(child.text || '');
             if (child.marks && child.marks.length > 0) {
               child.marks.forEach((mark: string) => {
                 if (mark === 'strong') {

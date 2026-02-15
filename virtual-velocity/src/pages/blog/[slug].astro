@@ -5,9 +5,10 @@ import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
 import HybridImage from '../../components/HybridImage.astro';
 import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../lib/sanityQueries';
-import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
+import { formatDate, decodeHtmlEntities, urlFor } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
-import { PortableText } from '@portabletext/react';
+import { escapeHtml, safeHref, safeImageSrc } from '../../lib/sanitize';
+import { SITE_URL } from '../../lib/config';
 
 export async function getStaticPaths() {
   const posts = await getAllBlogPosts();
@@ -36,15 +37,15 @@ if (!post) {
   return Astro.redirect('/blog');
 }
 
-// Render portable text to HTML
+// Render portable text to HTML (with XSS-safe escaping and safe URLs)
 function renderPortableText(blocks: any[]) {
   return blocks
     .map((block) => {
       if (block._type === 'block') {
-        // Get the text content
+        // Get the text content (escape all text for safe HTML)
         let content = block.children
           .map((child: any) => {
-            let text = child.text || '';
+            let text = escapeHtml(child.text || '');
 
             // Apply marks
             if (child.marks && child.marks.length > 0) {
@@ -56,10 +57,11 @@ function renderPortableText(blocks: any[]) {
                 } else if (mark === 'code') {
                   text = '<code class="bg-gray-100 px-2 py-1 rounded text-sm">' + text + '</code>';
                 } else {
-                  // Check if this mark is a link annotation
+                  // Check if this mark is a link annotation - only allow http(s) URLs
                   const linkDef = block.markDefs?.find((def: any) => def._key === mark);
-                  if (linkDef && linkDef._type === 'link' && linkDef.href) {
-                    text = '<a href="' + linkDef.href + '" class="text-sage-600 hover:text-sage-700 underline" target="_blank" rel="noopener noreferrer">' + text + '</a>';
+                  const safeUrl = linkDef && linkDef._type === 'link' ? safeHref(linkDef.href) : null;
+                  if (safeUrl) {
+                    text = '<a href="' + escapeHtml(safeUrl) + '" class="text-sage-600 hover:text-sage-700 underline" target="_blank" rel="noopener noreferrer">' + text + '</a>';
                   }
                 }
               });
@@ -70,7 +72,6 @@ function renderPortableText(blocks: any[]) {
           .join('');
 
         // Handle content with newlines (from WordPress migration)
-        // Split on newlines and wrap each line in a paragraph
         if (content.includes('\n')) {
           const paragraphs = content
             .split('\n')
@@ -91,32 +92,61 @@ function renderPortableText(blocks: any[]) {
         return '<p class="text-gray-700 leading-relaxed mb-6">' + content + '</p>';
       }
 
-      // Handle images
+      // Handle images - sanitize src and alt (only allow http(s) or relative URLs)
       if (block._type === 'image') {
-        const alt = block.alt || '';
+        const alt = escapeHtml(block.alt || '');
         let src = block._sanityAsset || '';
-
-        // Strip 'image@' prefix if present (from migration)
-        if (src.startsWith('image@')) {
-          src = src.substring(6);
-        }
-
-        return '<figure class="my-8"><img src="' + src + '" alt="' + alt + '" class="rounded-lg shadow-md w-full" />' + (alt ? '<figcaption class="text-sm text-gray-600 mt-2 text-center">' + alt + '</figcaption>' : '') + '</figure>';
+        if (src.startsWith('image@')) src = src.substring(6);
+        const safeSrc = safeImageSrc(src);
+        if (!safeSrc) return ''; // Unsafe or invalid src dropped
+        return '<figure class="my-8"><img src="' + safeSrc + '" alt="' + alt + '" class="rounded-lg shadow-md w-full" />' + (alt ? '<figcaption class="text-sm text-gray-600 mt-2 text-center">' + alt + '</figcaption>' : '') + '</figure>';
       }
 
-      // Handle other block types
       return '';
     })
     .join('');
 }
 
 const contentHtml = post.body ? renderPortableText(post.body) : '';
+
+// Absolute OG image for social sharing (required by Facebook/Twitter)
+const ogImageUrl = post.featuredImage
+  ? urlFor(post.featuredImage).width(1200).height(630).url()
+  : undefined;
+
+const postUrl = `${SITE_URL}/blog/${post.slug.current}`;
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: decodeHtmlEntities(post.title),
+  description: post.excerpt || '',
+  url: postUrl,
+  datePublished: post.publishedAt,
+  dateModified: post.updatedAt || post.publishedAt,
+  author: {
+    '@type': 'Organization',
+    name: 'Acupuncture & Holistic Health Associates',
+    url: SITE_URL
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Acupuncture & Holistic Health Associates',
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/favicon.svg`
+    }
+  },
+  ...(ogImageUrl && { image: ogImageUrl })
+};
 ---
 
 <BaseLayout
   title={decodeHtmlEntities(post.title)}
   description={decodeHtmlEntities(post.excerpt)}
+  image={ogImageUrl}
 >
+  <!-- Article structured data for rich results -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
     <Container size="md">

@@ -39,5 +39,7 @@ export const HOURS = {
 export const SOCIAL = {
   facebook: 'https://facebook.com/holisticacupuncture',
   instagram: 'https://instagram.com/holisticacupuncture',
-  linkedin: 'https://linkedin.com/company/holisticacupuncture'
+  linkedin: 'https://linkedin.com/company/holisticacupuncture',
+  // Optional: set for Twitter card attribution when links are shared
+  twitter: undefined as string | undefined
 };

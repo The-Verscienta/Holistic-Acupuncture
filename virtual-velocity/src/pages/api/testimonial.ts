@@ -7,6 +7,9 @@ export const prerender = false;
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_REQUESTS = 2; // 2 requests per minute (testimonials should be rare)
+const MAX_NAME_LENGTH = 200;
+const MAX_TESTIMONIAL_LENGTH = 2000;
+const MAX_CONDITION_LENGTH = 200;
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
@@ -103,13 +106,35 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    // Enforce max lengths
+    const name = String(data.name).trim();
+    const testimonial = String(data.testimonial).trim();
+    if (name.length > MAX_NAME_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Name is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (testimonial.length > MAX_TESTIMONIAL_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Testimonial is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (data.condition && String(data.condition).length > MAX_CONDITION_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Condition field is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Send notification email to admin
     try {
       await sendTestimonialNotification({
-        name: data.name,
+        name,
         email: data.email,
-        condition: data.condition,
-        testimonial: data.testimonial,
+        condition: data.condition?.trim().slice(0, MAX_CONDITION_LENGTH) || undefined,
+        testimonial,
         rating: data.rating || 5,
       });
     } catch (emailError) {

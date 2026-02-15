@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "lint": "astro check",
     "build:search": "astro build && npx pagefind --site dist --config pagefind.yml",
     "preview": "astro preview",
     "astro": "astro",

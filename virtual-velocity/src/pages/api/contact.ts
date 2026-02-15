@@ -8,6 +8,12 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_REQUESTS = 5; // 5 requests per minute
 
+// Max lengths to prevent DoS and oversized emails
+const MAX_NAME_LENGTH = 200;
+const MAX_MESSAGE_LENGTH = 5000;
+const MAX_PHONE_LENGTH = 30;
+const MAX_REFERRAL_LENGTH = 100;
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
   const record = rateLimitMap.get(ip);
@@ -88,14 +94,42 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    // Enforce max lengths
+    const name = String(data.name).trim();
+    const message = String(data.message).trim();
+    if (name.length > MAX_NAME_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Name is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Message is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (data.phone && String(data.phone).length > MAX_PHONE_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Phone number is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    if (data.referralSource && String(data.referralSource).length > MAX_REFERRAL_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Referral source is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Send notification email to admin
     try {
       await sendContactFormNotification({
-        name: data.name,
+        name,
         email: data.email,
-        phone: data.phone,
-        message: data.message,
-        referralSource: data.referralSource,
+        phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
+        message,
+        referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
       });
     } catch (emailError) {
       console.error('Contact notification email error:', emailError);
@@ -113,7 +147,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send confirmation email to user
     try {
-      await sendConfirmationEmail(data.email, data.name);
+      await sendConfirmationEmail(data.email, name);
     } catch (emailError) {
       console.error('Confirmation email error:', emailError);
       // Continue - main notification was sent

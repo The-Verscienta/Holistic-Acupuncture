@@ -7,6 +7,7 @@ export const prerender = false;
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const MAX_REQUESTS = 3; // 3 requests per minute
+const MAX_EMAIL_LENGTH = 254;
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
@@ -76,7 +77,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    const email = String(data.email).trim();
+    if (!emailRegex.test(email)) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -88,10 +90,16 @@ export const POST: APIRoute = async ({ request }) => {
         }
       );
     }
+    if (email.length > MAX_EMAIL_LENGTH) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Email is too long' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Send welcome email to subscriber
     try {
-      await sendNewsletterWelcomeEmail(data.email);
+      await sendNewsletterWelcomeEmail(email);
     } catch (emailError) {
       console.error('Newsletter welcome email error:', emailError);
       // Still return success - the intent was recorded

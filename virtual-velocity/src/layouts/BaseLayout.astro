@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
+import { SITE_URL, SOCIAL } from '../lib/config';
 
 interface Props {
   title: string;
@@ -10,9 +11,15 @@ interface Props {
   image?: string;
 }
 
-const { title, description, image = '/images/default-og.jpg' } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://holisticacupuncture.net');
+const { title, description, image } = Astro.props;
+const siteOrigin = Astro.site?.origin || SITE_URL;
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
 const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates | Milwaukee, WI' : `${title} | Acupuncture & Holistic Health Associates`;
+
+// OG/Twitter require absolute image URLs
+const imagePath = image || '/images/default-og.jpg';
+const imageUrl = imagePath.startsWith('http') ? imagePath : new URL(imagePath, siteOrigin).href;
+const twitterHandle = SOCIAL.twitter;
 ---
 
 <!doctype html>
@@ -32,7 +39,7 @@ const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates |
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={imageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Acupuncture & Holistic Health Associates" />
@@ -40,10 +47,11 @@ const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates |
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    {twitterHandle && <meta name="twitter:site" content={twitterHandle} />}
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={imageUrl} />
 
     <!-- Local Business Info -->
     <meta name="geo.region" content="US-WI" />

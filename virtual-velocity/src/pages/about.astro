@@ -6,6 +6,7 @@ import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import SanityImage from '../components/SanityImage.astro';
 import { getAllTeamMembers } from '../lib/sanityQueries';
+import { CONTACT } from '../lib/config';
 
 // Fetch team members from Sanity
 const teamMembers = await getAllTeamMembers();
@@ -183,6 +184,7 @@ const teamMembers = await getAllTeamMembers();
                     class="w-32 h-32 mx-auto mb-6 rounded-full"
                     sizes="128px"
                     quality={85}
+                    loading={index < 3 ? 'eager' : 'lazy'}
                   />
                 ) : (
                   <div class={`w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
@@ -311,8 +313,8 @@ const teamMembers = await getAllTeamMembers();
         <Button variant="secondary" size="lg" icon="calendar" href="/contact">
           Schedule Consultation
         </Button>
-        <Button variant="outline" size="lg" icon="phone" href="tel:+14145551234">
-          Call (414) 555-1234
+        <Button variant="outline" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}>
+          Call {CONTACT.phone}
         </Button>
       </div>
     </Container>

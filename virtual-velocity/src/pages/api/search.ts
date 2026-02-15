@@ -3,6 +3,31 @@ import { getAllBlogPosts, getAllConditions } from '../../lib/sanityQueries';
 
 export const prerender = false;
 
+// Rate limiting to prevent abuse of Sanity API
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 30; // 30 searches per minute per IP
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+  if (record.count >= MAX_REQUESTS) return false;
+  record.count++;
+  return true;
+}
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('cf-connecting-ip') ||
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    'unknown'
+  );
+}
+
 interface SearchResult {
   type: 'blog' | 'condition';
   title: string;
@@ -17,8 +42,19 @@ interface SearchResult {
  *
  * Searches through blog posts and conditions for matching content.
  */
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ request, url }) => {
   try {
+    const clientIp = getClientIp(request);
+    if (!checkRateLimit(clientIp)) {
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: 'Too many requests. Please try again in a minute.'
+        }),
+        { status: 429, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const query = url.searchParams.get('q')?.trim().toLowerCase();
 
     if (!query || query.length < 2) {
