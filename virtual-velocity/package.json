@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/fix-cloudflare-routes.js",
     "check": "astro check",
     "lint": "astro check",
     "build:search": "astro build && npx pagefind --site dist --config pagefind.yml",
