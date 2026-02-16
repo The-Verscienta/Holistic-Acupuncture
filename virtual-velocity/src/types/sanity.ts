@@ -28,7 +28,7 @@ export interface SanityBlock {
 
 export interface BlogPost {
   _id: string;
-  _type: 'blogPost' | 'blog'; // Support both native and migrated posts
+  _type: 'blog';
   title: string;
   slug: SanitySlug;
   author?: TeamMember;

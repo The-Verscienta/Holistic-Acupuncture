@@ -11,6 +11,16 @@
  * 4. Add to .env: ZEPTOMAIL_TOKEN=your_token_here
  */
 
+import { escapeHtml } from './sanitize';
+
+/**
+ * Strip CRLF and other control characters from strings used in email headers
+ * to prevent email header injection attacks.
+ */
+function sanitizeEmailHeader(value: string): string {
+  return value.replace(/[\r\n\t]/g, '').trim();
+}
+
 export interface EmailOptions {
   to: string | string[];
   subject: string;
@@ -65,7 +75,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
         name: fromName
       },
       to: toList,
-      subject: options.subject,
+      subject: sanitizeEmailHeader(options.subject),
     };
 
     // Add content (prefer HTML, fallback to text)
@@ -76,11 +86,12 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
       requestBody.textbody = options.text;
     }
 
-    // Add reply-to if provided
+    // Add reply-to if provided (sanitize to prevent header injection)
     if (options.replyTo) {
+      const safeReplyTo = sanitizeEmailHeader(options.replyTo);
       requestBody.reply_to = [{
-        address: options.replyTo,
-        name: options.replyTo.split('@')[0]
+        address: safeReplyTo,
+        name: safeReplyTo.split('@')[0]
       }];
     }
 
@@ -517,7 +528,7 @@ export async function sendConfirmationEmail(to: string, name: string): Promise<b
         </div>
         <div class="footer">
           <p>Acupuncture & Holistic Health Associates</p>
-          <p>Bayshore Town Center | 5800 N Bayshore Drive | Glendale, WI 53217</p>
+          <p>Bayshore Town Center | 500 W Silver Spring Dr, Suite K-205 | Glendale, WI 53217</p>
           <p style="font-size: 12px; margin-top: 15px;">
             <a href="https://holisticacupuncture.net" style="color: #657a52; text-decoration: none;">
               holisticacupuncture.net
@@ -546,7 +557,7 @@ Warm regards,
 Acupuncture & Holistic Health Associates
 
 ---
-Bayshore Town Center | 5800 N Bayshore Drive | Glendale, WI 53217
+Bayshore Town Center | 500 W Silver Spring Dr, Suite K-205 | Glendale, WI 53217
 holisticacupuncture.net
   `.trim();
 
@@ -708,14 +719,3 @@ holisticacupuncture.net
   });
 }
 
-/**
- * Escape HTML to prevent XSS
- */
-function escapeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}

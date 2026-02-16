@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { sendTestimonialNotification } from '../../lib/email';
+import { validateOrigin } from '../../lib/sanitize';
+import { SITE_URL } from '../../lib/config';
 
 export const prerender = false;
 
@@ -45,6 +47,14 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // CSRF protection: validate Origin header
+    if (!validateOrigin(request, SITE_URL)) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request origin' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Rate limiting
     const clientIp = getClientIp(request);
     if (!checkRateLimit(clientIp)) {
@@ -77,9 +87,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Validate email format
+    // Validate email format (reject CRLF to prevent header injection)
+    const email = String(data.email).trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!emailRegex.test(email) || /[\r\n]/.test(email)) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -129,16 +140,16 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send notification email to admin
-    try {
-      await sendTestimonialNotification({
-        name,
-        email: data.email,
-        condition: data.condition?.trim().slice(0, MAX_CONDITION_LENGTH) || undefined,
-        testimonial,
-        rating: data.rating || 5,
-      });
-    } catch (emailError) {
-      console.error('Testimonial notification email error:', emailError);
+    const notificationSent = await sendTestimonialNotification({
+      name,
+      email,
+      condition: data.condition?.trim().slice(0, MAX_CONDITION_LENGTH) || undefined,
+      testimonial,
+      rating: data.rating || 5,
+    });
+
+    if (!notificationSent) {
+      console.error('Testimonial notification email failed to send');
       return new Response(
         JSON.stringify({
           success: false,

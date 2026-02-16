@@ -1,5 +1,5 @@
 ---
-import { CONTACT, SITE_URL } from '../lib/config';
+import { CONTACT, HOURS, SITE_URL } from '../lib/config';
 
 // Structured Data for LocalBusiness (Acupuncture Clinic)
 const structuredData = {
@@ -25,10 +25,10 @@ const structuredData = {
   email: CONTACT.email,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "5800 N Bayshore Drive",
-    addressLocality: "Glendale",
-    addressRegion: "WI",
-    postalCode: "53217",
+    streetAddress: CONTACT.address.street,
+    addressLocality: CONTACT.address.city,
+    addressRegion: CONTACT.address.state,
+    postalCode: CONTACT.address.zip,
     addressCountry: "US"
   },
   geo: {
@@ -39,7 +39,13 @@ const structuredData = {
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      opens: "09:00",
+      closes: "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Friday",
       opens: "09:00",
       closes: "17:00"
     },
@@ -47,7 +53,7 @@ const structuredData = {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: "Saturday",
       opens: "09:00",
-      closes: "15:00"
+      closes: "17:00"
     }
   ],
   priceRange: "$$",

@@ -12,7 +12,7 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: false, // Set to true in production for better performance
+  useCdn: import.meta.env.PROD,
 });
 
 const builder = imageUrlBuilder(sanityClient);
@@ -33,7 +33,9 @@ export function formatDate(dateString: string): string {
 
 // Helper function to format relative dates
 export function formatRelativeDate(dateString: string): string {
+  if (!dateString) return '';
   const date = new Date(dateString);
+  if (isNaN(date.getTime())) return '';
   const now = new Date();
   const diffTime = Math.abs(now.getTime() - date.getTime());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -47,22 +49,25 @@ export function formatRelativeDate(dateString: string): string {
 }
 
 // Decode HTML entities from WordPress content
+// Only decodes known safe entities to prevent XSS via character code injection
+const UNSAFE_CHAR_CODES = new Set([34, 38, 39, 60, 62]); // " & ' < >
 export function decodeHtmlEntities(text: string): string {
   if (!text) return '';
   return text
-    .replace(/&#8217;/g, "'")
-    .replace(/&#8216;/g, "'")
-    .replace(/&#8220;/g, '"')
-    .replace(/&#8221;/g, '"')
-    .replace(/&#8211;/g, '–')
-    .replace(/&#8212;/g, '—')
+    .replace(/&#8217;/g, "\u2019")
+    .replace(/&#8216;/g, "\u2018")
+    .replace(/&#8220;/g, "\u201C")
+    .replace(/&#8221;/g, "\u201D")
+    .replace(/&#8211;/g, "\u2013")
+    .replace(/&#8212;/g, "\u2014")
     .replace(/&#038;/g, '&')
     .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+    .replace(/&#(\d+);/g, (match, code) => {
+      const charCode = parseInt(code, 10);
+      if (UNSAFE_CHAR_CODES.has(charCode)) return match;
+      return String.fromCharCode(charCode);
+    });
 }
 
 // Portable Text serializer for rendering content

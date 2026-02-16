@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { sendNewsletterWelcomeEmail } from '../../lib/email';
+import { validateOrigin } from '../../lib/sanitize';
+import { SITE_URL } from '../../lib/config';
 
 export const prerender = false;
 
@@ -43,6 +45,14 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // CSRF protection: validate Origin header
+    if (!validateOrigin(request, SITE_URL)) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request origin' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Rate limiting
     const clientIp = getClientIp(request);
     if (!checkRateLimit(clientIp)) {
@@ -75,10 +85,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Validate email format
+    // Validate email format (reject CRLF to prevent header injection)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const email = String(data.email).trim();
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(email) || /[\r\n]/.test(email)) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -98,11 +108,9 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send welcome email to subscriber
-    try {
-      await sendNewsletterWelcomeEmail(email);
-    } catch (emailError) {
-      console.error('Newsletter welcome email error:', emailError);
-      // Still return success - the intent was recorded
+    const welcomeSent = await sendNewsletterWelcomeEmail(email);
+    if (!welcomeSent) {
+      console.error('Newsletter welcome email failed to send');
     }
 
     // Return success response

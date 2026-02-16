@@ -359,7 +359,7 @@ const buildUrl = (page: number, category: string = categoryFilter) => {
           submitButton.disabled = false;
         }, 2000);
       } else {
-        throw new Error(data.message || 'Subscription failed');
+        throw new Error(data.error || 'Subscription failed');
       }
     } catch (error) {
       message.textContent = error instanceof Error ? error.message : 'An error occurred. Please try again.';

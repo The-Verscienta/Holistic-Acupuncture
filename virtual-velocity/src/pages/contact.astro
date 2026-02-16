@@ -51,8 +51,8 @@ import { CONTACT } from '../lib/config';
                 <h3 class="font-semibold text-charcoal mb-2">Visit Us</h3>
                 <p class="text-gray-600 text-sm">
                   Bayshore Town Center<br>
-                  500 W Silver Spring Dr, Suite K-205<br>
-                  Glendale, WI 53217
+                  {CONTACT.address.street}<br>
+                  {CONTACT.address.city}, {CONTACT.address.state} {CONTACT.address.zip}
                 </p>
               </div>
             </div>
@@ -71,7 +71,7 @@ import { CONTACT } from '../lib/config';
                   (414) 332-8888
                 </a>
                 <p class="text-gray-600 text-sm mt-1">
-                  Mon-Thu: 9:00 AM - 7:00 PM
+                  Mon-Thu: 9:00 AM - 6:00 PM
                 </p>
               </div>
             </div>
@@ -101,11 +101,15 @@ import { CONTACT } from '../lib/config';
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-600">Monday - Thursday:</span>
-                <span class="font-medium text-charcoal">9:00 AM - 7:00 PM</span>
+                <span class="font-medium text-charcoal">9:00 AM - 6:00 PM</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">Friday & Saturday:</span>
-                <span class="font-medium text-charcoal">By Appointment Only</span>
+                <span class="text-gray-600">Friday:</span>
+                <span class="font-medium text-charcoal">9:00 AM - 5:00 PM</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-600">Saturday:</span>
+                <span class="font-medium text-charcoal">By Appointment</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">Sunday:</span>
@@ -214,7 +218,7 @@ import { CONTACT } from '../lib/config';
                 label="Message"
                 placeholder="Tell us about your health concerns or questions..."
                 rows={6}
-                maxLength={1000}
+                maxLength={5000}
                 required
                 helpText="Please provide any relevant details about your condition or questions"
               />
@@ -397,12 +401,19 @@ import { CONTACT } from '../lib/config';
       const error = document.createElement('div');
       error.id = `${fieldId}-error`;
       error.className = 'flex items-center gap-2 text-sm text-red-600 mt-1';
-      error.innerHTML = `
-        <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-        </svg>
-        <span>${message}</span>
-      `;
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'w-4 h-4 flex-shrink-0');
+      svg.setAttribute('fill', 'currentColor');
+      svg.setAttribute('viewBox', '0 0 20 20');
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('fill-rule', 'evenodd');
+      path.setAttribute('d', 'M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z');
+      path.setAttribute('clip-rule', 'evenodd');
+      svg.appendChild(path);
+      const span = document.createElement('span');
+      span.textContent = message;
+      error.appendChild(svg);
+      error.appendChild(span);
       field.parentElement?.appendChild(error);
     } else if (errorEl) {
       const span = errorEl.querySelector('span');
@@ -547,7 +558,6 @@ import { CONTACT } from '../lib/config';
           name: name,
           email: email,
           phone: phone || null,
-          referralSource: reason,
           message: `Reason: ${reason}\nCondition: ${formData.get('condition') || 'Not specified'}\n\n${message}`,
         };
 

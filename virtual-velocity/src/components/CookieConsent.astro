@@ -1,0 +1,101 @@
+---
+/**
+ * Cookie Consent Banner
+ *
+ * Displays a GDPR/CCPA-compliant consent banner for analytics cookies.
+ * Google Analytics only loads after the user accepts.
+ * Consent preference is stored in a cookie for 365 days.
+ */
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+
+{import.meta.env.PROD && gaId && (
+  <div
+    id="cookie-consent"
+    class="fixed bottom-0 left-0 right-0 z-50 hidden"
+    role="dialog"
+    aria-label="Cookie consent"
+    aria-describedby="cookie-consent-text"
+  >
+    <div class="max-w-4xl mx-auto p-4">
+      <div class="bg-white rounded-xl shadow-2xl border border-sage-200 p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <div class="flex-1">
+          <p id="cookie-consent-text" class="text-sm text-sage-700 leading-relaxed">
+            We use cookies to analyze site traffic and improve your experience. No personal health information is tracked.
+            By clicking "Accept," you consent to our use of analytics cookies.
+          </p>
+        </div>
+        <div class="flex gap-3 flex-shrink-0">
+          <button
+            id="cookie-decline"
+            class="px-4 py-2 text-sm font-medium text-sage-600 bg-sage-50 hover:bg-sage-100 rounded-lg transition-colors"
+          >
+            Decline
+          </button>
+          <button
+            id="cookie-accept"
+            class="px-4 py-2 text-sm font-medium text-white bg-sage-700 hover:bg-sage-800 rounded-lg transition-colors"
+          >
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ gaId }}>
+    (function() {
+      var CONSENT_KEY = 'analytics_consent';
+
+      function getConsent() {
+        var match = document.cookie.match(new RegExp('(^| )' + CONSENT_KEY + '=([^;]+)'));
+        return match ? match[2] : null;
+      }
+
+      function setConsent(value) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        document.cookie = CONSENT_KEY + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax;Secure';
+      }
+
+      function loadGA() {
+        if (document.getElementById('ga-script')) return;
+        var s = document.createElement('script');
+        s.id = 'ga-script';
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', gaId, {
+          anonymize_ip: true,
+          cookie_flags: 'SameSite=None;Secure'
+        });
+      }
+
+      var consent = getConsent();
+      if (consent === 'accepted') {
+        loadGA();
+      } else if (consent !== 'declined') {
+        // Show banner for new visitors
+        var banner = document.getElementById('cookie-consent');
+        if (banner) banner.classList.remove('hidden');
+      }
+
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'cookie-accept') {
+          setConsent('accepted');
+          loadGA();
+          var banner = document.getElementById('cookie-consent');
+          if (banner) banner.classList.add('hidden');
+        } else if (e.target && e.target.id === 'cookie-decline') {
+          setConsent('declined');
+          var banner = document.getElementById('cookie-consent');
+          if (banner) banner.classList.add('hidden');
+        }
+      });
+    })();
+  </script>
+)}

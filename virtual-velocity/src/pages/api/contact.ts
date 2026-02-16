@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
 import { sendContactFormNotification, sendConfirmationEmail } from '../../lib/email';
+import { validateOrigin } from '../../lib/sanitize';
+import { SITE_URL } from '../../lib/config';
 
 export const prerender = false;
 
@@ -47,6 +49,14 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // CSRF protection: validate Origin header
+    if (!validateOrigin(request, SITE_URL)) {
+      return new Response(
+        JSON.stringify({ success: false, error: 'Invalid request origin' }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     // Rate limiting
     const clientIp = getClientIp(request);
     if (!checkRateLimit(clientIp)) {
@@ -79,9 +89,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Validate email format
+    // Validate email format (reject CRLF to prevent header injection)
+    const email = String(data.email).trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!emailRegex.test(email) || /[\r\n]/.test(email)) {
       return new Response(
         JSON.stringify({
           success: false,
@@ -123,16 +134,16 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send notification email to admin
-    try {
-      await sendContactFormNotification({
-        name,
-        email: data.email,
-        phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
-        message,
-        referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
-      });
-    } catch (emailError) {
-      console.error('Contact notification email error:', emailError);
+    const notificationSent = await sendContactFormNotification({
+      name,
+      email,
+      phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
+      message,
+      referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
+    });
+
+    if (!notificationSent) {
+      console.error('Contact notification email failed to send');
       return new Response(
         JSON.stringify({
           success: false,
@@ -145,13 +156,8 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Send confirmation email to user
-    try {
-      await sendConfirmationEmail(data.email, name);
-    } catch (emailError) {
-      console.error('Confirmation email error:', emailError);
-      // Continue - main notification was sent
-    }
+    // Send confirmation email to user (non-critical, don't fail if this doesn't send)
+    await sendConfirmationEmail(email, name);
 
     // Return success response
     return new Response(

@@ -33,6 +33,29 @@ export function safeHref(href: string | undefined | null): string | null {
 }
 
 /**
+ * Validate the Origin header on a request to protect against CSRF.
+ * Returns true if the request origin matches the allowed site origin.
+ * Falls back to Referer header if Origin is missing.
+ */
+export function validateOrigin(request: Request, allowedOrigin: string): boolean {
+  const origin = request.headers.get('origin');
+  if (origin) {
+    return origin === allowedOrigin;
+  }
+  // Fallback to Referer for same-origin non-CORS requests
+  const referer = request.headers.get('referer');
+  if (referer) {
+    try {
+      return new URL(referer).origin === allowedOrigin;
+    } catch {
+      return false;
+    }
+  }
+  // No Origin or Referer — reject (could be a direct API call)
+  return false;
+}
+
+/**
  * Return a URL string only if it looks like a safe http(s) or relative path for img src.
  * For Sanity image URLs we allow https and relative; block javascript:, data:, etc.
  */

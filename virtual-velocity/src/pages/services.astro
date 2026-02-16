@@ -392,7 +392,7 @@ const packages = [
         <Button variant="secondary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
           Book Appointment
         </Button>
-        <Button variant="outline" size="lg" icon="phone" href={`tel:${CONTACT.phone.replace(/[^0-9]/g, '')}`}>
+        <Button variant="outline" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/[^0-9]/g, '')}`}>
           Call {CONTACT.phone}
         </Button>
       </div>

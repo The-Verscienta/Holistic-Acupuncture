@@ -14,13 +14,14 @@ export const SITE_URL = 'https://holisticacupuncture.net';
 // Contact info
 export const CONTACT = {
   phone: '(414) 332-8888',
+  phoneRaw: '+14143328888',
   email: 'info@holisticacupuncture.net',
   address: {
-    street: '5800 N Bayshore Drive',
+    street: '500 W Silver Spring Dr, Suite K-205',
     city: 'Glendale',
     state: 'WI',
     zip: '53217',
-    full: 'Bayshore Town Center, 5800 N Bayshore Drive, Glendale, WI 53217'
+    full: 'Bayshore Town Center, 500 W Silver Spring Dr, Suite K-205, Glendale, WI 53217'
   }
 };
 

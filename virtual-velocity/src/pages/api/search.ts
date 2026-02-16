@@ -110,7 +110,7 @@ export const GET: APIRoute = async ({ request, url }) => {
           type: 'condition',
           title: condition.name,
           description: condition.description || '',
-          url: `/conditions/${condition.slug.current}`,
+          url: `/conditions#${condition.slug.current}`,
           category: condition.category
         });
       }
