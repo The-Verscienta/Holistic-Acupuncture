@@ -20,6 +20,8 @@ export interface Props {
   height?: number;
   class?: string;
   loading?: 'lazy' | 'eager';
+  /** Hint for LCP image. Use "high" only for the single above-the-fold image. */
+  fetchpriority?: 'high' | 'low' | 'auto';
   aspectRatio?: string; // e.g., "16/9", "4/3", "1/1"
   sizes?: string;
   quality?: number;
@@ -33,6 +35,7 @@ const {
   height,
   class: className = '',
   loading = 'lazy',
+  fetchpriority,
   aspectRatio,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px',
   quality = 80,
@@ -78,6 +81,7 @@ const combinedClass = `${className} ${objectFitClass}`.trim();
   height={height}
   loading={loading}
   decoding="async"
+  fetchpriority={fetchpriority}
   class={combinedClass}
   style={aspectRatioStyle}
 />

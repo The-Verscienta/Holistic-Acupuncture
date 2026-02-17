@@ -19,6 +19,8 @@ export interface Props {
   height?: number;
   class?: string;
   loading?: 'lazy' | 'eager';
+  /** Hint for LCP image. Use "high" only for the single above-the-fold image. */
+  fetchpriority?: 'high' | 'low' | 'auto';
   aspectRatio?: string;
   sizes?: string;
   quality?: number;
@@ -34,6 +36,7 @@ const {
   height,
   class: className = '',
   loading = 'lazy',
+  fetchpriority,
   aspectRatio,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 800px',
   quality = 80,
@@ -79,6 +82,7 @@ const cloudflarefit = objectFit === 'scale-down' ? 'scale-down' :
     quality={quality}
     class={className}
     loading={loading}
+    fetchpriority={fetchpriority}
   />
 ) : (
   <!-- Fallback to Sanity Images -->
@@ -89,6 +93,7 @@ const cloudflarefit = objectFit === 'scale-down' ? 'scale-down' :
     height={height}
     class={className}
     loading={loading}
+    fetchpriority={fetchpriority}
     aspectRatio={aspectRatio}
     sizes={sizes}
     quality={quality}

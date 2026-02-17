@@ -10,6 +10,8 @@ interface Props {
   quality?: number;
   class?: string;
   loading?: 'lazy' | 'eager';
+  /** Hint for LCP image (e.g. hero). Use "high" only for the single above-the-fold image. */
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 const {
@@ -21,6 +23,7 @@ const {
   quality = 85,
   class: className,
   loading = 'lazy',
+  fetchpriority,
 } = Astro.props;
 
 // Generate optimized image URL
@@ -52,5 +55,6 @@ const srcset = width
   height={height}
   loading={loading}
   decoding="async"
+  fetchpriority={fetchpriority}
   class={className}
 />

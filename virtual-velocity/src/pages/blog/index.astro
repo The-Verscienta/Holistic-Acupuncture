@@ -131,6 +131,7 @@ const buildUrl = (page: number, category: string = categoryFilter) => {
                     class="w-full"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     loading={index < 3 ? 'eager' : 'lazy'}
+                    fetchpriority={index === 0 ? 'high' : undefined}
                   />
                 ) : (
                   <div class="aspect-video bg-gradient-to-br from-sage-200 to-healing-blue flex items-center justify-center">
