@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/convert-logo-to-webp.js",
     "build": "astro build",
     "postbuild": "node scripts/fix-cloudflare-routes.js",
     "check": "astro check",
@@ -20,7 +21,8 @@
     "migrate:images": "node scripts/migration/migrateAllImages.js",
     "migrate:cloudflare": "node scripts/migration/migrateToCloudflare.js",
     "test:images": "node scripts/test-image-mapping.js",
-    "validate:structured-data": "node scripts/validate-structured-data.js"
+    "validate:structured-data": "node scripts/validate-structured-data.js",
+    "cloudflare:images-ttl": "node scripts/set-cloudflare-images-browser-ttl.js"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
@@ -51,6 +53,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "pagefind": "^1.4.0",
+    "sharp": "^0.33.5",
     "typescript": "^5.9.3"
   }
 }

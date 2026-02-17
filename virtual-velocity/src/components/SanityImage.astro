@@ -45,23 +45,23 @@ const {
 // Use alt from image metadata if not provided
 const imageAlt = alt || image.alt || '';
 
-// Build base image URL with auto format (WebP with fallback)
+// Build base image URL as WebP for smaller size and fast load
 const baseUrl = urlFor(image)
   .width(width)
   .quality(quality)
-  .auto('format');
+  .format('webp');
 
 // Add height if provided
 const imageUrl = height
   ? baseUrl.height(height).url()
   : baseUrl.url();
 
-// Generate responsive srcset for different screen sizes
+// Generate responsive srcset for different screen sizes (WebP)
 const srcset = [
-  `${urlFor(image).width(400).quality(quality).auto('format').url()} 400w`,
-  `${urlFor(image).width(800).quality(quality).auto('format').url()} 800w`,
-  `${urlFor(image).width(1200).quality(quality).auto('format').url()} 1200w`,
-  `${urlFor(image).width(1600).quality(quality).auto('format').url()} 1600w`,
+  `${urlFor(image).width(400).quality(quality).format('webp').url()} 400w`,
+  `${urlFor(image).width(800).quality(quality).format('webp').url()} 800w`,
+  `${urlFor(image).width(1200).quality(quality).format('webp').url()} 1200w`,
+  `${urlFor(image).width(1600).quality(quality).format('webp').url()} 1600w`,
 ].join(', ');
 
 // Generate aspect ratio styles if provided

@@ -43,8 +43,8 @@ export default defineConfig({
     },
   },
   build: {
-    // Inline stylesheets smaller than this size
-    inlineStylesheets: 'auto',
+    // Inline stylesheets to remove render-blocking CSS request (improves LCP)
+    inlineStylesheets: 'always',
   },
   // Prefetch configuration for faster page navigation
   prefetch: {

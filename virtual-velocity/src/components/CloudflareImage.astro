@@ -26,13 +26,13 @@ const {
   fetchpriority,
 } = Astro.props;
 
-// Generate optimized image URL
+// Generate optimized image URL (WebP for smaller size and fast load)
 const imageUrl = getCloudflareImageUrlWithOptions(imageId, 'public', {
   width,
   height,
   fit,
   quality,
-  format: 'auto', // Cloudflare auto-serves WebP/AVIF to supported browsers
+  format: 'webp',
 });
 
 // Generate srcset for responsive images
@@ -42,7 +42,7 @@ const srcset = width
       height: height ? height * 2 : undefined,
       fit,
       quality,
-      format: 'auto',
+      format: 'webp',
     })} 2x`
   : undefined;
 ---

@@ -22,7 +22,10 @@ const rootRelativeLogoSrc = logoSrc.startsWith('/') ? logoSrc : `/${logoSrc}`;
         href="/"
         class="flex items-center gap-2 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
       >
-        <img src={rootRelativeLogoSrc} alt="Acupuncture & Holistic Health Associates logo" width={40} height={40} class="h-10 w-auto shrink-0" />
+        <picture>
+          <source type="image/webp" srcset="/logo.webp" />
+          <img src={rootRelativeLogoSrc} alt="Acupuncture & Holistic Health Associates logo" width={40} height={40} class="h-10 w-auto shrink-0" />
+        </picture>
         <span class="hidden sm:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
         <span class="sm:hidden">AHH Associates</span>
       </a>
@@ -147,21 +150,23 @@ const rootRelativeLogoSrc = logoSrc.startsWith('/') ? logoSrc : `/${logoSrc}`;
     });
   }
 
-  // Header scroll effect
+  // Header scroll effect: use rAF to avoid forced reflow (read scrollY + write class in same frame)
   const header = document.getElementById('header');
-  let lastScroll = 0;
+  let scrollTicking = false;
 
   if (header) {
     window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-
-      if (currentScroll > 100) {
-        header.classList.add('shadow-md');
-      } else {
-        header.classList.remove('shadow-md');
-      }
-
-      lastScroll = currentScroll;
-    });
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        const currentScroll = window.scrollY;
+        if (currentScroll > 100) {
+          header.classList.add('shadow-md');
+        } else {
+          header.classList.remove('shadow-md');
+        }
+        scrollTicking = false;
+      });
+    }, { passive: true });
   }
 </script>

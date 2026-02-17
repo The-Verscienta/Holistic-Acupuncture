@@ -213,6 +213,44 @@ const cfImage = cloudflareIndex.find(img => img.id === wpImageId);
 )}
 ```
 
+## Browser cache (Cache TTL)
+
+Images from `imagedelivery.net` are served by Cloudflare Images. **Browser TTL** controls the `Cache-Control` header (and thus how long browsers cache images). A short TTL can trigger PageSpeed’s “long cache lifetime” suggestion.
+
+**Default:** Cloudflare Images uses a 2-day browser TTL.
+
+**To use a long cache (1 year) for better LCP/repeat visits:**
+
+### Option A: Dashboard
+
+1. In [Cloudflare Dashboard](https://dash.cloudflare.com/) go to **Images** (or **Account** → **Images**).
+2. Open **Browser TTL** (or **Cache** / **Caching** for Images).
+3. Set **Browser TTL** to **1 year** (e.g. `31536000` seconds).
+
+### Option B: API (curl)
+
+```bash
+curl --request PATCH "https://api.cloudflare.com/client/v4/accounts/{account_id}/images/v1/config" \
+  --header "Authorization: Bearer <API_TOKEN>" \
+  --header "Content-Type: application/json" \
+  --data '{"browser_ttl": 31536000}'
+```
+
+Replace `{account_id}` with your Cloudflare account ID and `<API_TOKEN>` with an API token that has **Cloudflare Images: Edit** permission.
+
+### Option C: Script (uses .env)
+
+From the project root (with `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_IMAGES_TOKEN` in `.env`):
+
+```bash
+node scripts/set-cloudflare-images-browser-ttl.js
+```
+
+After this, responses from `imagedelivery.net` will include something like  
+`Cache-Control: public, max-age=31536000, stale-while-revalidate=7200`, which satisfies the “long cache lifetime” recommendation.
+
+Docs: [Browser TTL · Cloudflare Images](https://developers.cloudflare.com/images/manage-images/browser-ttl/).
+
 ## Performance Benefits
 
 1. **Automatic Format Optimization:** WebP/AVIF served to supporting browsers
@@ -220,6 +258,7 @@ const cfImage = cloudflareIndex.find(img => img.id === wpImageId);
 3. **Responsive Images:** Automatic 2x srcset generation
 4. **Lazy Loading:** Built into CloudflareImage component
 5. **Cost Effective:** Fixed $5/month pricing
+6. **Long cache:** Set Browser TTL to 1 year (see above) for better repeat-visit performance
 
 ## Blog Posts Integration
 

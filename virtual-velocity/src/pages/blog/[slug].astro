@@ -109,9 +109,9 @@ function renderPortableText(blocks: any[]) {
 
 const contentHtml = post.body ? renderPortableText(post.body) : '';
 
-// Absolute OG image for social sharing (required by Facebook/Twitter)
+// Absolute OG image for social sharing (WebP for smaller size)
 const ogImageUrl = post.featuredImage
-  ? urlFor(post.featuredImage).width(1200).height(630).url()
+  ? urlFor(post.featuredImage).width(1200).height(630).format('webp').url()
   : undefined;
 
 const postUrl = `${SITE_URL}/blog/${post.slug.current}`;
