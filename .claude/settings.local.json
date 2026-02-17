@@ -79,7 +79,15 @@
       "WebFetch(domain:www.zoho.com)",
       "Bash(npx astro check:*)",
       "Bash(npm run build:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(findstr:*)",
+      "Bash(npx tsc:*)",
+      "Bash(dir:*)",
+      "Bash(npm info:*)",
+      "Bash(npm run sanity:deploy:*)",
+      "Bash(npx sanity login:*)",
+      "Bash(npx sanity deploy)",
+      "Bash(npx astro build)"
     ]
   },
   "enabledPlugins": {

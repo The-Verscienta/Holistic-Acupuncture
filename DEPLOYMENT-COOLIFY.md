@@ -151,17 +151,19 @@ Configure health checks to ensure your application is running:
 
 ---
 
-## Persistent Storage (Optional)
+## Persistent Storage (Required for Database)
 
-If you need persistent storage for Astro DB:
+The application uses Astro DB (SQLite) for form submissions and data storage. To persist data across deployments:
 
 1. Go to **Settings** → **Storages**
 2. Add a new volume:
 
 | Setting | Value |
 |---------|-------|
-| Source | `/data/astro-db` |
-| Destination | `/app/.astro` |
+| Source | `/data/holistic-acupuncture` |
+| Destination | `/app/data` |
+
+This ensures contact form submissions, newsletter signups, and testimonials persist across container restarts and redeployments.
 
 ---
 
@@ -232,10 +234,16 @@ PUBLIC_SANITY_PROJECT_ID must be set
 
 ### Database Connection Issues
 
+**Issue:** Build fails with "Attempting to build without the --remote flag or ASTRO_DATABASE_FILE"
+```
+[Astro DB Error] Attempting to build without the --remote flag or the ASTRO_DATABASE_FILE environment variable defined.
+```
+**Solution:** The Dockerfile has been updated to set `ASTRO_DATABASE_FILE=/app/data/astro.db`. Ensure you're using the latest Dockerfile.
+
 **Issue:** Astro DB not persisting data
 **Solution:**
-1. Add persistent storage volume (see above)
-2. Ensure `ASTRO_STUDIO_APP_TOKEN` is set for Astro Studio integration
+1. Add persistent storage volume (see Persistent Storage section above)
+2. Mount `/app/data` to a persistent volume in Coolify
 
 ### Port Binding Issues
 

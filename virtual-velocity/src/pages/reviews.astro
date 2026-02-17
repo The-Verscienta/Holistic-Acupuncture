@@ -4,6 +4,7 @@ import Container from '../components/Container.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
+import CloudflareImage from '../components/CloudflareImage.astro';
 import { getAllTestimonials } from '../lib/sanityQueries';
 import { formatRelativeDate } from '../lib/sanity';
 
@@ -141,27 +142,58 @@ const reviews = await getAllTestimonials();
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <Card variant="bordered" padding="lg" class="text-center">
-          <div class="text-5xl mb-3">🏆</div>
-          <h3 class="font-semibold text-charcoal mb-2">Best of Milwaukee</h3>
-          <p class="text-sm text-gray-600">Acupuncture 2020-2024</p>
-        </Card>
-
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="text-5xl mb-3">⭐</div>
-          <h3 class="font-semibold text-charcoal mb-2">Top Rated</h3>
-          <p class="text-sm text-gray-600">Google Reviews 2024</p>
-        </Card>
-
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="text-5xl mb-3">🎖️</div>
-          <h3 class="font-semibold text-charcoal mb-2">Excellence Award</h3>
-          <p class="text-sm text-gray-600">Patient Care 2023</p>
-        </Card>
-
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="text-5xl mb-3">💚</div>
+          <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden">
+            <CloudflareImage
+              imageId="wp-17309"
+              alt="2025 Community Choice Award"
+              width={160}
+              height={160}
+              fit="contain"
+              class="w-full h-full object-contain"
+            />
+          </div>
           <h3 class="font-semibold text-charcoal mb-2">Community Choice</h3>
-          <p class="text-sm text-gray-600">Holistic Health 2024</p>
+          <p class="text-sm text-gray-600">2025 Award Winner</p>
+        </Card>
+
+        <Card variant="bordered" padding="lg" class="text-center">
+          <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden">
+            <CloudflareImage
+              imageId="wp-14060"
+              alt="2024 Community Choice Award"
+              width={160}
+              height={160}
+              fit="contain"
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <h3 class="font-semibold text-charcoal mb-2">Community Choice</h3>
+          <p class="text-sm text-gray-600">2024 Award Winner</p>
+        </Card>
+
+        <Card variant="bordered" padding="lg" class="text-center">
+          <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden">
+            <CloudflareImage
+              imageId="wp-15397"
+              alt="25-Year Anniversary"
+              width={160}
+              height={160}
+              fit="contain"
+              class="w-full h-full object-contain"
+            />
+          </div>
+          <h3 class="font-semibold text-charcoal mb-2">25-Year Anniversary</h3>
+          <p class="text-sm text-gray-600">Serving Milwaukee Since 1999</p>
+        </Card>
+
+        <Card variant="bordered" padding="lg" class="text-center">
+          <div class="w-20 h-20 mx-auto mb-3 rounded-xl overflow-hidden bg-sage-100 flex items-center justify-center">
+            <svg class="w-10 h-10 text-sage-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-charcoal mb-2">Top Rated</h3>
+          <p class="text-sm text-gray-600">4.9 Stars on Google</p>
         </Card>
       </div>
     </Container>

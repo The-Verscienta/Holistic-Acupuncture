@@ -6,6 +6,7 @@ import TextInput from '../components/TextInput.astro';
 import TextArea from '../components/TextArea.astro';
 import Select from '../components/Select.astro';
 import Button from '../components/Button.astro';
+import CloudflareImage from '../components/CloudflareImage.astro';
 import { CONTACT } from '../lib/config';
 ---
 
@@ -23,6 +24,21 @@ import { CONTACT } from '../lib/config';
         <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
           We're here to help you on your journey to better health. Reach out to schedule an appointment or ask any questions you may have.
         </p>
+      </div>
+
+      <!-- Atmosphere Banner -->
+      <div class="mt-12 max-w-5xl mx-auto">
+        <div class="aspect-[21/9] rounded-2xl overflow-hidden">
+          <CloudflareImage
+            imageId="wp-15437"
+            alt="Peaceful, welcoming treatment environment"
+            width={1200}
+            height={514}
+            fit="cover"
+            loading="eager"
+            class="w-full h-full object-cover"
+          />
+        </div>
       </div>
     </Container>
   </section>
