@@ -49,10 +49,10 @@ const conditions = [
   title="Home"
   description="Acupuncture & Holistic Health Associates - Over 380,000 successful treatments in 25+ years. Expert acupuncture, Chinese herbal medicine, and holistic health care in Milwaukee."
 >
-  <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 via-warm-white to-sage-100 py-16 md:py-24 lg:py-32 overflow-hidden">
-    <!-- Decorative background elements -->
-    <div class="absolute inset-0 opacity-10">
+  <!-- Hero Section: min-height prevents CLS when fonts load (decorative blobs stay fixed) -->
+  <section class="relative min-h-[75vh] bg-gradient-to-br from-sage-50 via-warm-white to-sage-100 py-16 md:py-24 lg:py-32 overflow-hidden">
+    <!-- Decorative background elements (positioned in inset container to avoid shift) -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none" aria-hidden="true">
       <div class="absolute top-20 right-20 w-96 h-96 bg-sage-300 rounded-full blur-3xl"></div>
       <div class="absolute bottom-20 left-20 w-96 h-96 bg-healing-blue rounded-full blur-3xl"></div>
     </div>

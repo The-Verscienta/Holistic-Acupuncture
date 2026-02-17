@@ -28,9 +28,9 @@
   --color-warning: #d89a5b;
   --color-error: #c17557;
 
-  /* Typography */
-  --font-sans: Inter, system-ui, -apple-system, sans-serif;
-  --font-heading: Sora, system-ui, -apple-system, sans-serif;
+  /* Typography (metrics-matched fallbacks reduce CLS when web fonts load) */
+  --font-sans: Inter, 'Inter-fallback', system-ui, -apple-system, sans-serif;
+  --font-heading: Sora, 'Sora-fallback', system-ui, -apple-system, sans-serif;
   --font-serif: 'Crimson Pro', Georgia, serif;
 
   /* Fluid Typography Scale */
@@ -60,6 +60,22 @@
   /* Animations */
   --animate-fade-up: fadeUp 0.6s ease forwards;
   --animate-fade-in: fadeIn 0.4s ease forwards;
+}
+
+/* Metrics-matched fallbacks: reduce layout shift when Sora/Inter load (font swap) */
+@font-face {
+  font-family: 'Sora-fallback';
+  size-adjust: 106.5%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  src: local('Arial');
+}
+@font-face {
+  font-family: 'Inter-fallback';
+  size-adjust: 107%;
+  ascent-override: 90%;
+  descent-override: 22.5%;
+  src: local('Arial');
 }
 
 /* Base Styles */
