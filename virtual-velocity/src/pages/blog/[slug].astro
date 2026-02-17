@@ -133,7 +133,9 @@ const articleSchema = {
     name: 'Acupuncture & Holistic Health Associates',
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_URL}/favicon.svg`
+      url: `${SITE_URL}/favicon.svg`,
+      width: 512,
+      height: 512
     }
   },
   ...(ogImageUrl && { image: ogImageUrl })

@@ -19,7 +19,8 @@
     "migrate:test": "node scripts/migration/index.js --test",
     "migrate:images": "node scripts/migration/migrateAllImages.js",
     "migrate:cloudflare": "node scripts/migration/migrateToCloudflare.js",
-    "test:images": "node scripts/test-image-mapping.js"
+    "test:images": "node scripts/test-image-mapping.js",
+    "validate:structured-data": "node scripts/validate-structured-data.js"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
