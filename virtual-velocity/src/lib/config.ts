@@ -5,7 +5,7 @@
  */
 
 // Jane App booking URL - configurable via environment variable
-export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'https://holisticacupuncture.janeapp.com';
+export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'https://ahha.janeapp.com';
 
 // Site info
 export const SITE_NAME = 'Acupuncture & Holistic Health Associates';
@@ -27,20 +27,20 @@ export const CONTACT = {
 
 // Business hours
 export const HOURS = {
-  monday: '9:00 AM - 6:00 PM',
-  tuesday: '9:00 AM - 6:00 PM',
-  wednesday: '9:00 AM - 6:00 PM',
-  thursday: '9:00 AM - 6:00 PM',
-  friday: '9:00 AM - 5:00 PM',
-  saturday: 'By Appointment',
+  monday: '9:00 AM - 7:00 PM',
+  tuesday: '9:00 AM - 7:00 PM',
+  wednesday: '9:00 AM - 7:00 PM',
+  thursday: '9:00 AM - 7:00 PM',
+  friday: 'Administrative Day',
+  saturday: 'Closed',
   sunday: 'Closed'
 };
 
 // Social media links
 export const SOCIAL = {
-  facebook: 'https://facebook.com/holisticacupuncture',
-  instagram: 'https://instagram.com/holisticacupuncture',
-  linkedin: 'https://linkedin.com/company/holisticacupuncture',
+  facebook: 'https://www.facebook.com/acupunctureMKE/',
+  instagram: 'https://instagram.com/acupuncturemke',
+  linkedin: 'https://www.linkedin.com/company/acupuncture-&-holistic-health-associates',
   // Optional: set for Twitter card attribution when links are shared
-  twitter: undefined as string | undefined
+  twitter: 'https://twitter.com/acuphilip'
 };

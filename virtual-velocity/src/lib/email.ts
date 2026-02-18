@@ -1,16 +1,14 @@
 /**
  * Email Notification Service
  *
- * This module handles sending email notifications for form submissions
- * using ZeptoMail (https://www.zoho.com/zeptomail/) - Zoho's transactional email service.
+ * Sends email via Resend (https://resend.com). See:
+ * https://resend.com/docs/send-with-astro
  *
- * Setup Instructions:
- * 1. Sign up at https://www.zoho.com/zeptomail/
- * 2. Create a Mail Agent and verify your domain
- * 3. Get the Send Mail Token from the Mail Agent's SMTP/API settings
- * 4. Add to .env: ZEPTOMAIL_TOKEN=your_token_here
+ * Setup: create API key at https://resend.com/api-keys, verify domain,
+ * then set RESEND_API_KEY in .env.
  */
 
+import { Resend } from 'resend';
 import { escapeHtml } from './sanitize';
 
 /**
@@ -46,72 +44,39 @@ export interface TestimonialData {
 }
 
 /**
- * Send email using ZeptoMail API
+ * Send email using Resend SDK (https://resend.com/docs/send-with-astro)
  */
 export async function sendEmail(options: EmailOptions): Promise<boolean> {
-  const apiToken = import.meta.env.ZEPTOMAIL_TOKEN;
+  const apiKey = import.meta.env.RESEND_API_KEY;
 
-  if (!apiToken) {
-    console.error('ZEPTOMAIL_TOKEN not configured');
+  if (!apiKey) {
+    console.error('RESEND_API_KEY not configured');
     return false;
   }
 
-  const fromEmail = import.meta.env.ZEPTOMAIL_FROM_EMAIL || 'noreply@holisticacupuncture.net';
-  const fromName = import.meta.env.ZEPTOMAIL_FROM_NAME || 'Holistic Acupuncture Website';
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL || 'noreply@holisticacupuncture.net';
+  const fromName = import.meta.env.RESEND_FROM_NAME || 'Holistic Acupuncture Website';
+  const from = `${fromName} <${fromEmail}>`;
 
-  // Format recipients for ZeptoMail API
-  const toAddresses = Array.isArray(options.to) ? options.to : [options.to];
-  const toList = toAddresses.map(email => ({
-    email_address: {
-      address: email,
-      name: email.split('@')[0]
-    }
-  }));
+  const to = Array.isArray(options.to) ? options.to : [options.to];
 
   try {
-    const requestBody: Record<string, unknown> = {
-      from: {
-        address: fromEmail,
-        name: fromName
-      },
-      to: toList,
+    const resend = new Resend(apiKey);
+    const { data, error } = await resend.emails.send({
+      from,
+      to,
       subject: sanitizeEmailHeader(options.subject),
-    };
-
-    // Add content (prefer HTML, fallback to text)
-    if (options.html) {
-      requestBody.htmlbody = options.html;
-    }
-    if (options.text) {
-      requestBody.textbody = options.text;
-    }
-
-    // Add reply-to if provided (sanitize to prevent header injection)
-    if (options.replyTo) {
-      const safeReplyTo = sanitizeEmailHeader(options.replyTo);
-      requestBody.reply_to = [{
-        address: safeReplyTo,
-        name: safeReplyTo.split('@')[0]
-      }];
-    }
-
-    const response = await fetch('https://api.zeptomail.com/v1.1/email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Zoho-enczapikey ${apiToken}`,
-      },
-      body: JSON.stringify(requestBody),
+      html: options.html ?? options.text ?? '',
+      ...(options.text && { text: options.text }),
+      ...(options.replyTo && { reply_to: sanitizeEmailHeader(options.replyTo) }),
     });
 
-    if (!response.ok) {
-      const error = await response.json();
-      console.error('ZeptoMail send failed:', error);
+    if (error) {
+      console.error('Resend send failed:', error);
       return false;
     }
 
-    const result = await response.json();
-    console.log('Email sent successfully:', result.request_id);
+    console.log('Email sent successfully:', data?.id);
     return true;
   } catch (error) {
     console.error('Email send error:', error);
