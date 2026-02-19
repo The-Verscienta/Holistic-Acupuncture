@@ -11,8 +11,8 @@ const services = [
   {
     name: 'Initial Consultation & Treatment',
     description: 'Comprehensive health assessment, diagnosis, and your first acupuncture treatment. Includes detailed health history review and personalized treatment plan.',
-    duration: '90 minutes',
-    price: 150,
+    duration: '90-120 minutes',
+    price: 350,
     popular: true,
     includes: [
       'Complete health history review',
@@ -23,11 +23,11 @@ const services = [
     ]
   },
   {
-    name: 'Follow-up Acupuncture Session',
+    name: 'Acupuncture Session',
     description: 'Standard acupuncture treatment session for returning patients. Includes brief check-in and adjustment of treatment as needed.',
-    duration: '60 minutes',
-    price: 95,
-    popular: false,
+    duration: '45 minutes',
+    price: 90,
+    popular: true,
     includes: [
       'Progress evaluation',
       'Acupuncture treatment',
@@ -36,23 +36,23 @@ const services = [
     ]
   },
   {
-    name: 'Extended Acupuncture Session',
-    description: 'Longer treatment session for complex conditions or those needing extra attention. Ideal for chronic pain or multiple concerns.',
-    duration: '90 minutes',
-    price: 125,
+    name: 'Re-Examination',
+    description: 'For returning patients, and patients that have gone through a series of treatments.',
+    duration: '30 minutes',
+    price: 100,
     popular: false,
     includes: [
-      'Extended consultation',
-      'Comprehensive acupuncture',
-      'Additional modalities as needed',
-      'Cupping or gua sha if appropriate'
+      'Extended health consultation',
+      'Comprehensive acupuncture assessment',
+      'Range of Motion',
+      'Adjustments based on the results'
     ]
   },
   {
     name: 'Herbal Consultation',
     description: 'Personalized Chinese herbal medicine consultation. Custom formula created based on your specific health needs.',
-    duration: '45 minutes',
-    price: 65,
+    duration: '15 minutes',
+    price: 60,
     popular: false,
     includes: [
       'Herbal medicine assessment',
@@ -63,17 +63,17 @@ const services = [
     note: 'Herbs purchased separately'
   },
   {
-    name: 'Cosmetic Acupuncture',
-    description: 'Natural facial rejuvenation using acupuncture to improve skin tone, reduce fine lines, and promote a healthy glow.',
-    duration: '75 minutes',
-    price: 135,
+    name: 'Rapid Release Treatment',
+    description: 'Using RRT style treatment to help release muscle tension and aching.',
+    duration: '5 minutes',
+    price: 35,
     popular: false,
     includes: [
-      'Facial acupuncture treatment',
-      'Body points for overall balance',
-      'Facial massage',
-      'Skincare recommendations'
-    ]
+      'Rapid release treatment',
+      'One area of the body per session',
+      'Quick consultation'
+    ],
+    note: 'Not for use while pregnant'
   },
   {
     name: 'Cupping Therapy',
@@ -96,8 +96,8 @@ const packages = [
     description: 'Perfect for first-time patients wanting to experience acupuncture.',
     sessions: 'Initial visit',
     price: 29,
-    originalPrice: 150,
-    savings: 121,
+    originalPrice: 350,
+    savings: 321,
     highlight: true,
     features: [
       'Full initial consultation',
@@ -110,8 +110,8 @@ const packages = [
     name: '5-Session Package',
     description: 'Ideal for acute conditions or those starting their healing journey.',
     sessions: '5 follow-up sessions',
-    price: 425,
-    originalPrice: 475,
+    price: 405,
+    originalPrice: 450,
     savings: 50,
     highlight: false,
     features: [
@@ -125,13 +125,13 @@ const packages = [
     name: '10-Session Package',
     description: 'Best value for chronic conditions requiring ongoing treatment.',
     sessions: '10 follow-up sessions',
-    price: 800,
-    originalPrice: 950,
-    savings: 150,
+    price: 738,
+    originalPrice: 900,
+    savings: 162,
     highlight: false,
     features: [
       '10 acupuncture sessions',
-      '16% savings',
+      '18% savings',
       'Priority scheduling',
       'Valid for 6 months'
     ]
@@ -343,7 +343,7 @@ const packages = [
                     <svg class="w-5 h-5 text-sage-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                     </svg>
-                    {feature}
+                    {feature.startsWith('Valid for') ? <strong>{feature}</strong> : feature}
                   </li>
                 ))}
               </ul>
