@@ -14,11 +14,61 @@ All WordPress images have been migrated to Cloudflare Images CDN for cost-effect
 - **Success Rate:** 99.8%
 - **Index:** `public/cloudflare-images-index.json`
 
+## Adding new images
+
+You have two options depending on whether you can use the Media upload in Sanity Studio.
+
+### Option A: Upload from your computer (no Studio Media needed)
+
+Use this if you're on a Sanity plan that doesn't allow Media upload in Studio (e.g. free plan).
+
+1. **Run the upload script** with a local image file (from the project root):
+   ```bash
+   npm run upload:image -- path/to/your-image.jpg
+   npm run upload:image -- ./photo.png --title "My photo"
+   ```
+   The script uploads the file to **Sanity** (via API), then to **Cloudflare Images**, then appends the mapping to `public/cloudflare-images-index.json`.
+
+2. **Note the Sanity asset _ref** printed at the end (e.g. `image-abc123...-800x600-jpg`). You need this to use the image in a document.
+
+3. **Use the image in a document**  
+   Without the Media library you can't pick the image in Studio. Options:
+   - If your image field allows pasting or manual reference entry, paste the _ref there.
+   - Or use the [Sanity API](https://www.sanity.io/docs/http-api-mutations) to patch a document and set the image reference (e.g. when creating or updating a blog post).
+
+4. **Commit and deploy**  
+   Commit the updated `cloudflare-images-index.json` and deploy.
+
+**Required in `.env`:** `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `SANITY_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_IMAGES_TOKEN`.
+
+---
+
+### Option B: Upload in Studio, then sync to Cloudflare
+
+Use this if you *can* use the Media upload in Studio.
+
+1. **Upload in Sanity Studio** (Media or inside a document).
+
+2. **Copy the asset ref** from the image (e.g. `image-a5bdbdc6f1cb904fa80f947f61664f7ede72154f-1600x1067-jpg`).
+
+3. **Sync to Cloudflare and update the index**:
+   ```bash
+   npm run sync:cloudflare -- image-YOUR-REF-HERE
+   ```
+
+4. **Commit and deploy** the updated `cloudflare-images-index.json`.
+
+**Required in `.env`:** `PUBLIC_SANITY_PROJECT_ID`, `PUBLIC_SANITY_DATASET`, `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_IMAGES_TOKEN`.
+
+---
+
 ## Using Cloudflare Images
 
 ### 1. View All Images
 
-Visit: **http://localhost:4322/cloudflare-gallery**
+**In Sanity Studio:** Open the **Cloudflare Images** tool from the Studio menu. It fetches `cloudflare-images-index.json` from your site and shows all images on Cloudflare with their Sanity asset refs. Set `SANITY_STUDIO_CLOUDFLARE_INDEX_URL` (or `PUBLIC_APP_URL`) to your site origin (e.g. `https://holisticacupuncture.net` or `http://localhost:4321`) so the tool can load the index. The index is served with CORS from `/cloudflare-images-index.json`.
+
+**Gallery page:** Visit **http://localhost:4322/cloudflare-gallery**
 
 Beautiful gallery showing all 563 images with:
 - Automatic WebP/AVIF conversion

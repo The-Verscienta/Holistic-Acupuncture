@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
 import { schemaTypes } from './sanity/schemas';
+import { cloudflareImagesTool } from './sanity/tools/cloudflareImages';
 
 export default defineConfig({
   name: 'default',
@@ -10,6 +11,12 @@ export default defineConfig({
 
   projectId: process.env.PUBLIC_SANITY_PROJECT_ID || '6b7j3cf0',
   dataset: process.env.PUBLIC_SANITY_DATASET || 'production',
+
+  tools: [
+    cloudflareImagesTool({
+      indexUrl: process.env.SANITY_STUDIO_CLOUDFLARE_INDEX_URL || process.env.PUBLIC_APP_URL,
+    }),
+  ],
 
   plugins: [
     structureTool({

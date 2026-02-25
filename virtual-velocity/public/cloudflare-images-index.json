@@ -15934,5 +15934,30 @@
       ],
       "baseUrl": "https://imagedelivery.net/t5tnnNBoCpmnml-JZw7JMA/wp-1904"
     }
+  },
+  {
+    "id": 18979,
+    "title": "Staff Photo 2-25-26",
+    "filename": "staff-photo-2-25-26.jpg",
+    "url": "https://cdn.sanity.io/images/6b7j3cf0/production/6eb1aadb7cac840ccd5cda9c6f6fe33c3f48be93-4284x4287.jpg",
+    "mimeType": "image/jpeg",
+    "width": 4284,
+    "height": 4287,
+    "date": "2026-02-25T22:29:15",
+    "sanity": {
+      "_type": "image",
+      "asset": {
+        "_type": "reference",
+        "_ref": "image-6eb1aadb7cac840ccd5cda9c6f6fe33c3f48be93-4284x4287-jpg"
+      }
+    },
+    "local": null,
+    "cloudflare": {
+      "id": "sanity-mm2lwqh3-p3fzb3",
+      "variants": [
+        "https://imagedelivery.net/t5tnnNBoCpmnml-JZw7JMA/sanity-mm2lwqh3-p3fzb3/public"
+      ],
+      "baseUrl": "https://imagedelivery.net/t5tnnNBoCpmnml-JZw7JMA/sanity-mm2lwqh3-p3fzb3"
+    }
   }
 ]

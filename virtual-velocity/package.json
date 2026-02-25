@@ -21,6 +21,8 @@
     "migrate:images": "node scripts/migration/migrateAllImages.js",
     "migrate:cloudflare": "node scripts/migration/migrateToCloudflare.js",
     "test:images": "node scripts/test-image-mapping.js",
+    "sync:cloudflare": "node scripts/sync-sanity-asset-to-cloudflare.js",
+    "upload:image": "node scripts/upload-image-to-sanity-and-cloudflare.js",
     "validate:structured-data": "node scripts/validate-structured-data.js",
     "cloudflare:images-ttl": "node scripts/set-cloudflare-images-browser-ttl.js"
   },

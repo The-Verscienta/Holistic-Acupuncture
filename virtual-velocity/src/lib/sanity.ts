@@ -1,8 +1,8 @@
 import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 
 // Type for Sanity image sources
-type SanityImageSource = Parameters<ReturnType<typeof imageUrlBuilder>['image']>[0];
+type SanityImageSource = Parameters<ReturnType<typeof createImageUrlBuilder>['image']>[0];
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || '';
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
@@ -15,7 +15,7 @@ export const sanityClient = createClient({
   useCdn: import.meta.env.PROD,
 });
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);

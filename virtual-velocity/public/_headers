@@ -24,3 +24,8 @@
 
 /*.css
   Cache-Control: public, max-age=31536000, immutable
+
+# Allow Sanity Studio (any origin) to fetch Cloudflare images index
+/cloudflare-images-index.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300
