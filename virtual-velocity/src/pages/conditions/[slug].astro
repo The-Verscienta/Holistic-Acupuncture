@@ -160,12 +160,24 @@ const categoryLabel = categoryLabels[condition.category] || condition.category;
 
 <style>
   .prose-content :global(p) {
-    @apply text-gray-700 leading-relaxed mb-4;
+    color: var(--color-gray-600);
+    line-height: 1.625;
+    margin-bottom: 1rem;
   }
   .prose-content :global(h2) {
-    @apply text-2xl font-heading font-bold text-charcoal mt-8 mb-4;
+    font-size: var(--font-size-2xl);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--color-charcoal);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
   }
   .prose-content :global(h3) {
-    @apply text-xl font-heading font-semibold text-charcoal mt-6 mb-3;
+    font-size: var(--font-size-xl);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-charcoal);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 </style>
