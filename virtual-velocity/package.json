@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/convert-logo-to-webp.js",
+    "prebuild": "node scripts/convert-logo-to-webp.js && node scripts/generate-condition-redirects.js",
     "build": "astro build",
     "postbuild": "node scripts/fix-cloudflare-routes.js",
     "check": "astro check",

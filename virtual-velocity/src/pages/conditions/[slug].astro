@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Card from '../../components/Card.astro';
+import Button from '../../components/Button.astro';
+import Badge from '../../components/Badge.astro';
+import { getAllConditions, getConditionBySlug } from '../../lib/sanityQueries';
+import { CONTACT } from '../../lib/config';
+import { escapeHtml } from '../../lib/sanitize';
+export async function getStaticPaths() {
+  const conditions = await getAllConditions();
+  return conditions.map((condition) => ({
+    params: { slug: condition.slug.current },
+    props: { condition },
+  }));
+}
+
+const { condition } = Astro.props;
+
+if (!condition) {
+  return Astro.redirect('/404');
+}
+
+function renderPortableText(blocks: any[]) {
+  if (!blocks) return '';
+  return blocks
+    .map((block) => {
+      if (block._type === 'block') {
+        let content = block.children
+          .map((child: any) => {
+            let text = escapeHtml(child.text || '');
+            if (child.marks && child.marks.length > 0) {
+              child.marks.forEach((mark: string) => {
+                if (mark === 'strong') text = '<strong>' + text + '</strong>';
+                else if (mark === 'em') text = '<em>' + text + '</em>';
+              });
+            }
+            return text;
+          })
+          .join('');
+        const style = block.style || 'normal';
+        if (style === 'h2') return '<h2 class="text-2xl font-heading font-bold text-charcoal mt-8 mb-4">' + content + '</h2>';
+        if (style === 'h3') return '<h3 class="text-xl font-heading font-semibold text-charcoal mt-6 mb-3">' + content + '</h3>';
+        return '<p class="text-gray-700 leading-relaxed mb-4">' + content + '</p>';
+      }
+      return '';
+    })
+    .join('');
+}
+
+const categoryLabels: Record<string, string> = {
+  pain: 'Pain Management',
+  'mental-health': 'Mental Health & Wellness',
+  'womens-health': "Women's Health",
+  digestive: 'Digestive Health',
+  immune: 'Immune & Allergies',
+  other: 'Other Conditions',
+};
+
+const metaTitle = condition.seo?.metaTitle || `${condition.name} | Acupuncture Treatment`;
+const metaDescription = condition.seo?.metaDescription || condition.description;
+const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
+const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
+const categoryLabel = categoryLabels[condition.category] || condition.category;
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <!-- Hero -->
+  <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12 md:py-16">
+    <Container>
+      <a href="/conditions" class="inline-flex items-center gap-2 text-sage-600 hover:text-sage-700 text-sm font-medium mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        All Conditions
+      </a>
+      <Badge variant="default" size="md" class="mb-4">{categoryLabel}</Badge>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-charcoal mb-4">
+        {condition.name}
+      </h1>
+      <p class="text-lg text-gray-600 max-w-2xl">
+        {condition.description}
+      </p>
+    </Container>
+  </section>
+
+  <!-- Main content -->
+  <section class="py-12 md:py-16 bg-white">
+    <Container>
+      <div class="max-w-3xl">
+        {detailedHtml && (
+          <div class="prose-content mb-12" set:html={detailedHtml} />
+        )}
+
+        {condition.symptoms && condition.symptoms.length > 0 && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">Common Symptoms</h2>
+            <ul class="list-disc list-inside space-y-2 text-gray-700">
+              {condition.symptoms.map((symptom) => (
+                <li>{symptom}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {howHelpsHtml && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">How Acupuncture Helps</h2>
+            <div class="prose-content" set:html={howHelpsHtml} />
+          </div>
+        )}
+
+        {condition.treatmentDuration && (
+          <Card variant="bordered" padding="lg" class="mb-12">
+            <p class="text-gray-700">
+              <strong>Typical treatment duration:</strong> {condition.treatmentDuration}
+            </p>
+          </Card>
+        )}
+
+        {condition.relatedConditions && condition.relatedConditions.length > 0 && (
+          <div class="mb-12">
+            <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">Related Conditions</h2>
+            <div class="flex flex-wrap gap-2">
+              {condition.relatedConditions.map((rel) => (
+                <a
+                  href={`/conditions/${rel.slug.current}`}
+                  class="inline-flex items-center px-4 py-2 rounded-lg bg-sage-100 text-sage-800 hover:bg-sage-200 font-medium text-sm transition-colors"
+                >
+                  {rel.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-12 md:py-16 bg-sage-50">
+    <Container class="text-center">
+      <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">
+        Ready to explore treatment for {condition.name}?
+      </h2>
+      <p class="text-gray-600 mb-6 max-w-xl mx-auto">
+        Schedule a consultation to discuss how acupuncture can help you.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant="primary" size="lg" href="/contact">
+          Contact Us
+        </Button>
+        <Button variant="outline" size="lg" href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}>
+          Call {CONTACT.phone}
+        </Button>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose-content :global(p) {
+    @apply text-gray-700 leading-relaxed mb-4;
+  }
+  .prose-content :global(h2) {
+    @apply text-2xl font-heading font-bold text-charcoal mt-8 mb-4;
+  }
+  .prose-content :global(h3) {
+    @apply text-xl font-heading font-semibold text-charcoal mt-6 mb-3;
+  }
+</style>

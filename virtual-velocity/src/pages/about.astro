@@ -168,7 +168,12 @@ const teamMembers = await getAllTeamMembers();
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
-        {teamMembers.map((member, index) => {
+        {teamMembers.length === 0 ? (
+          <div class="md:col-span-2 text-center py-12 px-6 rounded-2xl bg-sage-50 border border-sage-200">
+            <p class="text-gray-600 mb-2">No team profiles yet.</p>
+            <p class="text-sm text-gray-500">Add practitioners and staff in Sanity Studio under <strong>Team Members</strong>. Each profile can include photo, role, credentials, short bio, and a link to a full profile page.</p>
+          </div>
+        ) : teamMembers.map((member, index) => {
           // Generate initials from name
           const initials = member.name
             .split(' ')
