@@ -1,5 +1,5 @@
 ---
-import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+import { JANE_BOOKING_URL, CONTACT, HOURS } from '../lib/config';
 const currentYear = new Date().getFullYear();
 ---
 
@@ -103,19 +103,19 @@ const currentYear = new Date().getFullYear();
         <ul class="space-y-2 text-sage-100 text-sm mb-6">
           <li class="flex justify-between">
             <span>Mon - Thu:</span>
-            <span>9:00 AM - 6:00 PM</span>
+            <span>{HOURS.monday}</span>
           </li>
           <li class="flex justify-between">
             <span>Friday:</span>
-            <span>9:00 AM - 5:00 PM</span>
+            <span>{HOURS.friday}</span>
           </li>
           <li class="flex justify-between">
             <span>Saturday:</span>
-            <span>By Appointment</span>
+            <span>{HOURS.saturday}</span>
           </li>
           <li class="flex justify-between">
             <span>Sunday:</span>
-            <span>Closed</span>
+            <span>{HOURS.sunday}</span>
           </li>
         </ul>
         <a

@@ -17,9 +17,8 @@ const siteOrigin = Astro.site?.origin || SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
 const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates | Milwaukee, WI' : `${title} | Acupuncture & Holistic Health Associates`;
 
-// OG/Twitter require absolute image URLs
-const imagePath = image || '/images/default-og.jpg';
-const imageUrl = imagePath.startsWith('http') ? imagePath : new URL(imagePath, siteOrigin).href;
+// OG/Twitter require absolute image URLs; only set if an image is provided
+const imageUrl = image ? (image.startsWith('http') ? image : new URL(image, siteOrigin).href) : null;
 const twitterHandle = SOCIAL.twitter;
 ---
 
@@ -40,9 +39,9 @@ const twitterHandle = SOCIAL.twitter;
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={imageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    {imageUrl && <meta property="og:image:width" content="1200" />}
+    {imageUrl && <meta property="og:image:height" content="630" />}
     <meta property="og:site_name" content="Acupuncture & Holistic Health Associates" />
     <meta property="og:locale" content="en_US" />
 
@@ -52,7 +51,7 @@ const twitterHandle = SOCIAL.twitter;
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={imageUrl} />
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
 
     <!-- Local Business Info -->
     <meta name="geo.region" content="US-WI" />

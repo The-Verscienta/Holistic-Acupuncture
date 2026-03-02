@@ -136,7 +136,7 @@ export const categoryLabels: Record<string, string> = {
 
 export const conditionCategories: Record<string, string> = {
   'pain': 'Pain Management',
-  'mental-health': 'Mental Health',
+  'mental-health': 'Mental Health & Wellness',
   'womens-health': "Women's Health",
   'digestive': 'Digestive Health',
   'immune': 'Immune & Allergies',

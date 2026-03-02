@@ -1,5 +1,5 @@
 ---
-import { CONTACT, HOURS, SITE_URL } from '../lib/config';
+import { CONTACT, HOURS, SITE_URL, SOCIAL } from '../lib/config';
 
 // Structured Data for LocalBusiness (Acupuncture Clinic)
 const structuredData = {
@@ -17,9 +17,7 @@ const structuredData = {
   },
   image: {
     "@type": "ImageObject",
-    url: `${SITE_URL}/images/default-og.jpg`,
-    width: 1200,
-    height: 630
+    url: `${SITE_URL}/logo.png`,
   },
   telephone: `+1${CONTACT.phone.replace(/\D/g, '')}`,
   email: CONTACT.email,
@@ -41,19 +39,7 @@ const structuredData = {
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
       opens: "09:00",
-      closes: "18:00"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Friday",
-      opens: "09:00",
-      closes: "17:00"
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: "09:00",
-      closes: "17:00"
+      closes: "19:00"
     }
   ],
   priceRange: "$$",
@@ -113,9 +99,9 @@ const structuredData = {
     description: "Over 25 years of experience in acupuncture and traditional Chinese medicine"
   },
   sameAs: [
-    "https://www.facebook.com/holisticacupuncture",
-    "https://www.instagram.com/holisticacupuncture",
-    "https://www.linkedin.com/company/holisticacupuncture"
+    SOCIAL.facebook,
+    SOCIAL.instagram,
+    SOCIAL.linkedin,
   ],
   hasCredential: {
     "@type": "EducationalOccupationalCredential",

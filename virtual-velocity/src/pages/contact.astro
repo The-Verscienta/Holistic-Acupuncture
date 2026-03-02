@@ -7,7 +7,7 @@ import TextArea from '../components/TextArea.astro';
 import Select from '../components/Select.astro';
 import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
-import { CONTACT } from '../lib/config';
+import { CONTACT, HOURS } from '../lib/config';
 ---
 
 <BaseLayout
@@ -84,11 +84,11 @@ import { CONTACT } from '../lib/config';
               </div>
               <div>
                 <h3 class="font-semibold text-charcoal mb-2">Call Us</h3>
-                <a href="tel:+14143328888" class="text-sage-600 hover:text-sage-700 font-medium">
-                  (414) 332-8888
+                <a href={`tel:${CONTACT.phoneRaw}`} class="text-sage-600 hover:text-sage-700 font-medium">
+                  {CONTACT.phone}
                 </a>
                 <p class="text-gray-600 text-sm mt-1">
-                  Mon-Thu: 9:00 AM - 6:00 PM
+                  Mon-Thu: {HOURS.monday}
                 </p>
               </div>
             </div>
@@ -103,8 +103,8 @@ import { CONTACT } from '../lib/config';
               </div>
               <div>
                 <h3 class="font-semibold text-charcoal mb-2">Email Us</h3>
-                <a href="mailto:info@holisticacupuncture.net" class="text-sage-600 hover:text-sage-700 font-medium break-all">
-                  info@holisticacupuncture.net
+                <a href={`mailto:${CONTACT.email}`} class="text-sage-600 hover:text-sage-700 font-medium break-all">
+                  {CONTACT.email}
                 </a>
                 <p class="text-gray-600 text-sm mt-1">
                   We'll respond within 24 hours
@@ -118,19 +118,19 @@ import { CONTACT } from '../lib/config';
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
                 <span class="text-gray-600">Monday - Thursday:</span>
-                <span class="font-medium text-charcoal">9:00 AM - 6:00 PM</span>
+                <span class="font-medium text-charcoal">{HOURS.monday}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">Friday:</span>
-                <span class="font-medium text-charcoal">9:00 AM - 5:00 PM</span>
+                <span class="font-medium text-charcoal">{HOURS.friday}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">Saturday:</span>
-                <span class="font-medium text-charcoal">By Appointment</span>
+                <span class="font-medium text-charcoal">{HOURS.saturday}</span>
               </div>
               <div class="flex justify-between">
                 <span class="text-gray-600">Sunday:</span>
-                <span class="font-medium text-charcoal">Closed</span>
+                <span class="font-medium text-charcoal">{HOURS.sunday}</span>
               </div>
             </div>
           </Card>

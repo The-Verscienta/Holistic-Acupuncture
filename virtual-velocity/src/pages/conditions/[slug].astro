@@ -6,6 +6,7 @@ import Button from '../../components/Button.astro';
 import Badge from '../../components/Badge.astro';
 import { getAllConditions, getConditionBySlug } from '../../lib/sanityQueries';
 import { CONTACT } from '../../lib/config';
+import { conditionCategories } from '../../types/sanity';
 import { escapeHtml } from '../../lib/sanitize';
 export async function getStaticPaths() {
   const conditions = await getAllConditions();
@@ -48,20 +49,11 @@ function renderPortableText(blocks: any[]) {
     .join('');
 }
 
-const categoryLabels: Record<string, string> = {
-  pain: 'Pain Management',
-  'mental-health': 'Mental Health & Wellness',
-  'womens-health': "Women's Health",
-  digestive: 'Digestive Health',
-  immune: 'Immune & Allergies',
-  other: 'Other Conditions',
-};
-
 const metaTitle = condition.seo?.metaTitle || `${condition.name} | Acupuncture Treatment`;
 const metaDescription = condition.seo?.metaDescription || condition.description;
 const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
 const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
-const categoryLabel = categoryLabels[condition.category] || condition.category;
+const categoryLabel = conditionCategories[condition.category] || condition.category;
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
