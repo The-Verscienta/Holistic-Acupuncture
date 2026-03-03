@@ -5,8 +5,10 @@
  * no image. Sanity requires image fields to be absent (unset), not null —
  * null causes "Invalid property value" errors in Sanity Studio.
  *
- * This script finds all teamMember and blogPost documents with null image
- * fields and unsets them.
+ * Covers:
+ *   - teamMember.photo
+ *   - blogPost.featuredImage + blogPost.content[] image blocks
+ *   - blog.featuredImage + blog.body[] image blocks (WordPress-migrated posts)
  *
  * Usage:
  *   node scripts/fix-null-images.js [--dry-run]
@@ -29,6 +31,7 @@ const client = createClient({
 });
 
 const dryRun = process.argv.includes('--dry-run');
+let totalFixed = 0;
 
 async function fixNullImages() {
   if (!process.env.PUBLIC_SANITY_PROJECT_ID || !process.env.SANITY_API_TOKEN) {
@@ -39,48 +42,54 @@ async function fixNullImages() {
   console.log(dryRun ? '--- DRY RUN (no changes will be made) ---\n' : '--- LIVE RUN ---\n');
 
   // teamMember: photo field
-  const teamWithNullPhoto = await client.fetch(
-    `*[_type == "teamMember" && photo == null]{ _id, name }`
-  );
-  console.log(`teamMember documents with null photo: ${teamWithNullPhoto.length}`);
-  for (const doc of teamWithNullPhoto) {
-    console.log(`  Fixing teamMember: ${doc.name} (${doc._id})`);
-    if (!dryRun) {
-      await client.patch(doc._id).unset(['photo']).commit();
-    }
-  }
+  await fixNullField('teamMember', 'photo', 'photo', 'name');
 
   // blogPost: featuredImage field
-  const postsWithNullImage = await client.fetch(
-    `*[_type == "blogPost" && featuredImage == null]{ _id, title }`
-  );
-  console.log(`\nblogPost documents with null featuredImage: ${postsWithNullImage.length}`);
-  for (const doc of postsWithNullImage) {
-    console.log(`  Fixing blogPost: ${doc.title} (${doc._id})`);
-    if (!dryRun) {
-      await client.patch(doc._id).unset(['featuredImage']).commit();
-    }
-  }
+  await fixNullField('blogPost', 'featuredImage', 'featuredImage', 'title');
 
   // blogPost: null image blocks inside content array
-  const postsWithNullContentImages = await client.fetch(
-    `*[_type == "blogPost" && count(content[_type == "image" && asset == null]) > 0]{ _id, title, content }`
-  );
-  console.log(`\nblogPost documents with null image blocks in content: ${postsWithNullContentImages.length}`);
-  for (const doc of postsWithNullContentImages) {
-    const cleaned = doc.content.filter(
-      (block) => !(block._type === 'image' && block.asset == null)
-    );
-    console.log(
-      `  Fixing blogPost content: ${doc.title} (${doc._id}) — removing ${doc.content.length - cleaned.length} null image block(s)`
-    );
-    if (!dryRun) {
-      await client.patch(doc._id).set({ content: cleaned }).commit();
-    }
-  }
+  await fixNullBodyImages('blogPost', 'content', 'title');
 
-  const total = teamWithNullPhoto.length + postsWithNullImage.length + postsWithNullContentImages.length;
-  console.log(`\nDone. ${total} document(s) ${dryRun ? 'would be' : 'were'} fixed.`);
+  // blog (WordPress-migrated): featuredImage field
+  await fixNullField('blog', 'featuredImage', 'featuredImage', 'title');
+
+  // blog (WordPress-migrated): null image blocks inside body array
+  await fixNullBodyImages('blog', 'body', 'title');
+
+  console.log(`\nDone. ${totalFixed} document(s) ${dryRun ? 'would be' : 'were'} fixed.`);
+}
+
+async function fixNullField(docType, field, unsetField, labelField) {
+  const docs = await client.fetch(
+    `*[_type == $type && ${field} == null]{ _id, "${labelField}": ${labelField} }`,
+    { type: docType }
+  );
+  console.log(`${docType} with null ${field}: ${docs.length}`);
+  for (const doc of docs) {
+    console.log(`  Fixing: ${doc[labelField]} (${doc._id})`);
+    if (!dryRun) {
+      await client.patch(doc._id).unset([unsetField]).commit();
+    }
+    totalFixed++;
+  }
+}
+
+async function fixNullBodyImages(docType, arrayField, labelField) {
+  const docs = await client.fetch(
+    `*[_type == $type && count(${arrayField}[_type == "image" && asset == null]) > 0]{ _id, "${labelField}": ${labelField}, "${arrayField}": ${arrayField} }`,
+    { type: docType }
+  );
+  console.log(`\n${docType} with null image blocks in ${arrayField}: ${docs.length}`);
+  for (const doc of docs) {
+    const blocks = doc[arrayField] || [];
+    const cleaned = blocks.filter((b) => !(b._type === 'image' && b.asset == null));
+    const removed = blocks.length - cleaned.length;
+    console.log(`  Fixing: ${doc[labelField]} (${doc._id}) — removing ${removed} null image block(s)`);
+    if (!dryRun) {
+      await client.patch(doc._id).set({ [arrayField]: cleaned }).commit();
+    }
+    totalFixed++;
+  }
 }
 
 fixNullImages().catch((err) => {
