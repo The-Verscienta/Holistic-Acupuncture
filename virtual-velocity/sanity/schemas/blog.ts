@@ -18,6 +18,23 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Wellness', value: 'wellness' },
+          { title: 'Pain Management', value: 'pain-management' },
+          { title: 'Mental Health', value: 'mental-health' },
+          { title: "Women's Health", value: 'womens-health' },
+          { title: 'Nutrition', value: 'nutrition' },
+          { title: 'Getting Started', value: 'getting-started' },
+        ],
+        layout: 'radio',
+      },
+      description: 'Clean category for the website (replaces raw WordPress categories)',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',

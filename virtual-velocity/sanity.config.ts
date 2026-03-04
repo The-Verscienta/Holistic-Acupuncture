@@ -28,9 +28,41 @@ export default defineConfig({
               .title('Blog Posts')
               .icon(() => '📝')
               .child(
-                S.documentTypeList('blog')
+                S.list()
                   .title('Blog Posts')
-                  .filter('_type == "blog"')
+                  .items([
+                    S.listItem()
+                      .title('All Posts')
+                      .icon(() => '📋')
+                      .child(
+                        S.documentTypeList('blog')
+                          .title('All Posts')
+                          .filter('_type == "blog"')
+                      ),
+                    S.divider(),
+                    ...([
+                      { title: 'Wellness', value: 'wellness', icon: '🌿' },
+                      { title: 'Pain Management', value: 'pain-management', icon: '💊' },
+                      { title: 'Mental Health', value: 'mental-health', icon: '🧠' },
+                      { title: "Women's Health", value: 'womens-health', icon: '🌸' },
+                      { title: 'Nutrition', value: 'nutrition', icon: '🥗' },
+                      { title: 'Getting Started', value: 'getting-started', icon: '🌱' },
+                      { title: 'Uncategorized', value: null, icon: '❓' },
+                    ].map(({ title, value, icon }) =>
+                      S.listItem()
+                        .title(`${icon} ${title}`)
+                        .child(
+                          S.documentTypeList('blog')
+                            .title(title)
+                            .filter(
+                              value === null
+                                ? '_type == "blog" && !defined(category)'
+                                : '_type == "blog" && category == $cat'
+                            )
+                            .params(value === null ? {} : { cat: value })
+                        )
+                    )),
+                  ])
               ),
             S.listItem()
               .title('Testimonials')
