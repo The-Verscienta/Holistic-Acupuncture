@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import Card from '../components/Card.astro';
 import TextInput from '../components/TextInput.astro';
-import TextArea from '../components/TextArea.astro';
 import Select from '../components/Select.astro';
 import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
@@ -224,15 +223,29 @@ import { CONTACT, HOURS } from '../lib/config';
                 ]}
               />
 
-              <TextArea
-                id="message"
-                name="message"
-                label="Message"
-                placeholder="Tell us about your health concerns or questions..."
-                rows={6}
-                maxLength={5000}
+              <Select
+                id="contactMethod"
+                name="contactMethod"
+                label="Best Way to Contact You"
+                options={[
+                  { value: 'phone', label: 'Phone Call' },
+                  { value: 'text', label: 'Text Message' },
+                  { value: 'email', label: 'Email' },
+                ]}
                 required
-                helpText="Please provide any relevant details about your condition or questions"
+              />
+
+              <Select
+                id="bestTime"
+                name="bestTime"
+                label="Best Time to Contact You"
+                options={[
+                  { value: 'morning', label: 'Morning (9am – 12pm)' },
+                  { value: 'afternoon', label: 'Afternoon (12pm – 4pm)' },
+                  { value: 'evening', label: 'Evening (4pm – 7pm)' },
+                  { value: 'anytime', label: 'Anytime' },
+                ]}
+                required
               />
 
               <div class="flex items-start gap-3">
@@ -435,7 +448,7 @@ import { CONTACT, HOURS } from '../lib/config';
 
   // Clear all errors
   function clearAllErrors() {
-    ['firstName', 'lastName', 'email', 'phone', 'reason', 'message'].forEach(clearFieldError);
+    ['firstName', 'lastName', 'email', 'phone', 'reason', 'contactMethod', 'bestTime'].forEach(clearFieldError);
   }
 
   // Real-time validation on blur
@@ -461,7 +474,7 @@ import { CONTACT, HOURS } from '../lib/config';
   });
 
   // Clear errors on input
-  ['firstName', 'lastName', 'email', 'phone', 'reason', 'message'].forEach(fieldId => {
+  ['firstName', 'lastName', 'email', 'phone', 'reason', 'contactMethod', 'bestTime'].forEach(fieldId => {
     const field = document.getElementById(fieldId);
     field?.addEventListener('input', () => clearFieldError(fieldId));
   });
@@ -485,7 +498,8 @@ import { CONTACT, HOURS } from '../lib/config';
       const email = (formData.get('email') as string)?.trim();
       const phone = (formData.get('phone') as string)?.trim();
       const reason = formData.get('reason') as string;
-      const message = (formData.get('message') as string)?.trim();
+      const contactMethod = formData.get('contactMethod') as string;
+      const bestTime = formData.get('bestTime') as string;
 
       // Client-side validation
       let hasErrors = false;
@@ -518,8 +532,13 @@ import { CONTACT, HOURS } from '../lib/config';
         hasErrors = true;
       }
 
-      if (!message) {
-        showFieldError('message', 'Please enter a message');
+      if (!contactMethod) {
+        showFieldError('contactMethod', 'Please select a preferred contact method');
+        hasErrors = true;
+      }
+
+      if (!bestTime) {
+        showFieldError('bestTime', 'Please select a best time to contact you');
         hasErrors = true;
       }
 
@@ -549,11 +568,13 @@ import { CONTACT, HOURS } from '../lib/config';
         const name = `${firstName} ${lastName}`;
 
         // Prepare data for API
+        const contactMethodLabels: Record<string, string> = { phone: 'Phone Call', text: 'Text Message', email: 'Email' };
+        const bestTimeLabels: Record<string, string> = { morning: 'Morning (9am–12pm)', afternoon: 'Afternoon (12pm–4pm)', evening: 'Evening (4pm–7pm)', anytime: 'Anytime' };
         const data = {
           name: name,
           email: email,
           phone: phone || null,
-          message: `Reason: ${reason}\nCondition: ${formData.get('condition') || 'Not specified'}\n\n${message}`,
+          message: `Reason: ${reason}\nCondition: ${formData.get('condition') || 'Not specified'}\nBest way to contact: ${contactMethodLabels[contactMethod] || contactMethod}\nBest time to contact: ${bestTimeLabels[bestTime] || bestTime}`,
         };
 
         // Submit to API
