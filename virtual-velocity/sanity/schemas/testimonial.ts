@@ -16,7 +16,6 @@ export default defineType({
       name: 'condition',
       title: 'Condition Treated',
       type: 'string',
-      validation: (Rule) => Rule.required(),
       description: 'Brief description of what was treated (e.g., "Chronic Migraines")',
     }),
     defineField({
@@ -24,7 +23,7 @@ export default defineType({
       title: 'Testimonial Quote',
       type: 'text',
       rows: 5,
-      validation: (Rule) => Rule.required().min(50).max(500),
+      validation: (Rule) => Rule.required().min(50).max(1500),
     }),
     defineField({
       name: 'rating',
