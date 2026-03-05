@@ -49,8 +49,8 @@ function renderPortableText(blocks: any[]) {
     .join('');
 }
 
-const metaTitle = condition.seo?.metaTitle || `${condition.name} | Acupuncture Treatment`;
-const metaDescription = condition.seo?.metaDescription || condition.description;
+const metaTitle = condition.seo?.metaTitle || `${condition.name} Treatment in Milwaukee, Wisconsin`;
+const metaDescription = condition.seo?.metaDescription || `${condition.description} Learn more about acupuncture treatment in Milwaukee, Wisconsin.`;
 const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
 const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
 const categoryLabel = conditionCategories[condition.category] || condition.category;

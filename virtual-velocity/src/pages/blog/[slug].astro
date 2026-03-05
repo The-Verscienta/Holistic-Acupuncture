@@ -140,11 +140,14 @@ const articleSchema = {
   },
   ...(ogImageUrl && { image: ogImageUrl })
 };
+
+const metaTitle = post.seo?.metaTitle || `${decodeHtmlEntities(post.title)} in Milwaukee, Wisconsin`;
+const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.excerpt)} Learn more about acupuncture in Milwaukee, Wisconsin.`;
 ---
 
 <BaseLayout
-  title={decodeHtmlEntities(post.title)}
-  description={decodeHtmlEntities(post.excerpt)}
+  title={metaTitle}
+  description={metaDescription}
   image={ogImageUrl}
 >
   <!-- Article structured data for rich results -->
