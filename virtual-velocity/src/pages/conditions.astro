@@ -4,6 +4,8 @@ import Container from '../components/Container.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
+import PageHero from '../components/PageHero.astro';
+import CTASection from '../components/CTASection.astro';
 import { CONTACT } from '../lib/config';
 import { getAllConditions } from '../lib/sanityQueries';
 import { conditionCategories } from '../types/sanity';
@@ -25,21 +27,16 @@ const conditionsByCategory = categoryOrder
   description="Discover how acupuncture can help with pain, stress, women's health, digestive issues, allergies, and many other conditions. Natural, effective healing solutions."
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
-    <Container>
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
-          Conditions We Treat
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8">
-          Acupuncture and Chinese herbal medicine can effectively treat a wide range of health conditions. Our experienced practitioners have helped thousands of patients find natural relief and lasting wellness.
-        </p>
-        <Button variant="primary" size="lg" icon="calendar" href="/contact">
-          Schedule Consultation
-        </Button>
-      </div>
-    </Container>
-  </section>
+  <PageHero
+    title="Conditions We Treat"
+    description="Acupuncture and Chinese herbal medicine can effectively treat a wide range of health conditions. Our experienced practitioners have helped thousands of patients find natural relief and lasting wellness."
+  >
+    <div class="mt-8">
+      <Button variant="primary" size="lg" icon="calendar" href="/contact">
+        Schedule Consultation
+      </Button>
+    </div>
+  </PageHero>
 
   <!-- Wellness Banner -->
   <section class="bg-white">
@@ -180,17 +177,9 @@ const conditionsByCategory = categoryOrder
   </section>
 
   <!-- CTA Section -->
-  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
-    <Container class="text-center">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
-        Ready to Find Natural Relief?
-      </h2>
-      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
-        Take the first step toward better health. Schedule your consultation today and discover how acupuncture can help you.
-      </p>
-      <Button variant="secondary" size="lg" icon="calendar" href="/contact">
-        Book Your Appointment
-      </Button>
-    </Container>
-  </section>
+  <CTASection
+    heading="Ready to Find Natural Relief?"
+    description="Take the first step toward better health. Schedule your consultation today and discover how acupuncture can help you."
+    primaryButton={{ label: 'Book Your Appointment', href: '/contact' }}
+  />
 </BaseLayout>

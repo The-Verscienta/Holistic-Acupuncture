@@ -7,6 +7,8 @@ import TextArea from '../components/TextArea.astro';
 import Select from '../components/Select.astro';
 import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
+import PageHero from '../components/PageHero.astro';
+import FeatureCard from '../components/FeatureCard.astro';
 import { CONTACT, HOURS } from '../lib/config';
 ---
 
@@ -15,18 +17,11 @@ import { CONTACT, HOURS } from '../lib/config';
   description="Get in touch with Acupuncture & Holistic Health Associates. Schedule an appointment, ask questions, or learn more about our services. Located in Milwaukee, WI."
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
-    <Container>
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
-          Get In Touch
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
-          We're here to help you on your journey to better health. Reach out to schedule an appointment or ask any questions you may have.
-        </p>
-      </div>
-
-      <!-- Atmosphere Banner -->
+  <PageHero
+    title="Get In Touch"
+    description="We're here to help you on your journey to better health. Reach out to schedule an appointment or ask any questions you may have."
+  >
+    <Fragment slot="below">
       <div class="mt-12 max-w-5xl mx-auto">
         <div class="aspect-[21/9] rounded-2xl overflow-hidden">
           <CloudflareImage
@@ -41,8 +36,8 @@ import { CONTACT, HOURS } from '../lib/config';
           />
         </div>
       </div>
-    </Container>
-  </section>
+    </Fragment>
+  </PageHero>
 
   <!-- Contact Information & Form -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
@@ -350,41 +345,24 @@ import { CONTACT, HOURS } from '../lib/config';
   <section class="py-16 md:py-20 lg:py-24 bg-white">
     <Container>
       <div class="grid md:grid-cols-3 gap-8">
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-charcoal mb-2">Free Parking</h3>
-          <p class="text-gray-600 text-sm">
-            Ample free parking available at Bayshore Town Center
-          </p>
-        </Card>
-
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-charcoal mb-2">Fully Accessible</h3>
-          <p class="text-gray-600 text-sm">
-            Wheelchair accessible entrance and treatment rooms
-          </p>
-        </Card>
-
-        <Card variant="bordered" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-charcoal mb-2">Flexible Hours</h3>
-          <p class="text-gray-600 text-sm">
-            Morning, afternoon, and evening appointments available
-          </p>
-        </Card>
+        <FeatureCard
+          cardVariant="bordered"
+          title="Free Parking"
+          description="Ample free parking available at Bayshore Town Center"
+          icon="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
+        />
+        <FeatureCard
+          cardVariant="bordered"
+          title="Fully Accessible"
+          description="Wheelchair accessible entrance and treatment rooms"
+          icon="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        />
+        <FeatureCard
+          cardVariant="bordered"
+          title="Flexible Hours"
+          description="Morning, afternoon, and evening appointments available"
+          icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </div>
     </Container>
   </section>

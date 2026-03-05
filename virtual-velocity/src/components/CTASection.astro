@@ -1,0 +1,61 @@
+---
+import Container from './Container.astro';
+import Button from './Button.astro';
+
+interface ButtonProps {
+  label: string;
+  href: string;
+  icon?: 'calendar' | 'phone' | 'mail' | 'arrow-right' | 'arrow-left' | 'info' | 'external';
+  variant?: 'primary' | 'secondary' | 'outline' | 'tertiary';
+  target?: '_blank' | '_self';
+  rel?: string;
+}
+
+interface Props {
+  heading: string;
+  description: string;
+  primaryButton: ButtonProps;
+  secondaryButton?: ButtonProps;
+  note?: string;
+}
+
+const { heading, description, primaryButton, secondaryButton, note } = Astro.props;
+---
+
+<section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
+  <Container>
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
+        {heading}
+      </h2>
+      <p class="text-lg md:text-xl mb-8 md:mb-10 opacity-90 leading-relaxed">
+        {description}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button
+          variant={primaryButton.variant ?? 'secondary'}
+          size="lg"
+          icon={primaryButton.icon ?? 'calendar'}
+          href={primaryButton.href}
+          target={primaryButton.target}
+          rel={primaryButton.rel}
+        >
+          {primaryButton.label}
+        </Button>
+        {secondaryButton && (
+          <Button
+            variant={secondaryButton.variant ?? 'outline'}
+            size="lg"
+            icon={secondaryButton.icon ?? 'phone'}
+            href={secondaryButton.href}
+            target={secondaryButton.target}
+            rel={secondaryButton.rel}
+          >
+            {secondaryButton.label}
+          </Button>
+        )}
+      </div>
+      {note && <p class="text-sm mt-6 opacity-75">{note}</p>}
+    </div>
+  </Container>
+</section>

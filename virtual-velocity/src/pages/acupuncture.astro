@@ -4,6 +4,11 @@ import Container from '../components/Container.astro';
 import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import { CONTACT } from '../lib/config';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CTASection from '../components/CTASection.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import StepCard from '../components/StepCard.astro';
 ---
 
 <BaseLayout
@@ -11,18 +16,10 @@ import { CONTACT } from '../lib/config';
   description="Learn how acupuncture works, what to expect during treatment, and how this ancient healing art can help you achieve better health naturally."
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
-    <Container>
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
-          About Acupuncture
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
-          Discover how this time-tested healing art can help you achieve natural wellness and lasting health through the power of traditional Chinese medicine.
-        </p>
-      </div>
-    </Container>
-  </section>
+  <PageHero
+    title="About Acupuncture"
+    description="Discover how this time-tested healing art can help you achieve natural wellness and lasting health through the power of traditional Chinese medicine."
+  />
 
   <!-- What is Acupuncture -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
@@ -85,71 +82,13 @@ import { CONTACT } from '../lib/config';
   <!-- How Acupuncture Works -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          How Acupuncture Works
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-          Understanding the mechanisms behind this powerful healing modality
-        </p>
-      </div>
+      <SectionHeader title="How Acupuncture Works" subtitle="Understanding the mechanisms behind this powerful healing modality" />
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
-            Stimulates Nerves
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Needles activate nerve endings, sending healing signals to the brain and affected areas
-          </p>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
-            Releases Endorphins
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Natural pain-relieving chemicals flood your system, providing relief and promoting wellbeing
-          </p>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
-            Reduces Inflammation
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Anti-inflammatory chemicals are released, reducing swelling and promoting tissue healing
-          </p>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-heading font-semibold text-charcoal mb-3">
-            Boosts Immunity
-          </h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            White blood cell production increases, strengthening your body's natural defenses
-          </p>
-        </Card>
+        <FeatureCard title="Stimulates Nerves" description="Needles activate nerve endings, sending healing signals to the brain and affected areas" icon="M13 10V3L4 14h7v7l9-11h-7z" layout="centered" cardVariant="elevated" />
+        <FeatureCard title="Releases Endorphins" description="Natural pain-relieving chemicals flood your system, providing relief and promoting wellbeing" icon="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" layout="centered" cardVariant="elevated" />
+        <FeatureCard title="Reduces Inflammation" description="Anti-inflammatory chemicals are released, reducing swelling and promoting tissue healing" icon="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" layout="centered" cardVariant="elevated" />
+        <FeatureCard title="Boosts Immunity" description="White blood cell production increases, strengthening your body's natural defenses" icon="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" layout="centered" cardVariant="elevated" />
       </div>
     </Container>
   </section>
@@ -158,85 +97,38 @@ import { CONTACT } from '../lib/config';
   <section class="py-16 md:py-20 lg:py-24 bg-white">
     <Container>
       <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12 md:mb-16">
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-            What to Expect During Your Visit
-          </h2>
-          <p class="text-lg text-gray-600">
-            Your first acupuncture experience, step by step
-          </p>
-        </div>
+        <SectionHeader title="What to Expect During Your Visit" subtitle="Your first acupuncture experience, step by step" />
 
         <div class="space-y-6">
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-6">
-              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
-                1
-              </div>
-              <div class="flex-1">
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
-                  Initial Consultation (30-45 minutes)
-                </h3>
-                <p class="text-gray-700 leading-relaxed mb-3">
-                  We begin with a comprehensive health history and discussion of your main concerns. We'll ask about your symptoms, medical history, lifestyle, diet, and sleep patterns.
-                </p>
-                <p class="text-gray-700 leading-relaxed">
-                  In traditional Chinese medicine, we also examine your tongue and take your pulse at multiple points, which provides valuable diagnostic information.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <StepCard number={1} title="Initial Consultation (30-45 minutes)">
+            <p class="text-gray-700 leading-relaxed mb-3">
+              We begin with a comprehensive health history and discussion of your main concerns. We'll ask about your symptoms, medical history, lifestyle, diet, and sleep patterns.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+              In traditional Chinese medicine, we also examine your tongue and take your pulse at multiple points, which provides valuable diagnostic information.
+            </p>
+          </StepCard>
 
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-6">
-              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
-                2
-              </div>
-              <div class="flex-1">
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
-                  Treatment Plan
-                </h3>
-                <p class="text-gray-700 leading-relaxed">
-                  Based on your consultation, we'll create a personalized treatment plan tailored to your specific needs and health goals. We'll explain which acupuncture points we'll use and what you can expect from treatment.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <StepCard number={2} title="Treatment Plan">
+            <p class="text-gray-700 leading-relaxed">
+              Based on your consultation, we'll create a personalized treatment plan tailored to your specific needs and health goals. We'll explain which acupuncture points we'll use and what you can expect from treatment.
+            </p>
+          </StepCard>
 
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-6">
-              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
-                3
-              </div>
-              <div class="flex-1">
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
-                  Acupuncture Treatment (30-45 minutes)
-                </h3>
-                <p class="text-gray-700 leading-relaxed mb-3">
-                  You'll lie comfortably on a treatment table while we insert ultra-fine needles (thinner than a human hair) at specific points. Most people feel minimal to no discomfort.
-                </p>
-                <p class="text-gray-700 leading-relaxed">
-                  The needles remain in place for 20-30 minutes while you relax. Many patients find this time deeply relaxing and even fall asleep.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <StepCard number={3} title="Acupuncture Treatment (30-45 minutes)">
+            <p class="text-gray-700 leading-relaxed mb-3">
+              You'll lie comfortably on a treatment table while we insert ultra-fine needles (thinner than a human hair) at specific points. Most people feel minimal to no discomfort.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+              The needles remain in place for 20-30 minutes while you relax. Many patients find this time deeply relaxing and even fall asleep.
+            </p>
+          </StepCard>
 
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-6">
-              <div class="w-12 h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-xl">
-                4
-              </div>
-              <div class="flex-1">
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-3">
-                  Post-Treatment & Follow-Up
-                </h3>
-                <p class="text-gray-700 leading-relaxed">
-                  After removing the needles, we'll discuss your experience and provide recommendations for home care, diet, or lifestyle modifications that can enhance your results. We'll also schedule your follow-up appointments based on your treatment plan.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <StepCard number={4} title="Post-Treatment & Follow-Up">
+            <p class="text-gray-700 leading-relaxed">
+              After removing the needles, we'll discuss your experience and provide recommendations for home care, diet, or lifestyle modifications that can enhance your results. We'll also schedule your follow-up appointments based on your treatment plan.
+            </p>
+          </StepCard>
         </div>
       </div>
     </Container>
@@ -246,14 +138,7 @@ import { CONTACT } from '../lib/config';
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
       <div class="max-w-3xl mx-auto">
-        <div class="text-center mb-12 md:mb-16">
-          <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-            Common Questions
-          </h2>
-          <p class="text-lg text-gray-600">
-            Answers to the most frequently asked questions about acupuncture
-          </p>
-        </div>
+        <SectionHeader title="Common Questions" subtitle="Answers to the most frequently asked questions about acupuncture" />
 
         <div class="space-y-4">
           <Card variant="elevated" padding="lg">
@@ -303,25 +188,11 @@ import { CONTACT } from '../lib/config';
   </section>
 
   <!-- CTA Section -->
-  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
-    <Container class="text-center">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
-        Experience the Benefits of Acupuncture
-      </h2>
-      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
-        Join thousands of patients who have found natural relief and lasting wellness through our expert acupuncture care.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="secondary" size="lg" icon="calendar" href="/contact">
-          Book Your First Visit
-        </Button>
-        <Button variant="outline" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}>
-          Call {CONTACT.phone}
-        </Button>
-      </div>
-      <p class="text-sm mt-6 opacity-75">
-        🎉 First Visit Special: Only $29 (regular $150) - Valid through March 31, 2026
-      </p>
-    </Container>
-  </section>
+  <CTASection
+    heading="Experience the Benefits of Acupuncture"
+    description="Join thousands of patients who have found natural relief and lasting wellness through our expert acupuncture care."
+    primaryButton={{ label: 'Book Your First Visit', href: '/contact' }}
+    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/\D/g, '')}`, icon: 'phone' }}
+    note="🎉 First Visit Special: Only $29 (regular $150) - Valid through March 31, 2026"
+  />
 </BaseLayout>

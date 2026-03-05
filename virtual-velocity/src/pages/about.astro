@@ -6,6 +6,11 @@ import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import SanityImage from '../components/SanityImage.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CTASection from '../components/CTASection.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import StatCard from '../components/StatCard.astro';
 import { getAllTeamMembers } from '../lib/sanityQueries';
 import { CONTACT } from '../lib/config';
 
@@ -18,19 +23,14 @@ const teamMembers = await getAllTeamMembers();
   description="Learn about Acupuncture & Holistic Health Associates - Milwaukee's trusted acupuncture practice with over 25 years of experience and 380,000+ successful treatments."
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
-    <Container>
-      <div class="max-w-3xl mx-auto text-center">
-        <Badge variant="default" size="md" class="mb-6">Est. 1999</Badge>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
-          About Our Practice
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
-          For over 25 years, we've been dedicated to providing exceptional acupuncture and holistic health care to the Milwaukee community, helping over 380,000 patients find natural healing and wellness.
-        </p>
-      </div>
-
-      <!-- Staff Group Photo -->
+  <PageHero
+    title="About Our Practice"
+    description="For over 25 years, we've been dedicated to providing exceptional acupuncture and holistic health care to the Milwaukee community, helping over 380,000 patients find natural healing and wellness."
+  >
+    <Fragment slot="badge">
+      <Badge variant="default" size="md" class="mb-6">Est. 1999</Badge>
+    </Fragment>
+    <Fragment slot="below">
       <div class="mt-12 max-w-5xl mx-auto">
         <div class="aspect-[16/9] rounded-2xl overflow-hidden shadow-lg">
           <CloudflareImage
@@ -44,8 +44,8 @@ const teamMembers = await getAllTeamMembers();
           />
         </div>
       </div>
-    </Container>
-  </section>
+    </Fragment>
+  </PageHero>
 
   <!-- Mission Section -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
@@ -69,47 +69,26 @@ const teamMembers = await getAllTeamMembers();
         </div>
 
         <div class="space-y-6">
-          <Card variant="elevated" padding="lg">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-2">Patient-Centered Care</h3>
-                <p class="text-gray-600">Every treatment plan is customized to your unique needs and health goals.</p>
-              </div>
-            </div>
-          </Card>
+          <FeatureCard
+            layout="horizontal"
+            title="Patient-Centered Care"
+            description="Every treatment plan is customized to your unique needs and health goals."
+            icon="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
 
-          <Card variant="elevated" padding="lg">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-2">Evidence-Based Practice</h3>
-                <p class="text-gray-600">Traditional wisdom meets modern research for optimal outcomes.</p>
-              </div>
-            </div>
-          </Card>
+          <FeatureCard
+            layout="horizontal"
+            title="Evidence-Based Practice"
+            description="Traditional wisdom meets modern research for optimal outcomes."
+            icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+          />
 
-          <Card variant="elevated" padding="lg">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-full bg-sage-100 flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-xl font-heading font-semibold text-charcoal mb-2">Compassionate Healing</h3>
-                <p class="text-gray-600">We treat you with the care and respect you deserve on your healing journey.</p>
-              </div>
-            </div>
-          </Card>
+          <FeatureCard
+            layout="horizontal"
+            title="Compassionate Healing"
+            description="We treat you with the care and respect you deserve on your healing journey."
+            icon="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+          />
         </div>
       </div>
     </Container>
@@ -118,39 +97,13 @@ const teamMembers = await getAllTeamMembers();
   <!-- Stats Section -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          Experience You Can Trust
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600">
-          Proven results backed by decades of clinical excellence
-        </p>
-      </div>
+      <SectionHeader title="Experience You Can Trust" subtitle="Proven results backed by decades of clinical excellence" />
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="text-5xl font-heading font-bold text-sage-600 mb-3">25+</div>
-          <div class="text-lg font-semibold text-charcoal mb-2">Years in Practice</div>
-          <div class="text-sm text-gray-600">Serving Milwaukee since 1999</div>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="text-5xl font-heading font-bold text-sage-600 mb-3">380K+</div>
-          <div class="text-lg font-semibold text-charcoal mb-2">Treatments</div>
-          <div class="text-sm text-gray-600">Successful patient visits</div>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="text-5xl font-heading font-bold text-sage-600 mb-3">4.9</div>
-          <div class="text-lg font-semibold text-charcoal mb-2">Patient Rating</div>
-          <div class="text-sm text-gray-600">Based on 500+ reviews</div>
-        </Card>
-
-        <Card variant="elevated" padding="lg" class="text-center">
-          <div class="text-5xl font-heading font-bold text-sage-600 mb-3">95%</div>
-          <div class="text-lg font-semibold text-charcoal mb-2">Satisfaction Rate</div>
-          <div class="text-sm text-gray-600">Patients highly satisfied</div>
-        </Card>
+        <StatCard value="25+" label="Years in Practice" description="Serving Milwaukee since 1999" />
+        <StatCard value="380K+" label="Treatments" description="Successful patient visits" />
+        <StatCard value="4.9" label="Patient Rating" description="Based on 500+ reviews" />
+        <StatCard value="95%" label="Satisfaction Rate" description="Patients highly satisfied" />
       </div>
     </Container>
   </section>
@@ -158,14 +111,7 @@ const teamMembers = await getAllTeamMembers();
   <!-- Team Section -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          Meet Our Team
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-          Experienced, licensed acupuncturists dedicated to your health and wellness
-        </p>
-      </div>
+      <SectionHeader title="Meet Our Team" subtitle="Experienced, licensed acupuncturists dedicated to your health and wellness" />
 
       <div class="grid md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
         {teamMembers.length === 0 ? (
@@ -268,45 +214,27 @@ const teamMembers = await getAllTeamMembers();
   <!-- Certifications & Awards -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          Certifications & Recognition
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600">
-          Maintaining the highest standards in acupuncture and holistic medicine
-        </p>
-      </div>
+      <SectionHeader title="Certifications & Recognition" subtitle="Maintaining the highest standards in acupuncture and holistic medicine" />
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card variant="default" padding="md" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-charcoal mb-2">NCCAOM Certified</h3>
-          <p class="text-sm text-gray-600">National Certification Commission for Acupuncture & Oriental Medicine</p>
-        </Card>
-
-        <Card variant="default" padding="md" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-charcoal mb-2">State Licensed</h3>
-          <p class="text-sm text-gray-600">Wisconsin Licensed Acupuncturists</p>
-        </Card>
-
-        <Card variant="default" padding="md" class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 bg-sage-100 rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-charcoal mb-2">Continuing Education</h3>
-          <p class="text-sm text-gray-600">150+ hours annually in advanced techniques</p>
-        </Card>
+        <FeatureCard
+          cardVariant="default"
+          title="NCCAOM Certified"
+          description="National Certification Commission for Acupuncture & Oriental Medicine"
+          icon="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+        />
+        <FeatureCard
+          cardVariant="default"
+          title="State Licensed"
+          description="Wisconsin Licensed Acupuncturists"
+          icon="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"
+        />
+        <FeatureCard
+          cardVariant="default"
+          title="Continuing Education"
+          description="150+ hours annually in advanced techniques"
+          icon="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+        />
 
         <Card variant="default" padding="md" class="text-center">
           <div class="flex justify-center gap-3 mb-4">
@@ -335,22 +263,10 @@ const teamMembers = await getAllTeamMembers();
   </section>
 
   <!-- CTA Section -->
-  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 to-healing-blue text-white">
-    <Container class="text-center">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
-        Ready to Start Your Healing Journey?
-      </h2>
-      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
-        Experience the difference that expert care and personalized treatment can make in your life.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="secondary" size="lg" icon="calendar" href="/contact">
-          Schedule Consultation
-        </Button>
-        <Button variant="outline" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}>
-          Call {CONTACT.phone}
-        </Button>
-      </div>
-    </Container>
-  </section>
+  <CTASection
+    heading="Ready to Start Your Healing Journey?"
+    description="Experience the difference that expert care and personalized treatment can make in your life."
+    primaryButton={{ label: 'Schedule Consultation', href: '/contact' }}
+    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/\D/g, '')}`, icon: 'phone' }}
+  />
 </BaseLayout>

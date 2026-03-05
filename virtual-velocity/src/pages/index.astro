@@ -7,6 +7,8 @@ import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import { getFeaturedTestimonials } from '../lib/sanityQueries';
 import { JANE_BOOKING_URL } from '../lib/config';
+import SectionHeader from '../components/SectionHeader.astro';
+import CTASection from '../components/CTASection.astro';
 
 // Fetch featured testimonials from Sanity
 const testimonials = await getFeaturedTestimonials(3);
@@ -174,14 +176,7 @@ const conditions = [
   <!-- Conditions We Treat -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-charcoal mb-4 md:mb-6">
-          Conditions We Treat
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-          Experience natural relief and healing for a wide range of health concerns through traditional acupuncture.
-        </p>
-      </div>
+      <SectionHeader title="Conditions We Treat" subtitle="Experience natural relief and healing for a wide range of health concerns through traditional acupuncture." />
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12">
         {conditions.map(condition => (
@@ -205,14 +200,7 @@ const conditions = [
   <!-- Testimonials -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-charcoal mb-4 md:mb-6">
-          What Our Patients Say
-        </h2>
-        <p class="text-lg md:text-xl text-gray-600">
-          Real stories from real people who have experienced healing.
-        </p>
-      </div>
+      <SectionHeader title="What Our Patients Say" subtitle="Real stories from real people who have experienced healing." />
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {testimonials.map(testimonial => (
@@ -227,23 +215,10 @@ const conditions = [
     </Container>
   </section>
 
-  <!-- CTA Section -->
-  <section class="py-16 md:py-20 lg:py-24 bg-gradient-to-br from-sage-600 via-sage-700 to-healing-blue text-white">
-    <Container class="text-center">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 md:mb-6">
-        Ready to Begin Your Healing Journey?
-      </h2>
-      <p class="text-lg md:text-xl mb-8 md:mb-10 max-w-2xl mx-auto opacity-90 leading-relaxed">
-        Take the first step towards better health and wellness. Our experienced team is here to help you achieve your health goals.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="secondary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-          Schedule Appointment
-        </Button>
-        <Button variant="outline" size="lg" icon="phone" href="tel:+14143328888">
-          Call Us (414) 332-8888
-        </Button>
-      </div>
-    </Container>
-  </section>
+  <CTASection
+    heading="Ready to Begin Your Healing Journey?"
+    description="Take the first step towards better health and wellness. Our experienced team is here to help you achieve your health goals."
+    primaryButton={{ label: 'Schedule Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    secondaryButton={{ label: 'Call Us (414) 332-8888', href: 'tel:+14143328888', icon: 'phone' }}
+  />
 </BaseLayout>

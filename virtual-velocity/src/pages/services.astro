@@ -6,6 +6,10 @@ import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+import PageHero from '../components/PageHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CTASection from '../components/CTASection.astro';
+import FeatureCard from '../components/FeatureCard.astro';
 
 const services = [
   {
@@ -147,18 +151,10 @@ const packages = [
   description="Explore our acupuncture services and transparent pricing. From initial consultations to package deals, find the right treatment option for your health journey."
 >
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
-    <Container>
-      <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-charcoal mb-6">
-          Services & Pricing
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
-          Transparent pricing for quality acupuncture care. We believe in providing exceptional value and personalized treatment for every patient.
-        </p>
-      </div>
-    </Container>
-  </section>
+  <PageHero
+    title="Services & Pricing"
+    description="Transparent pricing for quality acupuncture care. We believe in providing exceptional value and personalized treatment for every patient."
+  />
 
   <!-- Treatment Image Banner -->
   <section class="py-12 md:py-16 bg-white">
@@ -219,14 +215,7 @@ const packages = [
   <!-- Individual Services -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
     <Container>
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          Individual Services
-        </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Choose the service that best fits your needs. All treatments are personalized to your unique health concerns.
-        </p>
-      </div>
+      <SectionHeader title="Individual Services" subtitle="Choose the service that best fits your needs. All treatments are personalized to your unique health concerns." />
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map(service => (
@@ -300,14 +289,7 @@ const packages = [
   <!-- Package Deals -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
-          Package Deals
-        </h2>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Save money with our treatment packages. Ideal for ongoing care and chronic conditions.
-        </p>
-      </div>
+      <SectionHeader title="Package Deals" subtitle="Save money with our treatment packages. Ideal for ongoing care and chronic conditions." />
 
       <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {packages.map(pkg => (
@@ -383,65 +365,30 @@ const packages = [
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-charcoal mb-2">Insurance Coverage</h3>
-                <p class="text-gray-600 text-sm mb-3">
-                  Many insurance plans now cover acupuncture. We provide detailed receipts (superbills) for you to submit to your insurance for reimbursement.
-                </p>
-                <p class="text-gray-600 text-sm">
-                  Contact your insurance provider to check your acupuncture benefits before your visit.
-                </p>
-              </div>
-            </div>
-          </Card>
-
-          <Card variant="bordered" padding="lg">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-lg font-semibold text-charcoal mb-2">Payment Options</h3>
-                <p class="text-gray-600 text-sm mb-3">
-                  We accept cash, all major credit cards, HSA/FSA cards, and Apple Pay/Google Pay for your convenience.
-                </p>
-                <p class="text-gray-600 text-sm">
-                  Payment is due at the time of service. Package payments can be split upon request.
-                </p>
-              </div>
-            </div>
-          </Card>
+          <FeatureCard
+            layout="horizontal"
+            cardVariant="bordered"
+            title="Insurance Coverage"
+            description="Many insurance plans now cover acupuncture. We provide detailed receipts (superbills) for you to submit to your insurance for reimbursement. Contact your insurance provider to check your acupuncture benefits before your visit."
+            icon="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          />
+          <FeatureCard
+            layout="horizontal"
+            cardVariant="bordered"
+            title="Payment Options"
+            description="We accept cash, all major credit cards, HSA/FSA cards, and Apple Pay/Google Pay for your convenience. Payment is due at the time of service. Package payments can be split upon request."
+            icon="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+          />
         </div>
       </div>
     </Container>
   </section>
 
   <!-- CTA Section -->
-  <section class="py-16 md:py-20 bg-gradient-to-br from-sage-600 to-sage-700 text-white">
-    <Container class="text-center">
-      <h2 class="text-3xl md:text-4xl font-heading font-bold mb-4">
-        Ready to Start Your Healing Journey?
-      </h2>
-      <p class="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-        Book your appointment today and take the first step towards better health. New patients receive their first visit for only $29!
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="secondary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-          Book Appointment
-        </Button>
-        <Button variant="outline" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/[^0-9]/g, '')}`}>
-          Call {CONTACT.phone}
-        </Button>
-      </div>
-    </Container>
-  </section>
+  <CTASection
+    heading="Ready to Start Your Healing Journey?"
+    description="Book your appointment today and take the first step towards better health. New patients receive their first visit for only $29!"
+    primaryButton={{ label: 'Book Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/[^0-9]/g, '')}`, icon: 'phone' }}
+  />
 </BaseLayout>

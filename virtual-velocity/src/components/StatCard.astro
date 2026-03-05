@@ -1,0 +1,17 @@
+---
+import Card from './Card.astro';
+
+interface Props {
+  value: string;
+  label: string;
+  description?: string;
+}
+
+const { value, label, description } = Astro.props;
+---
+
+<Card variant="elevated" padding="lg" class="text-center">
+  <div class="text-5xl font-heading font-bold text-sage-600 mb-3">{value}</div>
+  <div class="text-lg font-semibold text-charcoal mb-2">{label}</div>
+  {description && <div class="text-sm text-gray-600">{description}</div>}
+</Card>
