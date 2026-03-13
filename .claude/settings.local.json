@@ -87,7 +87,10 @@
       "Bash(npm run sanity:deploy:*)",
       "Bash(npx sanity login:*)",
       "Bash(npx sanity deploy)",
-      "Bash(npx astro build)"
+      "Bash(npx astro build)",
+      "Bash(sed:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)"
     ]
   },
   "enabledPlugins": {

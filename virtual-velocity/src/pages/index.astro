@@ -14,36 +14,12 @@ import CTASection from '../components/CTASection.astro';
 const testimonials = await getFeaturedTestimonials(3);
 
 const conditions = [
-  {
-    name: 'Headaches & Migraines',
-    description: 'Natural, effective treatment to restore balance and promote healing from chronic headaches and migraines.',
-    icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
-  },
-  {
-    name: 'Chronic Pain',
-    description: 'Find lasting relief from persistent pain through traditional acupuncture and holistic treatment approaches.',
-    icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
-  },
-  {
-    name: 'Stress & Anxiety',
-    description: 'Calm your mind and reduce stress with proven acupuncture techniques that promote mental wellness.',
-    icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'
-  },
-  {
-    name: 'Insomnia',
-    description: 'Restore healthy sleep patterns and overcome insomnia with natural acupuncture treatments.',
-    icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z'
-  },
-  {
-    name: 'Digestive Issues',
-    description: 'Address digestive concerns and restore gut health through targeted acupuncture therapy.',
-    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-  },
-  {
-    name: 'Women\'s Health',
-    description: 'Support women\'s health through all life stages with specialized acupuncture care and treatment.',
-    icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-  },
+  { name: 'Headaches & Migraines', description: 'Natural, effective treatment to restore balance and promote healing from chronic headaches and migraines.', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z', anchor: 'pain' },
+  { name: 'Chronic Pain', description: 'Find lasting relief from persistent pain through traditional acupuncture and holistic treatment approaches.', icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z', anchor: 'pain' },
+  { name: 'Stress & Anxiety', description: 'Calm your mind and reduce stress with proven acupuncture techniques that promote mental wellness.', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z', anchor: 'mental-health' },
+  { name: 'Insomnia', description: 'Restore healthy sleep patterns and overcome insomnia with natural acupuncture treatments.', icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z', anchor: 'mental-health' },
+  { name: 'Digestive Issues', description: 'Address digestive concerns and restore gut health through targeted acupuncture therapy.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', anchor: 'digestive' },
+  { name: 'Women\'s Health', description: 'Support women\'s health through all life stages with specialized acupuncture care and treatment.', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', anchor: 'womens-health' },
 ];
 ---
 
@@ -174,7 +150,7 @@ const conditions = [
   </section>
 
   <!-- Conditions We Treat -->
-  <section class="py-16 md:py-20 lg:py-24 bg-white">
+  <section id="conditions" class="py-16 md:py-20 lg:py-24 bg-white scroll-mt-24">
     <Container>
       <SectionHeader title="Conditions We Treat" subtitle="Experience natural relief and healing for a wide range of health concerns through traditional acupuncture." />
 
@@ -183,7 +159,7 @@ const conditions = [
           <ServiceCard
             title={condition.name}
             description={condition.description}
-            href="/conditions"
+            href={`/conditions#${condition.anchor}`}
             icon={condition.icon}
           />
         ))}

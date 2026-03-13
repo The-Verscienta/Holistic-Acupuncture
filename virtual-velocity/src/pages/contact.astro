@@ -8,7 +8,8 @@ import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import PageHero from '../components/PageHero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
-import { CONTACT, HOURS } from '../lib/config';
+import { CONTACT } from '../lib/config';
+import OfficeHoursCard from '../components/OfficeHoursCard.astro';
 ---
 
 <BaseLayout
@@ -107,27 +108,7 @@ import { CONTACT, HOURS } from '../lib/config';
             </div>
           </Card>
 
-          <Card variant="bordered" padding="md" class="bg-sage-50">
-            <h3 class="font-semibold text-charcoal mb-3">Office Hours</h3>
-            <div class="space-y-2 text-sm">
-              <div class="flex justify-between">
-                <span class="text-gray-600">Monday - Thursday:</span>
-                <span class="font-medium text-charcoal">{HOURS.monday}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600">Friday:</span>
-                <span class="font-medium text-charcoal">{HOURS.friday}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600">Saturday:</span>
-                <span class="font-medium text-charcoal">{HOURS.saturday}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-600">Sunday:</span>
-                <span class="font-medium text-charcoal">{HOURS.sunday}</span>
-              </div>
-            </div>
-          </Card>
+          <OfficeHoursCard variant="card" />
         </div>
 
         <!-- Contact Form -->

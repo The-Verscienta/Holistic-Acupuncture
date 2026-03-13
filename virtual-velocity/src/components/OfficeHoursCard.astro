@@ -1,0 +1,75 @@
+---
+/**
+ * Office Hours – single source of truth for display.
+ * Hours data lives in src/lib/config.ts (HOURS). Update that file when hours change.
+ */
+import Card from './Card.astro';
+import { HOURS } from '../lib/config';
+
+export interface Props {
+  /** 'card' = bordered card (contact page), 'footer' = footer column style, 'plain' = simple box (e.g. contact-success) */
+  variant?: 'card' | 'footer' | 'plain';
+}
+
+const { variant = 'card' } = Astro.props;
+---
+
+{variant === 'card' && (
+  <Card variant="bordered" padding="md" class="bg-sage-50">
+    <h3 class="font-semibold text-charcoal mb-3">Office Hours</h3>
+    <div class="space-y-2 text-sm">
+      <div class="flex justify-between">
+        <span class="text-gray-600">Monday - Thursday:</span>
+        <span class="font-medium text-charcoal">{HOURS.monday}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Friday:</span>
+        <span class="font-medium text-charcoal">{HOURS.friday}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Saturday:</span>
+        <span class="font-medium text-charcoal">{HOURS.saturday}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-gray-600">Sunday:</span>
+        <span class="font-medium text-charcoal">{HOURS.sunday}</span>
+      </div>
+    </div>
+  </Card>
+)}
+
+{variant === 'footer' && (
+  <div>
+    <h3 class="text-lg font-heading font-semibold mb-4">Office Hours</h3>
+    <ul class="space-y-2 text-sage-100 text-sm mb-6">
+      <li class="flex justify-between">
+        <span>Mon - Thu:</span>
+        <span>{HOURS.monday}</span>
+      </li>
+      <li class="flex justify-between">
+        <span>Friday:</span>
+        <span>{HOURS.friday}</span>
+      </li>
+      <li class="flex justify-between">
+        <span>Saturday:</span>
+        <span>{HOURS.saturday}</span>
+      </li>
+      <li class="flex justify-between">
+        <span>Sunday:</span>
+        <span>{HOURS.sunday}</span>
+      </li>
+    </ul>
+  </div>
+)}
+
+{variant === 'plain' && (
+  <div class="p-4 bg-sage-50 rounded-[var(--radius-lg)] border border-sage-200 inline-block">
+    <p class="text-sm font-semibold text-gray-700 mb-2">Office Hours</p>
+    <div class="space-y-1 text-sm text-gray-600">
+      <p>Monday - Thursday: {HOURS.monday}</p>
+      <p>Friday: {HOURS.friday}</p>
+      <p>Saturday: {HOURS.saturday}</p>
+      <p>Sunday: {HOURS.sunday}</p>
+    </div>
+  </div>
+)}

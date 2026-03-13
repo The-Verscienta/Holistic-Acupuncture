@@ -4,6 +4,7 @@ import Container from '../components/Container.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import { CONTACT } from '../lib/config';
+import OfficeHoursCard from '../components/OfficeHoursCard.astro';
 ---
 
 <BaseLayout
@@ -100,11 +101,8 @@ import { CONTACT } from '../lib/config';
         </div>
 
         <!-- Office Hours -->
-        <div class="mt-8 p-4 bg-sage-50 rounded-[var(--radius-lg)] border border-sage-200 inline-block">
-          <p class="text-sm font-semibold text-gray-700 mb-2">Office Hours</p>
-          <p class="text-sm text-gray-600">Monday - Friday: 9:00 AM - 5:00 PM</p>
-          <p class="text-sm text-gray-600">Saturday: By Appointment</p>
-          <p class="text-sm text-gray-600">Sunday: Closed</p>
+        <div class="mt-8">
+          <OfficeHoursCard variant="plain" />
         </div>
       </div>
     </Container>

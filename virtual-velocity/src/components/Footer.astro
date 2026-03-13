@@ -1,5 +1,6 @@
 ---
-import { JANE_BOOKING_URL, CONTACT, HOURS } from '../lib/config';
+import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+import OfficeHoursCard from './OfficeHoursCard.astro';
 const currentYear = new Date().getFullYear();
 ---
 
@@ -99,25 +100,7 @@ const currentYear = new Date().getFullYear();
 
       <!-- Hours & CTA -->
       <div>
-        <h3 class="text-lg font-heading font-semibold mb-4">Office Hours</h3>
-        <ul class="space-y-2 text-sage-100 text-sm mb-6">
-          <li class="flex justify-between">
-            <span>Mon - Thu:</span>
-            <span>{HOURS.monday}</span>
-          </li>
-          <li class="flex justify-between">
-            <span>Friday:</span>
-            <span>{HOURS.friday}</span>
-          </li>
-          <li class="flex justify-between">
-            <span>Saturday:</span>
-            <span>{HOURS.saturday}</span>
-          </li>
-          <li class="flex justify-between">
-            <span>Sunday:</span>
-            <span>{HOURS.sunday}</span>
-          </li>
-        </ul>
+        <OfficeHoursCard variant="footer" />
         <a
           href={JANE_BOOKING_URL}
           target="_blank"
