@@ -47,7 +47,9 @@ function getClientIp(request: Request): string {
  * Handles contact form submissions and sends email notifications.
  * No database storage - emails only.
  */
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+
   try {
     // CSRF protection: allow config origins + same-origin (request host) so form works on any deployment
     if (!validateOriginList(request, getAllowedOrigins(request))) {
@@ -140,7 +142,7 @@ export const POST: APIRoute = async ({ request }) => {
       phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
       message,
       referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
-    });
+    }, resendApiKey);
 
     if (!notificationSent) {
       console.error('Contact notification email failed to send');
@@ -157,7 +159,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send confirmation email to user (non-critical, don't fail if this doesn't send)
-    await sendConfirmationEmail(email, name);
+    await sendConfirmationEmail(email, name, resendApiKey);
 
     // Return success response
     return new Response(

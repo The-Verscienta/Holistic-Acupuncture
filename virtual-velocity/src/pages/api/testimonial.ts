@@ -45,7 +45,9 @@ function getClientIp(request: Request): string {
  * No database storage - for testimonial management, integrate with
  * Sanity CMS or add them manually.
  */
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+
   try {
     // CSRF protection: allow config + same-origin so form works on any deployment
     if (!validateOriginList(request, getAllowedOrigins(request))) {
@@ -146,7 +148,7 @@ export const POST: APIRoute = async ({ request }) => {
       condition: data.condition?.trim().slice(0, MAX_CONDITION_LENGTH) || undefined,
       testimonial,
       rating: data.rating || 5,
-    });
+    }, resendApiKey);
 
     if (!notificationSent) {
       console.error('Testimonial notification email failed to send');

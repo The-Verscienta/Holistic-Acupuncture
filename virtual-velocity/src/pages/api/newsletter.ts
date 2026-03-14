@@ -43,7 +43,9 @@ function getClientIp(request: Request): string {
  * No database storage - for a full newsletter system, integrate with
  * a service like Mailchimp, ConvertKit, or Buttondown.
  */
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+
   try {
     // CSRF protection: allow config + same-origin so form works on any deployment
     if (!validateOriginList(request, getAllowedOrigins(request))) {
@@ -108,7 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Send welcome email to subscriber
-    const welcomeSent = await sendNewsletterWelcomeEmail(email);
+    const welcomeSent = await sendNewsletterWelcomeEmail(email, resendApiKey);
     if (!welcomeSent) {
       console.error('Newsletter welcome email failed to send');
     }

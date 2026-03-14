@@ -46,10 +46,10 @@ export interface TestimonialData {
 /**
  * Send email using Resend SDK (https://resend.com/docs/send-with-astro)
  */
-export async function sendEmail(options: EmailOptions): Promise<boolean> {
-  const apiKey = import.meta.env.RESEND_API_KEY;
+export async function sendEmail(options: EmailOptions, apiKey?: string): Promise<boolean> {
+  const resolvedApiKey = apiKey ?? import.meta.env.RESEND_API_KEY;
 
-  if (!apiKey) {
+  if (!resolvedApiKey) {
     console.error('RESEND_API_KEY not configured');
     return false;
   }
@@ -61,7 +61,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
   const to = Array.isArray(options.to) ? options.to : [options.to];
 
   try {
-    const resend = new Resend(apiKey);
+    const resend = new Resend(resolvedApiKey);
     const { data, error } = await resend.emails.send({
       from,
       to,
@@ -87,7 +87,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
 /**
  * Send contact form notification email
  */
-export async function sendContactFormNotification(data: ContactFormData): Promise<boolean> {
+export async function sendContactFormNotification(data: ContactFormData, apiKey?: string): Promise<boolean> {
   const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@holisticacupuncture.net';
 
   const html = `
@@ -235,13 +235,13 @@ Reply to this email to respond to ${data.name}
     text,
     html,
     replyTo: data.email,
-  });
+  }, apiKey);
 }
 
 /**
  * Send testimonial submission notification email
  */
-export async function sendTestimonialNotification(data: TestimonialData): Promise<boolean> {
+export async function sendTestimonialNotification(data: TestimonialData, apiKey?: string): Promise<boolean> {
   const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@holisticacupuncture.net';
 
   const stars = '⭐'.repeat(data.rating);
@@ -404,13 +404,13 @@ Review and approve in admin dashboard: https://holisticacupuncture.net/admin
     text,
     html,
     replyTo: data.email,
-  });
+  }, apiKey);
 }
 
 /**
  * Send confirmation email to form submitter
  */
-export async function sendConfirmationEmail(to: string, name: string): Promise<boolean> {
+export async function sendConfirmationEmail(to: string, name: string, apiKey?: string): Promise<boolean> {
   const html = `
     <!DOCTYPE html>
     <html>
@@ -531,13 +531,13 @@ holisticacupuncture.net
     subject: 'Thank you for contacting us',
     text,
     html,
-  });
+  }, apiKey);
 }
 
 /**
  * Send newsletter welcome email to new subscriber
  */
-export async function sendNewsletterWelcomeEmail(to: string): Promise<boolean> {
+export async function sendNewsletterWelcomeEmail(to: string, apiKey?: string): Promise<boolean> {
   const html = `
     <!DOCTYPE html>
     <html>
@@ -681,6 +681,6 @@ holisticacupuncture.net
     subject: 'Welcome to the Acupuncture & Holistic Health Newsletter!',
     text,
     html,
-  });
+  }, apiKey);
 }
 
