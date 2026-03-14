@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { sendTestimonialNotification } from '../../lib/email';
-import { validateOrigin } from '../../lib/sanitize';
-import { SITE_URL } from '../../lib/config';
+import { validateOriginList } from '../../lib/sanitize';
+import { getAllowedOrigins } from '../../lib/config';
 
 export const prerender = false;
 
@@ -47,8 +47,8 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request }) => {
   try {
-    // CSRF protection: validate Origin header
-    if (!validateOrigin(request, SITE_URL)) {
+    // CSRF protection: allow config + same-origin so form works on any deployment
+    if (!validateOriginList(request, getAllowedOrigins(request))) {
       return new Response(
         JSON.stringify({ success: false, error: 'Invalid request origin' }),
         { status: 403, headers: { 'Content-Type': 'application/json' } }

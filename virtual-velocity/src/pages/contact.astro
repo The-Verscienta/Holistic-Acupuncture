@@ -284,6 +284,7 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
                 </svg>
                 <div>
                   <h3 class="font-semibold text-error">Failed to Send Message</h3>
+                  <p id="error-message-detail" class="text-sm text-gray-700 mt-1"></p>
                   <p class="text-sm text-gray-700 mt-1">Please try again or call us at {CONTACT.phone}.</p>
                 </div>
               </div>
@@ -544,6 +545,8 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
         loadingMessage.classList.remove('hidden');
         successMessage.classList.add('hidden');
         errorMessage.classList.add('hidden');
+        const errorDetailEl = document.getElementById('error-message-detail');
+        if (errorDetailEl) errorDetailEl.textContent = '';
 
         // Combine first and last name
         const name = `${firstName} ${lastName}`;
@@ -611,7 +614,12 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
       } catch (error) {
         console.error('Form submission error:', error);
 
-        // Show error
+        // Show error and API message when present
+        const errorDetailEl = document.getElementById('error-message-detail');
+        if (errorDetailEl) {
+          const msg = error instanceof Error ? error.message : 'Something went wrong.';
+          errorDetailEl.textContent = msg;
+        }
         loadingMessage.classList.add('hidden');
         errorMessage.classList.remove('hidden');
         submitButton.disabled = false;

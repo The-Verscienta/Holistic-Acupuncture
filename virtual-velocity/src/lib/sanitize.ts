@@ -38,20 +38,28 @@ export function safeHref(href: string | undefined | null): string | null {
  * Falls back to Referer header if Origin is missing.
  */
 export function validateOrigin(request: Request, allowedOrigin: string): boolean {
+  return validateOriginList(request, [allowedOrigin]);
+}
+
+/**
+ * Validate Origin/Referer against a list of allowed origins (e.g. production + preview URL).
+ */
+export function validateOriginList(request: Request, allowedOrigins: string[]): boolean {
+  const allowed = new Set(allowedOrigins.filter(Boolean).map((o) => o.replace(/\/$/, '')));
   const origin = request.headers.get('origin');
   if (origin) {
-    return origin === allowedOrigin;
+    const o = origin.replace(/\/$/, '');
+    if (allowed.has(o)) return true;
   }
-  // Fallback to Referer for same-origin non-CORS requests
   const referer = request.headers.get('referer');
   if (referer) {
     try {
-      return new URL(referer).origin === allowedOrigin;
+      const r = new URL(referer).origin;
+      if (allowed.has(r)) return true;
     } catch {
-      return false;
+      // ignore invalid referer
     }
   }
-  // No Origin or Referer — reject (could be a direct API call)
   return false;
 }
 

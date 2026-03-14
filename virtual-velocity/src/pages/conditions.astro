@@ -194,6 +194,7 @@ const conditionsByCategory = categoryOrder
   <CTASection
     heading="Ready to Find Natural Relief?"
     description="Take the first step toward better health. Schedule your consultation today and discover how acupuncture can help you."
-    primaryButton={{ label: 'Book Your Appointment', href: '/contact' }}
+    primaryButton={{ label: 'Book Your Appointment', href: '/contact', variant: 'secondary', icon: 'calendar' }}
+    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/\D/g, '')}`, icon: 'phone', variant: 'outline' }}
   />
 </BaseLayout>

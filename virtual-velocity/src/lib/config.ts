@@ -11,6 +11,24 @@ export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'http
 export const SITE_NAME = 'Acupuncture & Holistic Health Associates';
 export const SITE_URL = 'https://holisticacupuncture.net';
 
+/** Allowed origins for API CSRF check (production + optional preview, e.g. Cloudflare Pages) */
+export const ALLOWED_ORIGINS: string[] = [
+  SITE_URL,
+  import.meta.env.PUBLIC_APP_URL,
+].filter(Boolean) as string[];
+
+/** Allowed origins including request origin so same-origin works on any deployment (pages.dev, localhost, etc.) */
+export function getAllowedOrigins(request: Request): string[] {
+  const list = [...ALLOWED_ORIGINS];
+  try {
+    const requestOrigin = new URL(request.url).origin;
+    if (requestOrigin && !list.includes(requestOrigin)) list.push(requestOrigin);
+  } catch {
+    // ignore invalid request url
+  }
+  return list;
+}
+
 // Contact info
 export const CONTACT = {
   phone: '(414) 332-8888',
