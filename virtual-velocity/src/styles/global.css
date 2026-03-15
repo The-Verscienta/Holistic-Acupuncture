@@ -188,3 +188,49 @@ h4 {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Holiday Theming
+   Each block sets CSS custom properties consumed by the
+   #header, #mobile-menu, and .holiday-hero targeting rules below.
+   data-holiday is set on <html> by the inline script in BaseLayout.
+   ============================================================ */
+
+[data-holiday="christmas"]        { --holiday-bg: #1a4a1a; --holiday-text: #f5e642; --holiday-hero-from: #0d2b0d; --holiday-hero-to: #4a1010; --holiday-accent: #c8a83c; }
+[data-holiday="halloween"]        { --holiday-bg: #1a1a2e; --holiday-text: #ff9500; --holiday-hero-from: #1a1a2e; --holiday-hero-to: #2d1b4e; --holiday-accent: #ff6b00; }
+[data-holiday="july-4th"]         { --holiday-bg: #001f5b; --holiday-text: #ffffff; --holiday-hero-from: #001f5b; --holiday-hero-to: #8b0000; --holiday-accent: #cc0000; }
+[data-holiday="st-patricks"]      { --holiday-bg: #1a4a1a; --holiday-text: #f5e642; --holiday-hero-from: #0d2b0d; --holiday-hero-to: #2a5c1a; --holiday-accent: #d4af37; }
+[data-holiday="mlk"]              { --holiday-bg: #1a0f00; --holiday-text: #d4af37; --holiday-hero-from: #1a0f00; --holiday-hero-to: #3d2000; --holiday-accent: #d4af37; }
+[data-holiday="valentines"]       { --holiday-bg: #5c0a1e; --holiday-text: #ffb3c6; --holiday-hero-from: #5c0a1e; --holiday-hero-to: #8b1a3a; --holiday-accent: #e91e63; }
+[data-holiday="chinese-new-year"] { --holiday-bg: #8b0000; --holiday-text: #ffd700; --holiday-hero-from: #8b0000; --holiday-hero-to: #3d0000; --holiday-accent: #ffd700; }
+[data-holiday="veterans"]         { --holiday-bg: #0a1628; --holiday-text: #c8a83c; --holiday-hero-from: #0a1628; --holiday-hero-to: #1a3050; --holiday-accent: #c8a83c; }
+
+/* Header and mobile menu */
+[data-holiday] #header {
+  background: var(--holiday-bg) !important;
+  color: var(--holiday-text);
+}
+[data-holiday] #header a,
+[data-holiday] #header button {
+  color: var(--holiday-text) !important;
+}
+[data-holiday] #mobile-menu {
+  background: var(--holiday-bg) !important;
+}
+[data-holiday] #mobile-menu a {
+  color: var(--holiday-text) !important;
+}
+
+/* Hero section */
+[data-holiday] .holiday-hero {
+  background: linear-gradient(to bottom right, var(--holiday-hero-from), var(--holiday-hero-to)) !important;
+  color: white;
+}
+
+/* Deco strip — hidden when empty, shown when JS injects emojis */
+#holiday-deco:not(:empty) {
+  font-size: 1.5rem;
+  letter-spacing: 0.25rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
