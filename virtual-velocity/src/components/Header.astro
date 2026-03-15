@@ -1,13 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import logo from '../assets/logo.png';
 import Navigation from './Navigation.astro';
 import Button from './Button.astro';
 import SearchModal from './SearchModal.astro';
 import { CONTACT, JANE_BOOKING_URL } from '../lib/config';
-
-// Ensure logo URL is root-relative so it works on all routes (e.g. /blog, /blog/slug)
-const logoSrc = typeof logo === 'object' && logo?.src != null ? logo.src : String(logo);
-const rootRelativeLogoSrc = logoSrc.startsWith('/') ? logoSrc : `/${logoSrc}`;
 ---
 
 <header
@@ -22,10 +19,7 @@ const rootRelativeLogoSrc = logoSrc.startsWith('/') ? logoSrc : `/${logoSrc}`;
         href="/"
         class="flex items-center gap-2 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
       >
-        <picture>
-          {import.meta.env.PROD && <source type="image/webp" srcset="/logo.webp" />}
-          <img src={rootRelativeLogoSrc} alt="Acupuncture & Holistic Health Associates logo" width={40} height={40} class="h-10 w-auto shrink-0" />
-        </picture>
+        <Image src={logo} alt="Acupuncture & Holistic Health Associates logo" width={40} height={40} class="h-10 w-auto shrink-0" loading="eager" />
         <span id="holiday-emoji" aria-hidden="true"></span>
         <span class="hidden 2xl:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
         <span class="2xl:hidden">AHH Associates</span>
