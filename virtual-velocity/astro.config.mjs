@@ -23,28 +23,16 @@ export default defineConfig({
   output: 'static', // Static by default, use prerender = false for SSR routes
   adapter: cloudflare
     ? cloudflare({
+        platformProxy: {
+          enabled: false,
+        },
         imageService: 'compile', // Optimize images at build time (sharp not available at runtime)
       })
     : node({
         mode: 'standalone',
       }),
   vite: {
-    plugins: [
-      tailwindcss(),
-      // Workaround for Astro 6.0.4 bug: fonts/runtime module is incomplete.
-      // createGetFontData doesn't exist in dist; stub it until 6.0.5+ fixes this.
-      {
-        name: 'astro-fonts-runtime-stub',
-        resolveId(id) {
-          if (id === 'astro/assets/fonts/runtime') return '\0astro-fonts-runtime-stub';
-        },
-        load(id) {
-          if (id === '\0astro-fonts-runtime-stub') {
-            return `export const fontData = {}; export function createGetFontData() { return () => undefined; }`;
-          }
-        },
-      },
-    ],
+    plugins: [tailwindcss()],
     build: {
       // Enable CSS code splitting for better caching
       cssCodeSplit: true,
