@@ -183,5 +183,80 @@ const twitterHandle = SOCIAL.twitter;
     </main>
     <Footer />
     <CookieConsent />
+
+  <script is:inline>
+    (function () {
+      var h = document.documentElement.dataset.holiday;
+      if (!h) return;
+      if (sessionStorage.getItem('holiday-confetti-shown')) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      sessionStorage.setItem('holiday-confetti-shown', '1');
+
+      function runEffect() {
+        var c = window.confetti;
+
+        if (h === 'christmas') {
+          // Gentle falling snow for 10 seconds
+          var end = Date.now() + 10000;
+          (function snow() {
+            c({ particleCount: 3, angle: 90, spread: 140,
+                origin: { x: Math.random(), y: -0.05 },
+                colors: ['#ffffff', '#cce8ff', '#e0f0ff'],
+                shapes: ['circle'], gravity: 0.25, scalar: 0.7,
+                drift: (Math.random() - 0.5) * 0.6, ticks: 500 });
+            if (Date.now() < end) requestAnimationFrame(snow);
+          })();
+
+        } else if (h === 'halloween') {
+          c({ particleCount: 100, spread: 120, origin: { y: 0.65 },
+              colors: ['#ff6b00', '#ff9500', '#2d1b4e', '#9c27b0', '#ffffff'],
+              shapes: ['circle', 'square'], scalar: 1.2, gravity: 1.2 });
+
+        } else if (h === 'july-4th') {
+          // Three staggered firework bursts
+          var bursts = 3;
+          function burst() {
+            c({ particleCount: 60, startVelocity: 35, spread: 360,
+                origin: { x: 0.2 + Math.random() * 0.6, y: 0.2 + Math.random() * 0.3 },
+                colors: ['#001f5b', '#ffffff', '#8b0000', '#cc0000'],
+                shapes: ['circle'], ticks: 80, gravity: 0.8 });
+            if (--bursts > 0) setTimeout(burst, 350);
+          }
+          burst();
+
+        } else if (h === 'st-patricks') {
+          c({ particleCount: 100, spread: 130, origin: { y: 0.65 },
+              colors: ['#2a5c1a', '#1a4a1a', '#f5e642', '#ffffff', '#4caf50'],
+              shapes: ['circle', 'square'], scalar: 1 });
+
+        } else if (h === 'valentines') {
+          c({ particleCount: 90, spread: 130, origin: { y: 0.65 },
+              colors: ['#e91e63', '#ff4081', '#ffb3c6', '#ffffff', '#ff6b9d'],
+              shapes: ['circle'], scalar: 1.1 });
+
+        } else if (h === 'chinese-new-year') {
+          c({ particleCount: 120, spread: 140, origin: { y: 0.65 },
+              colors: ['#ffd700', '#ff0000', '#8b0000', '#ffb300', '#ffffff'],
+              shapes: ['circle', 'square'], scalar: 1.2, gravity: 1.2 });
+
+        } else if (h === 'mlk') {
+          c({ particleCount: 70, spread: 110, origin: { y: 0.65 },
+              colors: ['#d4af37', '#ffffff', '#c8a83c', '#f5e642'],
+              shapes: ['circle'], scalar: 1 });
+
+        } else if (h === 'veterans') {
+          c({ particleCount: 80, spread: 110, origin: { y: 0.65 },
+              colors: ['#ffffff', '#c8a83c', '#0a1628', '#1a3050'],
+              shapes: ['circle', 'square'], scalar: 1 });
+        }
+      }
+
+      // Dynamically load canvas-confetti only during a holiday week
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+      s.onload = runEffect;
+      document.body.appendChild(s);
+    })();
+  </script>
   </body>
 </html>

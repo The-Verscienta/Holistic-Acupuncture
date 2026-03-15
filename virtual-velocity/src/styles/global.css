@@ -226,6 +226,20 @@ h4 {
   background: linear-gradient(to bottom right, var(--holiday-hero-from), var(--holiday-hero-to)) !important;
   color: white;
 }
+[data-holiday] .holiday-hero h1,
+[data-holiday] .holiday-hero h2,
+[data-holiday] .holiday-hero p {
+  color: var(--holiday-text) !important;
+}
+
+/* Footer */
+[data-holiday] #footer {
+  background: var(--holiday-bg) !important;
+}
+[data-holiday] #footer h3,
+[data-holiday] #footer a {
+  color: var(--holiday-text) !important;
+}
 
 /* Deco strip — hidden when empty, shown when JS injects emojis */
 #holiday-deco:not(:empty) {

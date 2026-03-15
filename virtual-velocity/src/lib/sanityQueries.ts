@@ -145,6 +145,27 @@ export async function getFeaturedTestimonials(limit: number = 6): Promise<Testim
   return await sanityClient.fetch(query);
 }
 
+export async function getRandomTestimonials(count: number = 3): Promise<Testimonial[]> {
+  const query = `*[_type == "testimonial"] {
+    _id,
+    author,
+    condition,
+    quote,
+    rating,
+    date,
+    featured,
+    verified,
+    avatar
+  }`;
+  const all: Testimonial[] = await sanityClient.fetch(query);
+  // Fisher-Yates shuffle, then take first `count`
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  return all.slice(0, count);
+}
+
 // Condition Queries
 export async function getAllConditions(): Promise<Condition[]> {
   const query = `*[_type == "condition"] | order(order asc) {

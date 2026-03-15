@@ -4,7 +4,7 @@ import OfficeHoursCard from './OfficeHoursCard.astro';
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-sage-700 text-white mt-auto" data-pagefind-ignore>
+<footer id="footer" class="bg-sage-700 text-white mt-auto" data-pagefind-ignore>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
       <!-- About Section -->
@@ -74,10 +74,15 @@ const currentYear = new Date().getFullYear();
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
-            <span>
-              Bayshore Town Center<br>
-              Milwaukee, WI
-            </span>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination_place_id=ChIJpwaRdmAeBYgRadfuDNZDi_4"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-white transition-colors"
+            >
+              {CONTACT.address.street}<br>
+              {CONTACT.address.city}, {CONTACT.address.state} {CONTACT.address.zip}
+            </a>
           </li>
           <li class="flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
