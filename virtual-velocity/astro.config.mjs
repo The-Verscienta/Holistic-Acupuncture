@@ -4,7 +4,6 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import node from '@astrojs/node';
-import { fileURLToPath } from 'url';
 
 // Conditionally import Cloudflare adapter
 // On Windows ARM64, workerd is not supported, so we use Node adapter for local builds
@@ -30,14 +29,22 @@ export default defineConfig({
         mode: 'standalone',
       }),
   vite: {
-    plugins: [tailwindcss()],
-    resolve: {
-      // Workaround for Astro 6.0.4 bug: missing "./assets/fonts/runtime" export
-      // https://github.com/withastro/astro/issues/xxxxx — remove when fixed in 6.0.5+
-      alias: {
-        'astro/assets/fonts/runtime': fileURLToPath(new URL('./node_modules/astro/dist/assets/fonts/runtime.js', import.meta.url)),
+    plugins: [
+      tailwindcss(),
+      // Workaround for Astro 6.0.4 bug: fonts/runtime module is incomplete.
+      // createGetFontData doesn't exist in dist; stub it until 6.0.5+ fixes this.
+      {
+        name: 'astro-fonts-runtime-stub',
+        resolveId(id) {
+          if (id === 'astro/assets/fonts/runtime') return '\0astro-fonts-runtime-stub';
+        },
+        load(id) {
+          if (id === '\0astro-fonts-runtime-stub') {
+            return `export const fontData = {}; export function createGetFontData() { return () => undefined; }`;
+          }
+        },
       },
-    },
+    ],
     build: {
       // Enable CSS code splitting for better caching
       cssCodeSplit: true,
