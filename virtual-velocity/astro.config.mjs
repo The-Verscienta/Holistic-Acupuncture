@@ -23,9 +23,6 @@ export default defineConfig({
   output: 'static', // Static by default, use prerender = false for SSR routes
   adapter: cloudflare
     ? cloudflare({
-        platformProxy: {
-          enabled: false, // Disable local platform proxy
-        },
         imageService: 'compile', // Optimize images at build time (sharp not available at runtime)
       })
     : node({
