@@ -3,6 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
+    "postinstall": "node scripts/patch-astro-fonts-runtime.cjs",
     "dev": "astro dev",
     "prebuild": "node scripts/convert-logo-to-webp.js && node scripts/generate-condition-redirects.js",
     "build": "astro build",
