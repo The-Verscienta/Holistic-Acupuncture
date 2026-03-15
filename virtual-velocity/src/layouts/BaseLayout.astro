@@ -26,6 +26,89 @@ const twitterHandle = SOCIAL.twitter;
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+  <script is:inline>
+    (function () {
+      var now = new Date();
+      var y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
+
+      // Chinese New Year [month, day] by year — update table around 2040
+      var cny = {
+        2024:[2,10], 2025:[1,29], 2026:[2,17], 2027:[2,6],  2028:[1,26],
+        2029:[2,13], 2030:[2,3],  2031:[1,23], 2032:[2,11], 2033:[1,31],
+        2034:[2,19], 2035:[2,8],  2036:[1,28], 2037:[2,15], 2038:[2,4],
+        2039:[1,24], 2040:[2,12]
+      };
+
+      // Emoji data stored in JS (not CSS) for reliable cross-browser access
+      window.__holidayEmojis = {
+        'christmas':        { logo: '🎄 ', deco: '🎄 ⛄ 🎁 ❄️' },
+        'halloween':        { logo: '🎃 ', deco: '🎃 🕸️ 🦇' },
+        'july-4th':         { logo: '🇺🇸 ', deco: '🎆 🇺🇸 🎇 ⭐' },
+        'st-patricks':      { logo: '☘️ ',  deco: '☘️ 🍀 🌟 🎶' },
+        'mlk':              { logo: '🕊️ ', deco: '✊ 🕊️ ⭐ 🌟' },
+        'valentines':       { logo: '❤️ ',  deco: '💕 ❤️ 🌹 💝' },
+        'chinese-new-year': { logo: '🧧 ', deco: '🧧 🐉 🏮 🎆' },
+        'veterans':         { logo: '🎖️ ', deco: '🇺🇸 ⭐ 🎖️ 🦅' }
+      };
+
+      // Returns day-of-month of the Nth Monday in a given month.
+      // Formula: 1 + ((8 - dow) % 7) gives the day of the first Monday.
+      // Verified: Jan 2026 starts Thu (dow=4) → firstMonday=5 → 3rd=19 ✓
+      function nthMonday(year, month, n) {
+        var date = new Date(year, month - 1, 1);
+        var dow = date.getDay();
+        var firstMonday = 1 + ((8 - dow) % 7);
+        return firstMonday + (n - 1) * 7;
+      }
+
+      // DST-safe date window check using YYYYMMDD integer comparison.
+      // NOTE: not safe across year boundaries — Christmas uses an explicit
+      // range instead (see detect() below).
+      function inWindow(y, m, d, wy, wm, wd, days) {
+        function toInt(yy, mm, dd) { return yy * 10000 + mm * 100 + dd; }
+        var target = new Date(wy, wm - 1, wd);
+        var lo = new Date(target); lo.setDate(target.getDate() - days);
+        var hi = new Date(target); hi.setDate(target.getDate() + days);
+        var check = toInt(y, m, d);
+        return check >= toInt(lo.getFullYear(), lo.getMonth() + 1, lo.getDate())
+            && check <= toInt(hi.getFullYear(), hi.getMonth() + 1, hi.getDate());
+      }
+
+      function detect(y, m, d) {
+        // Christmas window: Dec 11 – Jan 1 (intentionally asymmetric: 14 days
+        // before Dec 25, 7 days after). Uses explicit range instead of inWindow()
+        // because the window crosses a year boundary.
+        if ((m === 12 && d >= 11) || (m === 1 && d === 1)) return 'christmas';
+
+        var mlk  = nthMonday(y, 1, 3);
+        var cnyd = cny[y];
+
+        // Priority order (highest first after Christmas):
+        if (inWindow(y, m, d, y, 10, 31, 4))                      return 'halloween';
+        if (cnyd && inWindow(y, m, d, y, cnyd[0], cnyd[1], 3))    return 'chinese-new-year';
+        if (inWindow(y, m, d, y, 2,  14, 7))                      return 'valentines';
+        if (inWindow(y, m, d, y, 3,  17, 7))                      return 'st-patricks';
+        if (inWindow(y, m, d, y, 7,  4,  7))                      return 'july-4th';
+        if (inWindow(y, m, d, y, 1,  mlk, 3))                     return 'mlk';
+        if (inWindow(y, m, d, y, 11, 11, 7))                      return 'veterans';
+        return null;
+      }
+
+      var holiday = detect(y, m, d);
+      if (holiday) document.documentElement.dataset.holiday = holiday;
+
+      // Emoji injection runs after the DOM is ready (logo + deco elements exist).
+      document.addEventListener('DOMContentLoaded', function () {
+        var h = document.documentElement.dataset.holiday;
+        if (!h || !window.__holidayEmojis[h]) return;
+        var data = window.__holidayEmojis[h];
+        var deco = document.getElementById('holiday-deco');
+        var lel  = document.getElementById('holiday-emoji');
+        if (deco) deco.textContent = data.deco;
+        if (lel)  lel.textContent  = data.logo;
+      });
+    })();
+  </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="keywords" content="acupuncture, holistic health, traditional Chinese medicine, Milwaukee, Wisconsin, pain management, stress relief, fertility support, natural healing" />
