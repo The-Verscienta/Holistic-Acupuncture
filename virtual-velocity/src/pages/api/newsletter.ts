@@ -44,6 +44,7 @@ function getClientIp(request: Request): string {
  * a service like Mailchimp, ConvertKit, or Buttondown.
  */
 export const POST: APIRoute = async ({ request, locals }) => {
+  // Cloudflare Pages passes secrets via locals.runtime.env (runtime); import.meta.env is build-time only.
   const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
 
   try {

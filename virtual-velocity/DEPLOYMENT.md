@@ -4,6 +4,8 @@
 
 The contact form sends email via [Resend](https://resend.com). To avoid **500 errors** and "Failed to send message" on submit, set these in **Cloudflare Pages → your project → Settings → Environment variables**:
 
+**Important:** Cloudflare Pages injects env vars at **runtime** via `locals.runtime.env`, not at build time via Vite’s `import.meta.env`. The API routes read `RESEND_API_KEY` from `locals.runtime.env` first, then fall back to `import.meta.env` for local dev. So you must add the variables in the Cloudflare dashboard (not only in `.env`); otherwise the worker won’t see them.
+
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `RESEND_API_KEY` | **Yes** | API key from [Resend → API Keys](https://resend.com/api-keys). Create one and paste the key. |

@@ -4,8 +4,10 @@
  * Sends email via Resend (https://resend.com). See:
  * https://resend.com/docs/send-with-astro
  *
- * Setup: create API key at https://resend.com/api-keys, verify domain,
- * then set RESEND_API_KEY in .env.
+ * Setup: create API key at https://resend.com/api-keys, verify domain.
+ * - Local dev: set RESEND_API_KEY in .env (import.meta.env).
+ * - Cloudflare Pages: set RESEND_API_KEY in the dashboard; API routes pass it
+ *   via the optional apiKey argument (locals.runtime.env is runtime, import.meta.env is build-time only).
  */
 
 import { Resend } from 'resend';
