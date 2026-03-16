@@ -53,6 +53,9 @@
     "styled-components": "^6.2.0",
     "tailwindcss": "^4.1.18"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.55.1"
+  },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
     "pagefind": "^1.4.0",
