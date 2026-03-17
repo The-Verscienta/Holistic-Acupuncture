@@ -40,7 +40,7 @@ const { heading, description, primaryButton, secondaryButton, note } = Astro.pro
           target={primaryButton.target}
           rel={primaryButton.rel}
         >
-          {primaryButton.label}
+          <span class="holiday-btn-emoji" aria-hidden="true"></span>{primaryButton.label}
         </Button>
         {secondaryButton && (
           <Button

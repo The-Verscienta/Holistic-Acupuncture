@@ -102,10 +102,15 @@ const twitterHandle = SOCIAL.twitter;
         var h = document.documentElement.dataset.holiday;
         if (!h || !window.__holidayEmojis[h]) return;
         var data = window.__holidayEmojis[h];
-        var deco = document.getElementById('holiday-deco');
-        var lel  = document.getElementById('holiday-emoji');
-        if (deco) deco.textContent = data.deco;
-        if (lel)  lel.textContent  = data.logo;
+        var deco   = document.getElementById('holiday-deco');
+        var lel    = document.getElementById('holiday-emoji');
+        var footer = document.getElementById('holiday-footer-emoji');
+        if (deco)   deco.textContent   = data.deco;
+        if (lel)    lel.textContent    = data.logo;
+        if (footer) footer.textContent = data.logo;
+        document.querySelectorAll('.holiday-btn-emoji').forEach(function (el) {
+          el.textContent = data.logo;
+        });
       });
     })();
   </script>

@@ -4,13 +4,13 @@ import OfficeHoursCard from './OfficeHoursCard.astro';
 const currentYear = new Date().getFullYear();
 ---
 
-<footer id="footer" class="bg-sage-700 text-white mt-auto" data-pagefind-ignore>
+<footer id="footer" class="bg-gradient-to-br from-sage-700 to-sage-600 text-white mt-auto" data-pagefind-ignore>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
       <!-- About Section -->
       <div>
-        <h3 class="text-xl font-heading font-semibold mb-4">
-          Acupuncture & Holistic Health
+        <h3 class="text-xl font-heading font-semibold mb-4 text-white">
+          <span id="holiday-footer-emoji" aria-hidden="true"></span>Acupuncture & Holistic Health
         </h3>
         <p class="text-sage-100 text-sm leading-relaxed mb-4">
           Over 25 years of clinical excellence with 380,000+ successful treatments. Expert acupuncture and Chinese herbal medicine in Milwaukee.
@@ -25,7 +25,7 @@ const currentYear = new Date().getFullYear();
 
       <!-- Quick Links -->
       <div>
-        <h3 class="text-lg font-heading font-semibold mb-4">Quick Links</h3>
+        <h3 class="text-lg font-heading font-semibold mb-4 text-white">Quick Links</h3>
         <ul class="space-y-2">
           <li>
             <a href="/about" class="text-sage-100 hover:text-white transition-colors">
@@ -67,7 +67,7 @@ const currentYear = new Date().getFullYear();
 
       <!-- Contact Info -->
       <div>
-        <h3 class="text-lg font-heading font-semibold mb-4">Contact</h3>
+        <h3 class="text-lg font-heading font-semibold mb-4 text-white">Contact</h3>
         <ul class="space-y-3 text-sage-100 text-sm">
           <li class="flex items-start gap-2">
             <svg class="w-5 h-5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
