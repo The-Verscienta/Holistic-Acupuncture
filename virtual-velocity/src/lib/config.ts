@@ -10,7 +10,7 @@ export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'http
 // Site info
 export const SITE_NAME = 'Acupuncture & Holistic Health Associates';
 export const SITE_URL = 'https://holisticacupuncture.net';
-export const DEFAULT_OG_IMAGE = '/logo.png';
+export const DEFAULT_OG_IMAGE = '/images/default-og.jpg';
 
 /** Allowed origins for API CSRF check (production + optional preview, e.g. Cloudflare Pages) */
 export const ALLOWED_ORIGINS: string[] = [
