@@ -243,7 +243,21 @@ async function main() {
     (l) => l.trim() && !l.trim().startsWith('#')
   ).length;
 
-  const content = STATIC_REDIRECTS + conditionLines.join('\n') + '\n';
+  // Add trailing-slash variants for all blog redirect lines (Category 3).
+  // WordPress URLs always had trailing slashes; Cloudflare _redirects does NOT
+  // auto-match /slug and /slug/ — both must be explicit.
+  const blogRedirectPattern = /^(\/[\w-]+) (\/blog\/[\w-]+) (301)$/;
+  const extraLines = [];
+  for (const line of (STATIC_REDIRECTS + conditionLines.join('\n')).split('\n')) {
+    const m = line.match(blogRedirectPattern);
+    if (m && !m[1].endsWith('/')) {
+      extraLines.push(`${m[1]}/ ${m[2]} ${m[3]}`);
+    }
+  }
+
+  const content = STATIC_REDIRECTS + conditionLines.join('\n') + '\n\n'
+    + '# --- Trailing-slash variants for blog slugs (auto-generated) ---\n'
+    + extraLines.join('\n') + '\n';
   fs.writeFileSync(REDIRECTS_PATH, content, 'utf-8');
   console.log(
     `Wrote ${staticLineCount} static redirect(s) and ${count} condition redirect(s) to public/_redirects`

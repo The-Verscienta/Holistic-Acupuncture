@@ -6,7 +6,7 @@
     "dev": "astro dev",
     "prebuild": "node scripts/convert-logo-to-webp.js && node scripts/generate-condition-redirects.js",
     "build": "astro build",
-    "postbuild": "node scripts/fix-cloudflare-routes.js",
+    "postbuild": "npx pagefind --site dist --config pagefind.yml && node scripts/fix-cloudflare-routes.js",
     "check": "astro check",
     "lint": "astro check",
     "build:search": "astro build && npx pagefind --site dist --config pagefind.yml",
