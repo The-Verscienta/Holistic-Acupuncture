@@ -78,6 +78,7 @@ const bioHtml = member.bio ? renderPortableText(member.bio) : '';
 <BaseLayout
   title={`${member.name} - ${member.role}`}
   description={member.shortBio || `Learn more about ${member.name}, ${member.role} at Acupuncture & Holistic Health Associates.`}
+  breadcrumbs={[{name:'Home',url:'/'},{name:'About Us',url:'/about'},{name:member.name}]}
 >
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">

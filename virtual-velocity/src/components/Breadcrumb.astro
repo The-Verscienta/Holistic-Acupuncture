@@ -1,0 +1,28 @@
+---
+import { SITE_URL } from '../lib/config';
+
+interface BreadcrumbItem {
+  name: string;
+  url?: string; // omit for the current (last) page
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const siteOrigin = Astro.site?.origin || SITE_URL;
+
+const breadcrumbData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.name,
+    ...(item.url ? { item: new URL(item.url, siteOrigin).href } : {}),
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />

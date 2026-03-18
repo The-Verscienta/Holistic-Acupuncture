@@ -508,7 +508,7 @@ Close: X icon (top-right)
 │  🎉 Winter 2026 Special                │
 │                                        │
 │  $29 First Visit                       │
-│  (Regular $150)                        │
+│  (Regular $350)                        │
 │                                        │
 │  What's Included:                      │
 │  • Comprehensive consultation          │

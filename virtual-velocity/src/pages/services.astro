@@ -148,7 +148,8 @@ const packages = [
 
 <BaseLayout
   title="Services & Pricing"
-  description="Explore our acupuncture services and transparent pricing. From initial consultations to package deals, find the right treatment option for your health journey."
+  description="Explore our acupuncture services and transparent pricing. From consultations to package deals, find the right treatment for your health."
+  breadcrumbs={[{name:'Home',url:'/'},{name:'Services & Pricing'}]}
 >
   <!-- Hero Section -->
   <PageHero
@@ -202,7 +203,7 @@ const packages = [
           <div class="text-4xl">🎉</div>
           <div>
             <div class="text-lg font-semibold">New Patient Special - Only $29!</div>
-            <div class="text-sm opacity-90">First visit includes full consultation & treatment (reg. $150)</div>
+            <div class="text-sm opacity-90">First visit includes full consultation & treatment (reg. $350)</div>
           </div>
         </div>
         <Button variant="secondary" size="md" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">

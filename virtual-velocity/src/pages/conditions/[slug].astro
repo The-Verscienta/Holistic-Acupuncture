@@ -56,7 +56,7 @@ const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(conditio
 const categoryLabel = conditionCategories[condition.category] || condition.category;
 ---
 
-<BaseLayout title={metaTitle} description={metaDescription}>
+<BaseLayout title={metaTitle} description={metaDescription} breadcrumbs={[{name:'Home',url:'/'},{name:'Conditions We Treat',url:'/conditions'},{name:condition.name}]}>
   <!-- Hero -->
   <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12 md:py-16">
     <Container>

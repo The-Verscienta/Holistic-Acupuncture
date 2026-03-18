@@ -149,6 +149,7 @@ const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.
   title={metaTitle}
   description={metaDescription}
   image={ogImageUrl}
+  breadcrumbs={[{name:'Home',url:'/'},{name:'Blog',url:'/blog'},{name:decodeHtmlEntities(post.title)}]}
 >
   <!-- Article structured data for rich results -->
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
