@@ -1,42 +1,41 @@
 /**
- * Overwrite dist/_routes.json with a minimal config so no rule exceeds
- * Cloudflare's 100-character limit (Error 8000057).
+ * Write a minimal _routes.json so only API routes go to the Worker.
+ * Everything else is served as static assets (so _redirects rules fire).
  *
- * Run after `astro build` when deploying to Cloudflare Pages:
- *   npm run build && node scripts/fix-cloudflare-routes.js
+ * Writes to both dist/ and dist/client/ to cover both locations that
+ * @astrojs/cloudflare may use depending on the output mode.
  *
- * Or use postbuild in package.json.
+ * Run after `astro build`: postbuild in package.json.
  */
-import { writeFileSync, existsSync } from 'fs';
+import { writeFileSync, existsSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const distDir = join(__dirname, '..', 'dist');
-const routesPath = join(distDir, '_routes.json');
 
-const MAX_LEN = 100;
 const routes = {
   version: 1,
   include: [
-    '/api/*',  // API routes (contact, newsletter, testimonial, search)
-    '/blog',   // Blog index (prerender = false)
+    '/api/*',  // Server-side API routes (contact, newsletter, testimonial, search)
   ],
   exclude: [],
 };
 
-// Validate all patterns are under Cloudflare's limit
-const allPatterns = [...routes.include, ...routes.exclude];
-const over = allPatterns.filter((p) => p.length > MAX_LEN);
-if (over.length > 0) {
-  console.error(`fix-cloudflare-routes: pattern(s) over ${MAX_LEN} chars:`, over);
-  process.exit(1);
-}
-
-if (!existsSync(routesPath)) {
-  // No Cloudflare build output; skip (e.g. local Node adapter build)
+if (!existsSync(distDir)) {
+  console.log('fix-cloudflare-routes: dist/ not found, skipping.');
   process.exit(0);
 }
 
-writeFileSync(routesPath, JSON.stringify(routes, null, 2), 'utf8');
-console.log('fix-cloudflare-routes: wrote dist/_routes.json (all rules under 100 chars)');
+const content = JSON.stringify(routes, null, 2);
+
+// Write to dist/_routes.json (Cloudflare Pages root)
+writeFileSync(join(distDir, '_routes.json'), content, 'utf8');
+console.log('fix-cloudflare-routes: wrote dist/_routes.json');
+
+// Also write to dist/client/_routes.json (used by @astrojs/cloudflare server mode)
+const clientDir = join(distDir, 'client');
+if (existsSync(clientDir)) {
+  writeFileSync(join(clientDir, '_routes.json'), content, 'utf8');
+  console.log('fix-cloudflare-routes: wrote dist/client/_routes.json');
+}
