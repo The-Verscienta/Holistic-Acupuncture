@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
 import Navigation from './Navigation.astro';
 import Button from './Button.astro';
 import SearchModal from './SearchModal.astro';
@@ -19,7 +17,7 @@ import { CONTACT, JANE_BOOKING_URL } from '../lib/config';
         href="/"
         class="flex items-center gap-2 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
       >
-        <Image src={logo} alt="Acupuncture & Holistic Health Associates logo" width={40} height={40} class="h-10 w-auto shrink-0" loading="eager" />
+        <img src="/logo.webp" alt="Acupuncture & Holistic Health Associates logo" width="40" height="40" class="h-10 w-auto shrink-0" loading="eager" />
         <span id="holiday-emoji" aria-hidden="true"></span>
         <span class="hidden 2xl:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
         <span class="2xl:hidden">AHH Associates</span>
