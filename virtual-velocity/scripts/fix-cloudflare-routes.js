@@ -18,6 +18,7 @@ const routes = {
   version: 1,
   include: [
     '/api/*',  // Server-side API routes (contact, newsletter, testimonial, search)
+    '/blog',   // Blog index is SSR (pagination/filtering via query params)
   ],
   exclude: [],
 };
