@@ -4,6 +4,7 @@ import testimonial from './testimonial';
 import condition from './condition';
 import teamMember from './teamMember';
 import faq from './faq';
+import contactSubmission from './contactSubmission';
 
 export const schemaTypes = [
   blogPost,
@@ -12,4 +13,5 @@ export const schemaTypes = [
   condition,
   teamMember,
   faq,
+  contactSubmission,
 ];
