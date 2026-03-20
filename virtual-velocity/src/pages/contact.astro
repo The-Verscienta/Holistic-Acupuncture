@@ -229,6 +229,22 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
                 required
               />
 
+              <Select
+                id="referralSource"
+                name="referralSource"
+                label="How Did You Hear About Us?"
+                placeholder="Select an option..."
+                options={[
+                  { value: 'google-search', label: 'Google Search' },
+                  { value: 'google-maps', label: 'Google Maps' },
+                  { value: 'friend-family', label: 'Friend or Family Referral' },
+                  { value: 'doctor-referral', label: 'Doctor Referral' },
+                  { value: 'social-media', label: 'Social Media' },
+                  { value: 'returning-patient', label: 'Returning Patient' },
+                  { value: 'other', label: 'Other' },
+                ]}
+              />
+
               <div class="flex items-start gap-3">
                 <input
                   type="checkbox"
@@ -554,11 +570,13 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
         // Prepare data for API
         const contactMethodLabels: Record<string, string> = { phone: 'Phone Call', text: 'Text Message', email: 'Email' };
         const bestTimeLabels: Record<string, string> = { morning: 'Morning (9am–12pm)', afternoon: 'Afternoon (12pm–4pm)', evening: 'Evening (4pm–7pm)', anytime: 'Anytime' };
+        const referralSource = (formData.get('referralSource') as string) || null;
         const data = {
           name: name,
           email: email,
           phone: phone || null,
           message: `Reason: ${reason}\nCondition: ${formData.get('condition') || 'Not specified'}\nBest way to contact: ${contactMethodLabels[contactMethod] || contactMethod}\nBest time to contact: ${bestTimeLabels[bestTime] || bestTime}`,
+          referralSource: referralSource || undefined,
         };
 
         // Submit to API
