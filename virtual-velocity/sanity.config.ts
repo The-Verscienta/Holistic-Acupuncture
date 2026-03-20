@@ -96,6 +96,16 @@ export default defineConfig({
                   .title('FAQs')
                   .filter('_type == "faq"')
               ),
+            S.divider(),
+            S.listItem()
+              .title('Contact Submissions')
+              .icon(() => '📬')
+              .child(
+                S.documentTypeList('contactSubmission')
+                  .title('Contact Submissions')
+                  .filter('_type == "contactSubmission"')
+                  .defaultOrdering([{ field: 'submittedAt', direction: 'desc' }])
+              ),
           ]),
     }),
     visionTool(),
