@@ -195,6 +195,7 @@
   let pagefindLoaded = false;
 
   const searchTrigger = document.getElementById('search-trigger');
+  const mobileSearchTrigger = document.getElementById('mobile-search-trigger');
   const searchModal = document.getElementById('search-modal');
   const searchBackdrop = document.getElementById('search-backdrop');
   const searchClose = document.getElementById('search-close');
@@ -288,6 +289,7 @@
 
   // Event Listeners
   searchTrigger?.addEventListener('click', openSearch);
+  mobileSearchTrigger?.addEventListener('click', openSearch);
   searchBackdrop?.addEventListener('click', closeSearch);
   searchClose?.addEventListener('click', closeSearch);
 
