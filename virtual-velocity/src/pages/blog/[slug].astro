@@ -9,6 +9,7 @@ import { formatDate, decodeHtmlEntities, urlFor } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
 import { escapeHtml, safeHref, safeImageSrc } from '../../lib/sanitize';
 import { SITE_URL } from '../../lib/config';
+import NewPatientSpecial from '../../components/NewPatientSpecial.astro';
 
 export async function getStaticPaths() {
   const posts = await getAllBlogPosts();
@@ -273,6 +274,8 @@ const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.
       </div>
     </Container>
   </section>
+
+  <NewPatientSpecial />
 
   <!-- Related Posts -->
   {relatedPosts && relatedPosts.length > 0 && (

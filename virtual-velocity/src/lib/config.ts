@@ -45,6 +45,13 @@ export const CONTACT = {
   }
 };
 
+// New patient special offer pricing
+export const NEW_PATIENT_SPECIAL = {
+  price: 29,
+  regularPrice: 350,
+  get savings() { return this.regularPrice - this.price; },
+};
+
 // Business hours
 export const HOURS = {
   monday: '9:00 AM - 7:00 PM',

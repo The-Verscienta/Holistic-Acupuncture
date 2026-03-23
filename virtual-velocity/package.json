@@ -58,11 +58,11 @@
     "@pagefind/linux-x64": "1.4.0",
     "@rollup/rollup-linux-x64-gnu": "4.55.1",
     "@tailwindcss/oxide-linux-x64-gnu": "4.1.18",
-    "lightningcss-linux-x64-gnu": "1.30.2"
+    "lightningcss-linux-x64-gnu": "1.30.2",
+    "pagefind": "1.4.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
-    "pagefind": "^1.4.0",
     "sharp": "^0.34.5",
     "typescript": "^5.9.3"
   }

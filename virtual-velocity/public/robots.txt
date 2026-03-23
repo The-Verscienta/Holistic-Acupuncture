@@ -7,5 +7,10 @@ Allow: /
 Disallow: /api/
 Disallow: /_astro/
 
+# Disallow WordPress legacy query-string URLs
+Disallow: /*?page_id=
+Disallow: /*?p=
+Disallow: /*?preview=
+
 # Sitemap location
 Sitemap: https://holisticacupuncture.net/sitemap.xml

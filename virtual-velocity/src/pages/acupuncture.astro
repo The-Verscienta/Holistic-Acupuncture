@@ -9,6 +9,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import StepCard from '../components/StepCard.astro';
+import NewPatientSpecial from '../components/NewPatientSpecial.astro';
 ---
 
 <BaseLayout
@@ -188,12 +189,13 @@ import StepCard from '../components/StepCard.astro';
     </Container>
   </section>
 
+  <NewPatientSpecial />
+
   <!-- CTA Section -->
   <CTASection
     heading="Experience the Benefits of Acupuncture"
     description="Join thousands of patients who have found natural relief and lasting wellness through our expert acupuncture care."
     primaryButton={{ label: 'Book Your First Visit', href: '/contact' }}
     secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/\D/g, '')}`, icon: 'phone' }}
-    note="🎉 First Visit Special: Only $29 (regular $150) - Valid through March 31, 2026"
   />
 </BaseLayout>

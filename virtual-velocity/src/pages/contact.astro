@@ -8,8 +8,12 @@ import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import PageHero from '../components/PageHero.astro';
 import FeatureCard from '../components/FeatureCard.astro';
-import { CONTACT, HOURS } from '../lib/config';
+import { CONTACT, HOURS, NEW_PATIENT_SPECIAL } from '../lib/config';
 import OfficeHoursCard from '../components/OfficeHoursCard.astro';
+
+const now = new Date();
+const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
 ---
 
 <BaseLayout
@@ -114,6 +118,15 @@ import OfficeHoursCard from '../components/OfficeHoursCard.astro';
         <!-- Contact Form -->
         <div class="lg:col-span-2">
           <Card variant="elevated" padding="lg">
+            <!-- New patient urgency banner -->
+            <div class="flex items-center gap-3 bg-earth-orange/10 border border-earth-orange/30 rounded-lg px-4 py-3 mb-6">
+              <span class="text-2xl" aria-hidden="true">🎉</span>
+              <p class="text-sm text-gray-800">
+                <strong class="text-earth-orange">New Patient Special — only ${NEW_PATIENT_SPECIAL.price}</strong> (reg. ${NEW_PATIENT_SPECIAL.regularPrice}).
+                Book by <strong>{expiryDate}</strong> to claim this offer. Fill out the form below and we'll get you scheduled.
+              </p>
+            </div>
+
             <h2 class="text-2xl font-heading font-bold text-charcoal mb-6">
               Send Us a Message
             </h2>

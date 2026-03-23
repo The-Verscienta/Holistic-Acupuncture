@@ -10,6 +10,7 @@ import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import FeatureCard from '../components/FeatureCard.astro';
+import NewPatientSpecial from '../components/NewPatientSpecial.astro';
 
 const services = [
   {
@@ -195,23 +196,7 @@ const packages = [
     </Container>
   </section>
 
-  <!-- Special Offer Banner -->
-  <section class="bg-gradient-to-br from-tcm-red to-tcm-red-dark text-white py-6">
-    <Container>
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <div class="text-4xl">🎉</div>
-          <div>
-            <div class="text-lg font-semibold">New Patient Special - Only $29!</div>
-            <div class="text-sm opacity-90">First visit includes full consultation & treatment (reg. $350)</div>
-          </div>
-        </div>
-        <Button variant="secondary" size="md" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
-          Book Now
-        </Button>
-      </div>
-    </Container>
-  </section>
+  <NewPatientSpecial />
 
   <!-- Individual Services -->
   <section class="py-16 md:py-20 lg:py-24 bg-white">
@@ -409,7 +394,7 @@ const packages = [
   <!-- CTA Section -->
   <CTASection
     heading="Ready to Start Your Healing Journey?"
-    description="Book your appointment today and take the first step towards better health. New patients receive their first visit for only $29!"
+    description="Book your appointment today and take the first step towards better health."
     primaryButton={{ label: 'Book Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
     secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/[^0-9]/g, '')}`, icon: 'phone' }}
   />

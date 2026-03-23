@@ -2,15 +2,18 @@
 import Container from './Container.astro';
 import Card from './Card.astro';
 import Button from './Button.astro';
+import { NEW_PATIENT_SPECIAL } from '../lib/config';
 
-// Always expires at the end of the current month
+// Always expires at midnight at the end of the current month
 const now = new Date();
-const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 const expiryDate = endOfMonth.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
   year: 'numeric',
 });
+// ISO string passed to client for countdown target
+const expiryISO = endOfMonth.toISOString();
 ---
 
 <section class="py-16 md:py-20 bg-white">
@@ -23,9 +26,20 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', {
         <h3 class="text-2xl md:text-3xl font-heading font-bold text-charcoal mb-4">
           Ready to Experience the Benefits of Acupuncture?
         </h3>
-        <p class="text-lg text-gray-700 mb-6">
-          Book your first consultation and receive <strong>$321 off</strong> your initial visit. That's a comprehensive assessment and first treatment for just $29!
+        <p class="text-lg text-gray-700 mb-4">
+          Book your first consultation and receive <strong>${NEW_PATIENT_SPECIAL.savings} off</strong> your initial visit. That's a comprehensive assessment and first treatment for just ${NEW_PATIENT_SPECIAL.price}!
         </p>
+
+        <!-- Countdown timer -->
+        <div class="flex justify-center gap-3 mb-6" aria-label="Offer countdown timer">
+          {(['days','hours','mins','secs'] as const).map(unit => (
+            <div class="flex flex-col items-center bg-sage-50 rounded-lg px-4 py-3 min-w-[64px]">
+              <span class="text-2xl font-bold font-heading text-sage-700 tabular-nums" data-countdown={unit}>--</span>
+              <span class="text-xs text-gray-500 uppercase tracking-wide mt-1">{unit}</span>
+            </div>
+          ))}
+        </div>
+
         <Button variant="primary" size="lg" icon="calendar" href="/contact">
           Schedule Your Consultation
         </Button>
@@ -36,3 +50,37 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', {
     </Card>
   </Container>
 </section>
+
+<script define:vars={{ expiryISO }}>
+  (function () {
+    var deadline = new Date(expiryISO).getTime();
+    var days  = document.querySelectorAll('[data-countdown="days"]');
+    var hours = document.querySelectorAll('[data-countdown="hours"]');
+    var mins  = document.querySelectorAll('[data-countdown="mins"]');
+    var secs  = document.querySelectorAll('[data-countdown="secs"]');
+
+    function pad(n) { return String(Math.max(0, n)).padStart(2, '0'); }
+
+    function tick() {
+      var diff = deadline - Date.now();
+      if (diff <= 0) {
+        days.forEach(function(el)  { el.textContent = '00'; });
+        hours.forEach(function(el) { el.textContent = '00'; });
+        mins.forEach(function(el)  { el.textContent = '00'; });
+        secs.forEach(function(el)  { el.textContent = '00'; });
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000)  / 60000);
+      var s = Math.floor((diff % 60000)    / 1000);
+      days.forEach(function(el)  { el.textContent = pad(d); });
+      hours.forEach(function(el) { el.textContent = pad(h); });
+      mins.forEach(function(el)  { el.textContent = pad(m); });
+      secs.forEach(function(el)  { el.textContent = pad(s); });
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>

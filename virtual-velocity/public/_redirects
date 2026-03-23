@@ -19,6 +19,27 @@
 /diagnosis /acupuncture 301
 /welcome-website-acupuncture-holistic-health-associates / 301
 /photo-by-saranya7 / 301
+/photo-by-usgs /blog 301
+/photo-by-sara-bakhshi /blog 301
+/photo-by-md-duran /blog 301
+/about_us /about 301
+/about_us/ /about 301
+/acupuncture-reviews /reviews 301
+/acupuncture-reviews/ /reviews 301
+/viruses-on-your-mind /blog/viruses-on-your-mind 301
+/viruses-on-your-mind/ /blog/viruses-on-your-mind 301
+/acupuncture-chiropractic /blog/acupuncture-chiropractic 301
+/acupuncture-chiropractic/ /blog/acupuncture-chiropractic 301
+/no-ones-friend-insomina /blog/no-ones-friend-insomina 301
+/no-ones-friend-insomina/ /blog/no-ones-friend-insomina 301
+/quinoa /blog/quinoa 301
+/quinoa/ /blog/quinoa 301
+/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee /blog/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee 301
+/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee/ /blog/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee 301
+/using-acupuncture-for-mood-disorders /blog/using-acupuncture-for-mood-disorders 301
+/using-acupuncture-for-mood-disorders/ /blog/using-acupuncture-for-mood-disorders 301
+/best-of-test /blog 301
+/best-of-test/ /blog 301
 /blog/page/* /blog 301
 /wp-content/* /blog 301
 
@@ -31,7 +52,20 @@
 /2697-2/* /blog 301
 /sleep/* /conditions/sleep 301
 
+# WordPress tag/category/date archive wildcards
+/tag/* /blog 301
+/category/* /blog 301
+/2016/* /blog 301
+/2017/* /blog 301
+/2022/* /blog 301
+
 # Blog posts with known attachment sub-paths (wildcard rules)
+/four-golden-rules-of-acupuncture/* /blog/four-golden-rules-of-acupuncture 301
+/embracing-autumn-how-acupuncture-can-support-your-seasonal-transition/* /blog/embracing-autumn-how-acupuncture-can-support-your-seasonal-transition 301
+/unlocking-chinese-herbal-medicine/* /blog/unlocking-chinese-herbal-medicine 301
+/faqs-about-perimenopause-treatment-and-acupuncture/* /blog/faqs-about-perimenopause-treatment-and-acupuncture 301
+/acupuncture-for-stomach-issues/* /blog/acupuncture-for-stomach-issues 301
+/chinese-new-year/* /blog 301
 /summer-health-tips-from-an-acupuncturist/* /blog/summer-health-tips-from-an-acupuncturist 301
 /exploring-colon-cleanses-myths-methods-and-what-really-works/* /blog/exploring-colon-cleanses-myths-methods-and-what-really-works 301
 /oil-pulling-modern-oral-health/* /blog/oil-pulling-modern-oral-health 301

@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import { SITE_URL, SOCIAL, DEFAULT_OG_IMAGE } from '../lib/config';
+import { SITE_URL, SOCIAL, DEFAULT_OG_IMAGE, CONTACT, JANE_BOOKING_URL } from '../lib/config';
 
 interface Props {
   title: string;
@@ -183,6 +183,50 @@ const twitterHandle = SOCIAL.twitter;
     </main>
     <Footer />
     <CookieConsent />
+
+    <!-- Mobile sticky Book Now bar (hidden on lg+ where header button is visible) -->
+    <div
+      id="mobile-book-bar"
+      class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-gray-200 shadow-lg px-4 py-3 flex items-center gap-3 translate-y-full transition-transform duration-300"
+      aria-hidden="true"
+    >
+      <a
+        href={`tel:+1${CONTACT.phoneRaw}`}
+        class="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg border border-sage-300 text-sage-700 font-semibold text-sm"
+        aria-label={`Call ${CONTACT.phone}`}
+      >
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+        </svg>
+        Call Us
+      </a>
+      <a
+        href={JANE_BOOKING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex-[2] flex items-center justify-center gap-2 py-3 rounded-lg bg-sage-700 hover:bg-sage-600 text-white font-semibold text-sm transition-colors"
+      >
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        Book Appointment
+      </a>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var bar = document.getElementById('mobile-book-bar');
+        if (!bar) return;
+        var shown = false;
+        window.addEventListener('scroll', function () {
+          if (window.scrollY > 300 && !shown) {
+            shown = true;
+            bar.classList.remove('translate-y-full');
+            bar.removeAttribute('aria-hidden');
+          }
+        }, { passive: true });
+      })();
+    </script>
 
   <script is:inline>
     (function () {
