@@ -196,6 +196,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Track contact form submission as conversion event to Meta (non-critical)
+    // TEMPORARILY DISABLED FOR DEBUGGING
+    /*
     const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN ?? import.meta.env.META_CONVERSIONS_API_TOKEN;
     const metaDatasetId = runtimeEnv.META_DATASET_ID ?? import.meta.env.META_DATASET_ID;
     if (metaAccessToken && metaDatasetId) {
@@ -218,6 +220,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
         console.error('Failed to send Meta conversion event:', err);
       }
     }
+    */
 
     // Return success response
     return new Response(
