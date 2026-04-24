@@ -1,0 +1,191 @@
+import { createHash, randomUUID } from 'crypto';
+
+/**
+ * SHA-256 hash a string (for PII like email, phone)
+ */
+function hashSHA256(value: string): string {
+  return createHash('sha256')
+    .update(value)
+    .digest('hex');
+}
+
+/**
+ * Normalize and hash email (lowercase, trim, hash)
+ */
+function normalizeAndHashEmail(email: string): string {
+  const normalized = email.toLowerCase().trim();
+  return hashSHA256(normalized);
+}
+
+/**
+ * Normalize and hash phone number (remove non-digits, hash)
+ */
+function normalizeAndHashPhone(phone: string): string {
+  const normalized = phone.replace(/\D/g, '');
+  if (normalized.length < 10) {
+    throw new Error('Invalid phone number');
+  }
+  return hashSHA256(normalized);
+}
+
+export { hashSHA256, normalizeAndHashEmail, normalizeAndHashPhone };
+
+/**
+ * Customer data for a conversion event (hashed PII)
+ */
+export interface CustomerData {
+  email?: string; // SHA-256 hashed
+  phone_number?: string; // SHA-256 hashed
+  client_ip_address?: string; // Not hashed
+  client_user_agent?: string; // Not hashed
+}
+
+/**
+ * Conversion event sent to Meta
+ */
+export interface ConversionEvent {
+  event_name: 'Contact';
+  event_time: number; // Unix timestamp in seconds
+  action_source: 'website';
+  event_id: string; // UUID
+  event_source_url: string;
+  custom_data?: {
+    contact_reason?: string;
+    contact_type?: string;
+    contact_location?: string;
+  };
+  user_data: CustomerData;
+}
+
+/**
+ * Send a conversion event to Meta's Conversions API
+ */
+export async function sendConversionEvent(
+  event: ConversionEvent,
+  accessToken: string,
+  datasetId: string
+): Promise<{ success: boolean; eventId?: string; error?: string }> {
+  const apiUrl = `https://graph.facebook.com/v18.0/${datasetId}/events`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        data: [event],
+        access_token: accessToken,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Meta API error:', errorData);
+      return {
+        success: false,
+        error: errorData.error?.message || 'Unknown error',
+      };
+    }
+
+    const result = await response.json();
+    console.log('Conversion event sent to Meta:', event.event_id);
+    return {
+      success: true,
+      eventId: event.event_id,
+    };
+  } catch (error) {
+    console.error('Failed to send conversion event to Meta:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * Create and send a contact form conversion event
+ */
+export async function sendContactFormConversion(
+  data: {
+    email?: string;
+    phone?: string;
+    clientIp?: string;
+    clientUserAgent?: string;
+    sourceUrl: string;
+    contactReason?: string;
+  },
+  accessToken: string,
+  datasetId: string
+): Promise<{ success: boolean; eventId?: string; error?: string }> {
+  const eventId = randomUUID();
+  const customer_data: CustomerData = {
+    client_ip_address: data.clientIp,
+    client_user_agent: data.clientUserAgent,
+  };
+
+  // Hash PII if provided
+  if (data.email) {
+    try {
+      customer_data.email = normalizeAndHashEmail(data.email);
+    } catch (e) {
+      console.warn('Failed to hash email:', e);
+    }
+  }
+
+  if (data.phone) {
+    try {
+      customer_data.phone_number = normalizeAndHashPhone(data.phone);
+    } catch (e) {
+      console.warn('Failed to hash phone:', e);
+    }
+  }
+
+  const event: ConversionEvent = {
+    event_name: 'Contact',
+    event_time: Math.floor(Date.now() / 1000),
+    action_source: 'website',
+    event_id: eventId,
+    event_source_url: data.sourceUrl,
+    user_data: customer_data,
+    custom_data: data.contactReason
+      ? { contact_reason: data.contactReason }
+      : undefined,
+  };
+
+  return sendConversionEvent(event, accessToken, datasetId);
+}
+
+/**
+ * Create and send a phone call conversion event
+ */
+export async function sendPhoneCallConversion(
+  data: {
+    clientIp?: string;
+    clientUserAgent?: string;
+    sourceUrl: string;
+    location: string;
+  },
+  accessToken: string,
+  datasetId: string
+): Promise<{ success: boolean; eventId?: string; error?: string }> {
+  const eventId = randomUUID();
+
+  const event: ConversionEvent = {
+    event_name: 'Contact',
+    event_time: Math.floor(Date.now() / 1000),
+    action_source: 'website',
+    event_id: eventId,
+    event_source_url: data.sourceUrl,
+    user_data: {
+      client_ip_address: data.clientIp,
+      client_user_agent: data.clientUserAgent,
+    },
+    custom_data: {
+      contact_type: 'phone_click',
+      contact_location: data.location,
+    },
+  };
+
+  return sendConversionEvent(event, accessToken, datasetId);
+}
