@@ -664,4 +664,26 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
       }
     });
   }
+
+  // Track phone call clicks from contact page
+  document.addEventListener('DOMContentLoaded', () => {
+    const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+    phoneLinks.forEach((link) => {
+      link.addEventListener('click', async () => {
+        try {
+          await fetch('/api/phone-click', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              location: 'contact-page',
+              sourceUrl: window.location.href,
+            }),
+          });
+        } catch (error) {
+          console.error('Failed to track phone click:', error);
+          // Continue - don't block the phone call
+        }
+      });
+    });
+  });
 </script>
