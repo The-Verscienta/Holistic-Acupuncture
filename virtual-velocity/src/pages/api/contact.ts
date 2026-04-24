@@ -3,6 +3,7 @@ import { createClient } from '@sanity/client';
 import { sendContactFormNotification, sendConfirmationEmail } from '../../lib/email';
 import { validateOriginList } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
+import { sendContactFormConversion } from '../../lib/meta';
 
 export const prerender = false;
 
@@ -40,6 +41,10 @@ function getClientIp(request: Request): string {
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     'unknown'
   );
+}
+
+function getClientUserAgent(request: Request): string {
+  return request.headers.get('user-agent') || '';
 }
 
 /**
@@ -187,6 +192,30 @@ export const POST: APIRoute = async ({ request, locals }) => {
         });
       } catch (err) {
         console.error('Failed to save contact submission to Sanity:', err);
+      }
+    }
+
+    // Track contact form submission as conversion event to Meta (non-critical)
+    const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN ?? import.meta.env.META_CONVERSIONS_API_TOKEN;
+    const metaDatasetId = runtimeEnv.META_DATASET_ID ?? import.meta.env.META_DATASET_ID;
+    if (metaAccessToken && metaDatasetId) {
+      try {
+        const sourceUrl = request.headers.get('referer') || request.url;
+        const clientUserAgent = getClientUserAgent(request);
+        await sendContactFormConversion(
+          {
+            email,
+            phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
+            clientIp,
+            clientUserAgent,
+            sourceUrl,
+            contactReason: data.referralSource || undefined,
+          },
+          metaAccessToken,
+          metaDatasetId
+        );
+      } catch (err) {
+        console.error('Failed to send Meta conversion event:', err);
       }
     }
 
