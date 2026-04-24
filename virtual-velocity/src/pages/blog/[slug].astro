@@ -96,8 +96,15 @@ function renderPortableText(blocks: any[]) {
       // Handle images - sanitize src and alt (only allow http(s) or relative URLs)
       if (block._type === 'image') {
         const alt = escapeHtml(block.alt || '');
-        let src = block._sanityAsset || '';
-        if (src.startsWith('image@')) src = src.substring(6);
+        let src = '';
+        if (block.asset) {
+          // Native Sanity image reference
+          try { src = urlFor(block).width(800).url(); } catch { src = ''; }
+        } else if (block._sanityAsset) {
+          // WordPress-migrated image
+          src = block._sanityAsset;
+          if (src.startsWith('image@')) src = src.substring(6);
+        }
         const safeSrc = safeImageSrc(src);
         if (!safeSrc) return ''; // Unsafe or invalid src dropped
         return '<figure class="my-8"><img src="' + safeSrc + '" alt="' + alt + '" class="rounded-lg shadow-md w-full" />' + (alt ? '<figcaption class="text-sm text-gray-600 mt-2 text-center">' + alt + '</figcaption>' : '') + '</figure>';
