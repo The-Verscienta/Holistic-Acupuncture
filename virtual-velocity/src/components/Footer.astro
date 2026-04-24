@@ -5,6 +5,29 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer id="footer" class="bg-gradient-to-br from-sage-700 to-sage-600 text-white mt-auto" data-pagefind-ignore>
+<script>
+  // Track phone call clicks from footer
+  document.addEventListener('DOMContentLoaded', () => {
+    const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+    phoneLinks.forEach((link) => {
+      link.addEventListener('click', async () => {
+        try {
+          await fetch('/api/phone-click', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              location: 'footer',
+              sourceUrl: window.location.href,
+            }),
+          });
+        } catch (error) {
+          console.error('Failed to track phone click:', error);
+          // Continue - don't block the phone call
+        }
+      });
+    });
+  });
+</script>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
       <!-- About Section -->
