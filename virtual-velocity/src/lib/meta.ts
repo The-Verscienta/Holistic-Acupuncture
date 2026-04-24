@@ -1,18 +1,29 @@
-import { createHash, randomUUID } from 'crypto';
+/**
+ * Simple UUID v4 generator (works in browsers and Cloudflare Workers)
+ */
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 /**
- * SHA-256 hash a string (for PII like email, phone)
+ * SHA-256 hash a string using Web Crypto API (works in Cloudflare Workers)
  */
-function hashSHA256(value: string): string {
-  return createHash('sha256')
-    .update(value)
-    .digest('hex');
+async function hashSHA256(value: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(value);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
  * Normalize and hash email (lowercase, trim, hash)
  */
-function normalizeAndHashEmail(email: string): string {
+async function normalizeAndHashEmail(email: string): Promise<string> {
   const normalized = email.toLowerCase().trim();
   return hashSHA256(normalized);
 }
@@ -20,7 +31,7 @@ function normalizeAndHashEmail(email: string): string {
 /**
  * Normalize and hash phone number (remove non-digits, hash)
  */
-function normalizeAndHashPhone(phone: string): string {
+async function normalizeAndHashPhone(phone: string): Promise<string> {
   const normalized = phone.replace(/\D/g, '');
   if (normalized.length < 10) {
     throw new Error('Invalid phone number');
@@ -133,7 +144,7 @@ export async function sendContactFormConversion(
     throw new Error('Invalid sourceUrl');
   }
 
-  const eventId = randomUUID();
+  const eventId = generateUUID();
   const customer_data: CustomerData = {
     client_ip_address: data.clientIp,
     client_user_agent: data.clientUserAgent,
@@ -142,7 +153,7 @@ export async function sendContactFormConversion(
   // Hash PII if provided
   if (data.email) {
     try {
-      customer_data.email = normalizeAndHashEmail(data.email);
+      customer_data.email = await normalizeAndHashEmail(data.email);
     } catch (e) {
       console.warn('Failed to hash email:', e);
     }
@@ -150,7 +161,7 @@ export async function sendContactFormConversion(
 
   if (data.phone) {
     try {
-      customer_data.phone_number = normalizeAndHashPhone(data.phone);
+      customer_data.phone_number = await normalizeAndHashPhone(data.phone);
     } catch (e) {
       console.warn('Failed to hash phone:', e);
     }
@@ -191,7 +202,7 @@ export async function sendPhoneCallConversion(
     throw new Error('Invalid sourceUrl');
   }
 
-  const eventId = randomUUID();
+  const eventId = generateUUID();
 
   const event: ConversionEvent = {
     event_name: 'Contact',
