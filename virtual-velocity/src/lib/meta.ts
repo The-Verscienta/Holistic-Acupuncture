@@ -80,7 +80,15 @@ export async function sendConversionEvent(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        return {
+          success: false,
+          error: `HTTP ${response.status}`,
+        };
+      }
       console.error('Meta API error:', errorData);
       return {
         success: false,
@@ -118,6 +126,13 @@ export async function sendContactFormConversion(
   accessToken: string,
   datasetId: string
 ): Promise<{ success: boolean; eventId?: string; error?: string }> {
+  // Validate sourceUrl
+  try {
+    new URL(data.sourceUrl);
+  } catch {
+    throw new Error('Invalid sourceUrl');
+  }
+
   const eventId = randomUUID();
   const customer_data: CustomerData = {
     client_ip_address: data.clientIp,
@@ -169,6 +184,13 @@ export async function sendPhoneCallConversion(
   accessToken: string,
   datasetId: string
 ): Promise<{ success: boolean; eventId?: string; error?: string }> {
+  // Validate sourceUrl
+  try {
+    new URL(data.sourceUrl);
+  } catch {
+    throw new Error('Invalid sourceUrl');
+  }
+
   const eventId = randomUUID();
 
   const event: ConversionEvent = {
