@@ -196,15 +196,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Track contact form submission as conversion event to Meta (non-critical)
-    // TEMPORARILY DISABLED FOR DEBUGGING
-    /*
     const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN ?? import.meta.env.META_CONVERSIONS_API_TOKEN;
     const metaDatasetId = runtimeEnv.META_DATASET_ID ?? import.meta.env.META_DATASET_ID;
     if (metaAccessToken && metaDatasetId) {
       try {
+        console.log('[Meta] Sending conversion event', { metaDatasetId, email, hasPhone: !!data.phone });
         const sourceUrl = request.headers.get('referer') || request.url;
         const clientUserAgent = getClientUserAgent(request);
-        await sendContactFormConversion(
+        const result = await sendContactFormConversion(
           {
             email,
             phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
@@ -216,11 +215,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
           metaAccessToken,
           metaDatasetId
         );
+        console.log('[Meta] Conversion result:', result);
       } catch (err) {
-        console.error('Failed to send Meta conversion event:', err);
+        console.error('[Meta] Failed to send conversion event:', err instanceof Error ? err.message : String(err));
       }
+    } else {
+      console.warn('[Meta] Missing credentials:', { hasToken: !!metaAccessToken, hasDatasetId: !!metaDatasetId });
     }
-    */
 
     // Return success response
     return new Response(
