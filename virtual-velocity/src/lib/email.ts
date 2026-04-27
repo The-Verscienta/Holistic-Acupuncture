@@ -56,8 +56,8 @@ export async function sendEmail(options: EmailOptions, apiKey?: string): Promise
     return false;
   }
 
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL || 'noreply@holisticacupuncture.net';
-  const fromName = import.meta.env.RESEND_FROM_NAME || 'Holistic Acupuncture Website';
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL || 'info@milwaukeeacu.com';
+  const fromName = import.meta.env.RESEND_FROM_NAME || 'Milwaukee Acupuncture';
   const from = `${fromName} <${fromEmail}>`;
 
   const to = Array.isArray(options.to) ? options.to : [options.to];
@@ -90,7 +90,7 @@ export async function sendEmail(options: EmailOptions, apiKey?: string): Promise
  * Send contact form notification email
  */
 export async function sendContactFormNotification(data: ContactFormData, apiKey?: string): Promise<boolean> {
-  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@holisticacupuncture.net';
+  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@milwaukeeacu.com';
 
   const html = `
     <!DOCTYPE html>
@@ -244,7 +244,7 @@ Reply to this email to respond to ${data.name}
  * Send testimonial submission notification email
  */
 export async function sendTestimonialNotification(data: TestimonialData, apiKey?: string): Promise<boolean> {
-  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@holisticacupuncture.net';
+  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@milwaukeeacu.com';
 
   const stars = '⭐'.repeat(data.rating);
 
