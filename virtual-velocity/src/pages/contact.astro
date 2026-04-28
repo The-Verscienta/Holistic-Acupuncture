@@ -153,6 +153,7 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
                   type="text"
                   placeholder="John"
                   required
+                  autocomplete="given-name"
                 />
 
                 <TextInput
@@ -162,6 +163,7 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
                   type="text"
                   placeholder="Doe"
                   required
+                  autocomplete="family-name"
                 />
               </div>
 
@@ -174,6 +176,8 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
                   placeholder="john.doe@example.com"
                   required
                   helpText="We'll never share your email"
+                  autocomplete="email"
+                  inputmode="email"
                 />
 
                 <TextInput
@@ -183,6 +187,8 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
                   type="tel"
                   placeholder="(414) 555-1234"
                   helpText="Optional but helpful for scheduling"
+                  autocomplete="tel"
+                  inputmode="tel"
                 />
               </div>
 
@@ -258,17 +264,22 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
                 ]}
               />
 
-              <div class="flex items-start gap-3">
-                <input
-                  type="checkbox"
-                  id="newsletter"
-                  name="newsletter"
-                  class="mt-1 w-4 h-4 rounded border-gray-400 text-sage-600 focus:ring-sage-500"
-                />
-                <label for="newsletter" class="text-sm text-gray-700">
+              <!-- Wrap input + label in a label so the entire row is tappable
+                   (≥44px target). The visible checkbox stays 16px so the
+                   visual design is unchanged; the hit area is the row. -->
+              <label for="newsletter" class="flex items-start gap-3 py-2 cursor-pointer min-h-[44px]">
+                <span class="flex items-center justify-center w-11 h-11 -my-2 -ml-2 flex-shrink-0">
+                  <input
+                    type="checkbox"
+                    id="newsletter"
+                    name="newsletter"
+                    class="w-4 h-4 rounded border-gray-500 text-sage-600 focus:ring-sage-500"
+                  />
+                </span>
+                <span class="text-sm text-gray-700 pt-2">
                   I'd like to receive health tips and news from Acupuncture & Holistic Health Associates
-                </label>
-              </div>
+                </span>
+              </label>
 
               <div class="pt-4">
                 <Button type="submit" variant="primary" size="lg" fullWidth icon="calendar">
@@ -281,7 +292,12 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
             </form>
 
             <!-- Loading State (hidden by default) -->
-            <div id="loading-message" class="hidden mt-6 p-4 bg-sage-50 border border-sage-200 rounded-[var(--radius-md)]">
+            <div
+              id="loading-message"
+              class="hidden mt-6 p-4 bg-sage-50 border border-sage-200 rounded-[var(--radius-md)]"
+              role="status"
+              aria-live="polite"
+            >
               <div class="flex items-center gap-3">
                 <svg class="w-6 h-6 text-sage-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -293,20 +309,30 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
             </div>
 
             <!-- Success Message (hidden by default) -->
-            <div id="success-message" class="hidden mt-6 p-4 bg-success/10 border border-success rounded-[var(--radius-md)]">
+            <div
+              id="success-message"
+              class="hidden mt-6 p-4 bg-success/10 border border-success rounded-[var(--radius-md)]"
+              role="status"
+              aria-live="polite"
+            >
               <div class="flex items-center gap-3">
                 <svg class="w-6 h-6 text-success flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
                 <div>
-                  <h3 class="font-semibold text-success">Message Sent Successfully!</h3>
+                  <h3 id="success-heading" tabindex="-1" class="font-semibold text-success">Message Sent Successfully!</h3>
                   <p class="text-sm text-gray-700 mt-1">We'll get back to you within 24 hours.</p>
                 </div>
               </div>
             </div>
 
             <!-- Error Message (hidden by default) -->
-            <div id="error-message" class="hidden mt-6 p-4 bg-error/10 border border-error rounded-[var(--radius-md)]">
+            <div
+              id="error-message"
+              class="hidden mt-6 p-4 bg-error/10 border border-error rounded-[var(--radius-md)]"
+              role="alert"
+              aria-live="assertive"
+            >
               <div class="flex items-center gap-3">
                 <svg class="w-6 h-6 text-error flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
@@ -420,6 +446,8 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
       const error = document.createElement('div');
       error.id = `${fieldId}-error`;
       error.className = 'flex items-center gap-2 text-sm text-red-600 mt-1';
+      // Announce inline field errors to screen readers as they appear
+      error.setAttribute('role', 'alert');
       const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       svg.setAttribute('class', 'w-4 h-4 flex-shrink-0');
       svg.setAttribute('fill', 'currentColor');
@@ -563,9 +591,10 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
       try {
         // Show loading state
         submitButton.disabled = true;
+        submitButton.setAttribute('aria-busy', 'true');
         const originalHTML = submitButton.innerHTML;
         submitButton.innerHTML = `
-          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -618,6 +647,15 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
           successMessage.classList.remove('hidden');
           successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
+          // Move focus into the success message so screen-reader and keyboard
+          // users land somewhere meaningful (the form just disappeared from
+          // under their cursor).
+          const successHeading = document.getElementById('success-heading');
+          if (successHeading) {
+            // Defer focus until after the smooth scroll has started
+            requestAnimationFrame(() => successHeading.focus({ preventScroll: true }));
+          }
+
           // If newsletter checkbox was checked, handle that too
           const newsletter = formData.get('newsletter');
           if (newsletter === 'on') {
@@ -654,8 +692,9 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
         loadingMessage.classList.add('hidden');
         errorMessage.classList.remove('hidden');
         submitButton.disabled = false;
+        submitButton.removeAttribute('aria-busy');
         submitButton.innerHTML = `
-          <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
           Send Message

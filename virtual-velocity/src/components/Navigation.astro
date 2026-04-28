@@ -7,16 +7,35 @@ const navigation = [
   { name: 'Blog', href: '/blog' },
   { name: 'FAQ', href: '/faq' },
 ];
+
+// Match the active link by treating href as a path prefix so
+// /blog/some-post still highlights "Blog" and /conditions/back-pain → "Conditions".
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+function isActive(href: string): boolean {
+  return currentPath === href || currentPath.startsWith(href + '/');
+}
 ---
 
 <nav class="flex items-center gap-1">
-  {navigation.map(item => (
-    <a
-      href={item.href}
-      class="px-3 py-2 text-gray-600 hover:text-sage-700 font-medium transition-colors relative group"
-    >
-      {item.name}
-      <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-tcm-red transition-all duration-300 group-hover:w-full"></span>
-    </a>
-  ))}
+  {navigation.map(item => {
+    const active = isActive(item.href);
+    return (
+      <a
+        href={item.href}
+        aria-current={active ? 'page' : undefined}
+        class:list={[
+          'px-3 py-2 font-medium transition-colors relative group',
+          active ? 'text-sage-700' : 'text-gray-600 hover:text-sage-700',
+        ]}
+      >
+        {item.name}
+        <span
+          class:list={[
+            'absolute bottom-0 left-0 h-0.5 bg-tcm-red transition-all duration-300',
+            active ? 'w-full' : 'w-0 group-hover:w-full',
+          ]}
+        ></span>
+      </a>
+    );
+  })}
 </nav>

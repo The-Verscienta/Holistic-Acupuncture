@@ -68,6 +68,8 @@ export const SOCIAL = {
   facebook: 'https://www.facebook.com/acupunctureMKE/',
   instagram: 'https://instagram.com/acupuncturemke',
   linkedin: 'https://www.linkedin.com/company/acupuncture-&-holistic-health-associates',
-  // Optional: set for Twitter card attribution when links are shared
-  twitter: 'https://twitter.com/acuphilip'
+  // Twitter card attribution: must be the @handle, not a URL
+  twitter: '@acuphilip',
+  // Profile URL used in schema.org sameAs
+  twitterUrl: 'https://twitter.com/acuphilip'
 };

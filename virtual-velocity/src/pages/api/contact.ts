@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@sanity/client';
 import { sendContactFormNotification, sendConfirmationEmail } from '../../lib/email';
-import { validateOriginList } from '../../lib/sanitize';
+import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
 import { sendContactFormConversion } from '../../lib/meta';
 
@@ -60,6 +60,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const sanityWriteToken = runtimeEnv.SANITY_WRITE_TOKEN ?? import.meta.env.SANITY_WRITE_TOKEN;
 
   try {
+    // Reject oversized bodies before reading them into memory
+    const tooBig = checkBodySize(request, 50_000);
+    if (tooBig) return tooBig;
+
     // CSRF protection: allow config origins + same-origin (request host) so form works on any deployment
     if (!validateOriginList(request, getAllowedOrigins(request))) {
       return new Response(

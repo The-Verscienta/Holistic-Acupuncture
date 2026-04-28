@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getAllBlogPosts, getAllConditions } from '../../lib/sanityQueries';
+import type { BlogPost, Condition } from '../../types/sanity';
 
 export const prerender = false;
 
@@ -26,6 +27,41 @@ function getClientIp(request: Request): string {
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
     'unknown'
   );
+}
+
+// Module-scope TTL cache for searchable corpus.
+// On Cloudflare Workers each isolate has its own cache; that's fine —
+// blog/condition data changes rarely and the goal is to stop hammering
+// Sanity on every keystroke. Sanity webhook revalidation could clear this
+// in the future via a separate purge endpoint.
+const CORPUS_TTL_MS = 5 * 60 * 1000; // 5 minutes
+let corpusCache: {
+  blogPosts: BlogPost[];
+  conditions: Condition[];
+  expiresAt: number;
+} | null = null;
+let corpusInflight: Promise<{ blogPosts: BlogPost[]; conditions: Condition[] }> | null = null;
+
+async function getCorpus(): Promise<{ blogPosts: BlogPost[]; conditions: Condition[] }> {
+  const now = Date.now();
+  if (corpusCache && corpusCache.expiresAt > now) {
+    return { blogPosts: corpusCache.blogPosts, conditions: corpusCache.conditions };
+  }
+  // Coalesce concurrent misses so a burst of requests triggers a single fetch
+  if (corpusInflight) return corpusInflight;
+  corpusInflight = (async () => {
+    const [blogPosts, conditions] = await Promise.all([
+      getAllBlogPosts(),
+      getAllConditions(),
+    ]);
+    corpusCache = { blogPosts, conditions, expiresAt: Date.now() + CORPUS_TTL_MS };
+    return { blogPosts, conditions };
+  })();
+  try {
+    return await corpusInflight;
+  } finally {
+    corpusInflight = null;
+  }
 }
 
 interface SearchResult {
@@ -71,11 +107,8 @@ export const GET: APIRoute = async ({ request, url }) => {
       );
     }
 
-    // Fetch all searchable content
-    const [blogPosts, conditions] = await Promise.all([
-      getAllBlogPosts(),
-      getAllConditions()
-    ]);
+    // Fetch all searchable content (cached in-isolate for CORPUS_TTL_MS)
+    const { blogPosts, conditions } = await getCorpus();
 
     const results: SearchResult[] = [];
 

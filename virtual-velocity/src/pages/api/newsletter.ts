@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { sendNewsletterWelcomeEmail } from '../../lib/email';
-import { validateOriginList } from '../../lib/sanitize';
+import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
 
 export const prerender = false;
@@ -48,6 +48,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
 
   try {
+    // Reject oversized bodies before reading them into memory
+    const tooBig = checkBodySize(request, 5_000);
+    if (tooBig) return tooBig;
+
     // CSRF protection: allow config + same-origin so form works on any deployment
     if (!validateOriginList(request, getAllowedOrigins(request))) {
       return new Response(

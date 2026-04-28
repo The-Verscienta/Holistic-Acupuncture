@@ -64,6 +64,27 @@ export function validateOriginList(request: Request, allowedOrigins: string[]): 
 }
 
 /**
+ * Reject requests whose Content-Length header exceeds maxBytes.
+ * Returns a 413 Response when over-limit, or null when OK to proceed.
+ *
+ * Body parsing in Workers buffers the full body into memory, so the guard
+ * must run BEFORE `request.json()`. Header is client-supplied; combine with
+ * platform-level limits (Cloudflare WAF / Workers max body size) for full coverage.
+ */
+export function checkBodySize(request: Request, maxBytes = 50_000): Response | null {
+  const lenHeader = request.headers.get('content-length');
+  if (!lenHeader) return null; // No header → let the runtime handle/reject
+  const len = parseInt(lenHeader, 10);
+  if (Number.isFinite(len) && len > maxBytes) {
+    return new Response(
+      JSON.stringify({ success: false, error: 'Request body too large' }),
+      { status: 413, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+  return null;
+}
+
+/**
  * Return a URL string only if it looks like a safe http(s) or relative path for img src.
  * For Sanity image URLs we allow https and relative; block javascript:, data:, etc.
  */

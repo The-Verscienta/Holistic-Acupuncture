@@ -39,6 +39,7 @@ export async function getFeaturedBlogPosts(limit: number = 3): Promise<BlogPost[
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   const query = `*[_type == "blog" && slug.current == $slug][0] {
     _id,
+    _updatedAt,
     title,
     slug,
     "author": author->{_id, name, slug, photo, role, credentials},

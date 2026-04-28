@@ -11,9 +11,9 @@ const structuredData = {
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
-    url: `${SITE_URL}/favicon.svg`,
-    width: 250,
-    height: 250
+    url: `${SITE_URL}/logo.png`,
+    width: 703,
+    height: 827
   },
   image: {
     "@type": "ImageObject",
@@ -40,6 +40,12 @@ const structuredData = {
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
       opens: "09:00",
       closes: "19:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Friday", "Saturday", "Sunday"],
+      opens: "00:00",
+      closes: "00:00"
     }
   ],
   priceRange: "$$",
@@ -85,13 +91,6 @@ const structuredData = {
     "Pain Management",
     "Integrative Medicine"
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "500",
-    bestRating: "5",
-    worstRating: "1"
-  },
   founder: {
     "@type": "Person",
     name: "Dr. David Curry",

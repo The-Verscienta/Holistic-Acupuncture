@@ -10,10 +10,15 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
 ---
 
 {import.meta.env.PROD && gaId && (
+  <!--
+    role="region" instead of "dialog": this banner is non-blocking — users can
+    keep interacting with the page while it's visible — so a modal-dialog role
+    misrepresents the affordance to assistive tech.
+  -->
   <div
     id="cookie-consent"
     class="fixed bottom-0 left-0 right-0 z-50 hidden"
-    role="dialog"
+    role="region"
     aria-label="Cookie consent"
     aria-describedby="cookie-consent-text"
   >
@@ -28,7 +33,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
         <div class="flex gap-3 flex-shrink-0">
           <button
             id="cookie-decline"
-            class="px-4 py-2 text-sm font-medium text-sage-600 bg-sage-50 hover:bg-sage-100 rounded-lg transition-colors"
+            class="px-4 py-2 text-sm font-medium text-sage-700 bg-white hover:bg-sage-50 border border-sage-700 rounded-lg transition-colors"
           >
             Decline
           </button>

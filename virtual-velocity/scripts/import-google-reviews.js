@@ -1,16 +1,24 @@
 /**
- * Import Google reviews from holisticacupuncture.net/reviews/ into Sanity testimonials.
+ * Import Google reviews from Outscraper into Sanity testimonials.
  *
+ * - Fetches reviews via Outscraper's Google Maps Reviews API (async + poll)
  * - Skips any review that already exists (matched by author name)
- * - Names are stored as first name + last initial (e.g. "Victoria B.")
+ * - Names are anonymized to first name + last initial (e.g. "Victoria B.")
+ * - Uses the actual star rating from Google
+ * - Skips reviews under 50 chars (Sanity schema min) and truncates over 1500 (max)
  * - condition field is left blank (not available from Google reviews)
- * - All reviews are 5-star
  *
  * Usage:
- *   node scripts/import-google-reviews.js [--dry-run]
+ *   node scripts/import-google-reviews.js [--dry-run] [--limit=N] [--sort=newest|highest|lowest]
  *
  * Requires in .env:
- *   PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET, SANITY_API_TOKEN
+ *   OUTSCRAPER_API_KEY      - https://app.outscraper.com/profile
+ *   PUBLIC_SANITY_PROJECT_ID
+ *   PUBLIC_SANITY_DATASET
+ *   SANITY_API_TOKEN        - write token
+ *
+ * Free tier: 500 reviews/month. Outscraper bills per review returned, so this
+ * script defaults to --limit=500 to stay free. Override with --limit=N to fetch fewer.
  */
 
 import { createClient } from '@sanity/client';
@@ -18,7 +26,29 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const client = createClient({
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
+
+// Source of truth: virtual-velocity/src/lib/config.ts CONTACT.address.googlePlaceId
+const GOOGLE_PLACE_ID = 'ChIJpwaRdmAeBYgRadfuDNZDi_4';
+
+const OUTSCRAPER_API_KEY = process.env.OUTSCRAPER_API_KEY;
+const OUTSCRAPER_BASE = 'https://api.outscraper.com';
+
+const args = process.argv.slice(2);
+const isDryRun = args.includes('--dry-run');
+const limitArg = args.find((a) => a.startsWith('--limit='));
+const sortArg = args.find((a) => a.startsWith('--sort='));
+const REVIEWS_LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : 500;
+const SORT = sortArg ? sortArg.split('=')[1] : 'newest';
+
+const POLL_INTERVAL_MS = 5000;
+const POLL_TIMEOUT_MS = 5 * 60 * 1000; // 5 min
+const SCHEMA_MIN_QUOTE = 50;
+const SCHEMA_MAX_QUOTE = 1500;
+
+const sanity = createClient({
   projectId: process.env.PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.PUBLIC_SANITY_DATASET || 'production',
   token: process.env.SANITY_API_TOKEN,
@@ -26,126 +56,186 @@ const client = createClient({
   useCdn: false,
 });
 
-const isDryRun = process.argv.includes('--dry-run');
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
 function toFirstNameLastInitial(fullName) {
-  const parts = fullName.trim().split(/\s+/);
+  const parts = (fullName || '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'Anonymous';
   if (parts.length === 1) return parts[0];
   const first = parts[0];
   const lastInitial = parts[parts.length - 1][0].toUpperCase();
   return `${first} ${lastInitial}.`;
 }
 
-// Reviews scraped from https://holisticacupuncture.net/reviews/
-const googleReviews = [
-  {
-    fullName: 'Victoria Brauer',
-    date: '2025-10-15',
-    quote: "I was curious about acupuncture for many years, then finally decided to make an appointment. I'm so glad to have discovered this clinic because they have improved my life. I had various health issues for many years and tried different treatments & medications, but the issues came back or got worse. I was frustrated after seeing several doctors and paying too much money for appts/meds that wouldn't make me feel better. I felt a difference after a week of acupuncture treatment and I was hooked. The treatments are very relaxing and I appreciate the education the team provides about acupuncture and healthier living. I highly recommend making an appointment! I'm still blown away by the results after coming here for 2 years.",
-  },
-  {
-    fullName: 'Lori Kuehn',
-    date: '2025-09-26',
-    quote: "I want to thank my acupuncturist. After six months of neck pain, I felt immediate relief after my first session.",
-  },
-  {
-    fullName: 'Tamara mcc6',
-    date: '2025-09-20',
-    quote: "Acupuncture has been a life changer for me. I thought this was going to be a way of living the rest of my life in pain. Acupuncture has been great experience for me. So glad I gave it a try. Awesome team of people who are gentle and compassionate.",
-  },
-  {
-    fullName: 'Dan Ney',
-    date: '2025-09-20',
-    quote: "The AHHA team is amazing and a blessing to our community!! I had no idea of the benefits from acupuncture. Late July my back locked up out of the blue. It was so sever that somedays I couldn't get out of bed. I saw a chiropractor which did help but still had a lot of pain. I then reached out to my primary physician and tried muscle relaxers which made me drowsy and still in a lot of pain. I was worried that this may lead to surgery, I was referred to try acupuncture. I reached out to AHHA and that same day had an appointment and received my first treatment. After just the first treatment I had a huge gain in relief from the pain. After 5 weeks, I'm completely pain free and back to full function. The treatments are easy and only take about a half hour. The team makes everything seamless and they really care about you. I recommend acupuncture and highly recommend the AHHA team for anyone that has experienced a back issue like I did and in general to improve their health! Very blessed that they are so close to home!",
-  },
-  {
-    fullName: 'Jenny Benjamin',
-    date: '2025-09-09',
-    quote: "I have had jaw pain for years because I have TMJ. It has gotten worse in the last couple of years because of dental work. TMJ has many adverse symptoms beyond jaw pain: neck pain, sinus trouble, vertigo, headaches, and eye strain. I've experienced all of those related problems due to TMJ. After going to the emergency room with a migraine that stemmed from a TMJ flare up, I sought out treatment at Acupuncture & Holistic Health Associates. The team's expertise, kindness, empathy, and professionalism drew me in right away, and after a few weeks of treatment I started to feel much better. After a few months of treatment, I am pain free and realize how much pain I had been enduring on a daily basis before getting help from Acupuncture & Holistic Health Associates. I cannot praise, recommend, or rate this team high enough; the relief their care has brought me has changed my life.",
-  },
-  {
-    fullName: 'Betty Schmidt',
-    date: '2025-09-05',
-    quote: "In the spring of 2025 I found myself in severe pain in my arms, shoulders, wrists and fingers. I wasn't able to do everyday things like dressing myself. The pain was so severe I couldn't sleep. I was put on a pain medication that helped a little. A specialist told me my pain was my new normal. Facing assisted living was not for me. I found AHHA ( the only original style acupuncture clinic). After the first session the pain started to lessen. After several sessions I was able to stop my strong pain meds. I am now able to live my life again and do everything! I no longer need to hire a caregiver. A big thank you to Acupuncture & Holistic Health Associates. It's been amazing!",
-  },
-  {
-    fullName: 'Bill Pierce',
-    date: '2025-09-03',
-    quote: "I was in bad shape a few months ago and found my way into Acupuncture and Holistic Health and I can now say it was one of the best decisions in my life. I was dealing with IBS and pain in my hips and back and now I feel so much better I can hardly believe it. My IBS is a non issue and after taking medicine for heartburn for over a decade I am completely off the meds now. I'm able to work out as the tension in my hips and back has left. The amazing kind and compassionate staff as well as the treatments and herbs have helped so much I'll always be grateful and happy I took the leap of faith and checked them out.",
-  },
-  {
-    fullName: 'Crystal Lu',
-    date: '2025-08-29',
-    quote: "Only one month of treatment and I've had a wonderful experience at Acupuncture and Holistic Health Associates. Acupuncture has helped me tremendously with my digestive health, as well as my neck and back pain. Not only do I feel better overall, but I also notice I have more energy and feel overall healthy! The staff is always on top of their \"A\" game and genuinely takes the time to get to know their patients. What I appreciate most is they educate you so you can take the right steps toward improving your health. They make it clear that your care is a partnership: if you combine acupuncture with the proper lifestyle changes, you'll see great results. If you only rely on the sessions without making changes, you may miss out on the full benefits. I highly recommend them to anyone looking for a natural, supportive, and effective approach to better health.",
-  },
-  {
-    fullName: 'Deborah Anderson',
-    date: '2025-08-05',
-    quote: "Truly an amazing experience with tangible results. Everyone is professional, engaging and responsive to your personal journey toward optimal health!",
-  },
-  {
-    fullName: 'Tamara Martinsek',
-    date: '2025-04-08',
-    quote: "I was skeptical. But decided that some of the things I have been relying on western medicine to fix had hit a plateau of healing and were not going to get better. So after a discussion with my fav nurse practitioner about alternative options for both my physical and mental health I decided to accept an offer for a review and introductory session. It has been about 6 months and I am 100% invested and seeing great results. A combination of herbs and weekly sessions have totally turned my life around. Less pain, more energy, better mood, no longer depressed, losing weight, and I have cut down on medication scripted by my GP with no ill effects. We even dealt with a major injury in December without medication or physical therapy. My only regret is that I didn't do this sooner! And the team is the best!",
-  },
-  {
-    fullName: 'Shelly Sabourin',
-    date: '2025-02-05',
-    quote: "As a nurse, extremely impressed with the way the team approaches health, wellness, education, and treatment. After two sessions, I am pain free from an acute issue after traveling. Highly recommend incorporating acupuncture into your health maintenance routine! I give them 5++++ stars! It's been an incredible experience.",
-  },
-  {
-    fullName: 'Michele Ripp',
-    date: '2021-01-13',
-    quote: "I love everything about AHHA -- from the staff, to the treatment plan, specifically curated to address my ailments. It's amazing to see positive results after only a couple of treatments. Between receiving treatment and a specially formulated herbal blend, my lower back and neck pain have not returned. Thank you for always extending a warm welcome and improving my overall health.",
-  },
-  {
-    fullName: 'John Zamorski',
-    date: '2020-08-24',
-    quote: "Acupuncture Needles! Scares a LOT of people if they have never experienced the treatments. Let me immediately ease your mind — the tiny thin needles cause no discomfort at all. I first experienced acupuncture about twelve years ago for pretty severe shoulder pain from lifting something I shouldn't have alone. They sat me down, stuck a few pins in me, told me to relax for about fifteen minutes and the pain disseminated. I was impressed. They explained the pain relief was temporary but if I repeated the process three times a week for a couple of weeks, the pain would go away and stay away. I returned this past January when I got shingles in my right arm and lost total mobility of my right arm. My doctor and a neuro-orthopedic sports medicine doctor couldn't agree on a cause. I called AHHA and I am happy to report my arm is 100% fully recovered — full mobility, no pain. The staff are Rock Stars. From the front desk to the acupuncturists, everyone treats you like family. I could not ask for more.",
-  },
-];
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function toIsoDate(review) {
+  // Outscraper exposes a few possible date fields; prefer review_datetime_utc.
+  const raw =
+    review.review_datetime_utc ||
+    review.review_timestamp ||
+    review.review_date ||
+    null;
+  if (!raw) return null;
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+async function outscraperRequest(path, opts = {}) {
+  const res = await fetch(`${OUTSCRAPER_BASE}${path}`, {
+    ...opts,
+    headers: {
+      'X-API-KEY': OUTSCRAPER_API_KEY,
+      Accept: 'application/json',
+      ...(opts.headers || {}),
+    },
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Outscraper ${path} → ${res.status}: ${body.slice(0, 300)}`);
+  }
+  return res.json();
+}
+
+async function fetchReviewsFromOutscraper() {
+  const query = encodeURIComponent(`place_id:${GOOGLE_PLACE_ID}`);
+  const url =
+    `/maps/reviews-v3?query=${query}` +
+    `&reviewsLimit=${REVIEWS_LIMIT}` +
+    `&sort=${encodeURIComponent(SORT)}` +
+    `&async=true`;
+
+  console.log(`Submitting Outscraper job (limit=${REVIEWS_LIMIT}, sort=${SORT})...`);
+  const submission = await outscraperRequest(url);
+  const requestId = submission.id;
+  if (!requestId) {
+    throw new Error(`No request id from Outscraper submission: ${JSON.stringify(submission)}`);
+  }
+  console.log(`Request id: ${requestId}. Polling...`);
+
+  const start = Date.now();
+  while (Date.now() - start < POLL_TIMEOUT_MS) {
+    await sleep(POLL_INTERVAL_MS);
+    const status = await outscraperRequest(`/requests/${requestId}`);
+    const s = (status.status || '').toLowerCase();
+    process.stdout.write(`  status=${status.status || 'unknown'}\r`);
+    if (s === 'success' || s === 'finished') {
+      console.log('\nJob complete.');
+      // Either inline data or a results_location URL.
+      if (Array.isArray(status.data)) return status.data;
+      if (status.results_location) {
+        const r = await fetch(status.results_location);
+        if (!r.ok) throw new Error(`results_location fetch failed: ${r.status}`);
+        const json = await r.json();
+        return json.data || json;
+      }
+      throw new Error(`Job finished but no data field: ${JSON.stringify(status).slice(0, 300)}`);
+    }
+    if (s === 'failed' || s === 'error') {
+      throw new Error(`Outscraper job failed: ${JSON.stringify(status)}`);
+    }
+  }
+  throw new Error(`Outscraper job timed out after ${POLL_TIMEOUT_MS / 1000}s`);
+}
+
+function flattenReviews(data) {
+  // data is an array of place result objects; each may have a reviews_data array.
+  const reviews = [];
+  for (const place of data || []) {
+    const list = place?.reviews_data || place?.reviews || [];
+    for (const r of list) reviews.push(r);
+  }
+  return reviews;
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
 
 async function main() {
-  console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
-  console.log(`Reviews to import: ${googleReviews.length}\n`);
+  if (!OUTSCRAPER_API_KEY) {
+    console.error('Missing OUTSCRAPER_API_KEY in .env');
+    process.exit(1);
+  }
+  if (!process.env.SANITY_API_TOKEN) {
+    console.error('Missing SANITY_API_TOKEN in .env');
+    process.exit(1);
+  }
 
-  // Fetch existing testimonials to avoid duplicates
-  const existing = await client.fetch(`*[_type == "testimonial"]{ author }`);
-  const existingNames = new Set(existing.map((t) => t.author.toLowerCase()));
+  console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`Place ID: ${GOOGLE_PLACE_ID}`);
+
+  const data = await fetchReviewsFromOutscraper();
+  const reviews = flattenReviews(data);
+  console.log(`Reviews fetched: ${reviews.length}\n`);
+
+  if (reviews.length === 0) {
+    console.log('Nothing to import.');
+    return;
+  }
+
+  // Existing testimonials → dedup by author name
+  const existing = await sanity.fetch(`*[_type == "testimonial"]{ author }`);
+  const existingNames = new Set(existing.map((t) => (t.author || '').toLowerCase()));
   console.log(`Existing testimonials in Sanity: ${existing.length}`);
 
   let created = 0;
-  let skipped = 0;
+  let skippedDup = 0;
+  let skippedShort = 0;
+  let skippedNoText = 0;
 
-  for (const review of googleReviews) {
-    const author = toFirstNameLastInitial(review.fullName);
+  for (const r of reviews) {
+    const fullName = r.author_title || r.author_name || r.reviewer_name || '';
+    const text = (r.review_text || r.text || '').trim();
+    const rating = Number(r.review_rating || r.rating || 0);
+    const date = toIsoDate(r) || new Date().toISOString().slice(0, 10);
 
+    if (!text) {
+      skippedNoText++;
+      continue;
+    }
+    if (text.length < SCHEMA_MIN_QUOTE) {
+      skippedShort++;
+      continue;
+    }
+
+    const author = toFirstNameLastInitial(fullName);
     if (existingNames.has(author.toLowerCase())) {
-      console.log(`  SKIP (already exists): ${author}`);
-      skipped++;
+      console.log(`  SKIP (duplicate author): ${author}`);
+      skippedDup++;
       continue;
     }
 
     const doc = {
       _type: 'testimonial',
       author,
-      quote: review.quote,
-      rating: 5,
-      date: review.date,
+      quote: text.slice(0, SCHEMA_MAX_QUOTE),
+      rating: rating >= 1 && rating <= 5 ? Math.round(rating) : 5,
+      date,
       featured: false,
       verified: true,
     };
 
     if (isDryRun) {
-      console.log(`  DRY RUN - would create: ${author} (${review.date})`);
+      console.log(`  DRY RUN - would create: ${author} (${date}, ${doc.rating}★)`);
     } else {
-      await client.create(doc);
-      console.log(`  CREATED: ${author} (${review.date})`);
+      await sanity.create(doc);
+      console.log(`  CREATED: ${author} (${date}, ${doc.rating}★)`);
+      // Reserve the name immediately so a same-batch duplicate is also skipped.
+      existingNames.add(author.toLowerCase());
     }
     created++;
   }
 
-  console.log(`\nDone. Created: ${created}, Skipped: ${skipped}`);
+  console.log(
+    `\nDone. Created: ${created}, Dup skipped: ${skippedDup}, ` +
+      `Short skipped: ${skippedShort}, No-text skipped: ${skippedNoText}`,
+  );
 }
 
 main().catch((err) => {

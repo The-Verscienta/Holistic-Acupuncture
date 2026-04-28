@@ -123,27 +123,42 @@ const ogImageUrl = post.featuredImage
   : undefined;
 
 const postUrl = `${SITE_URL}/blog/${post.slug.current}`;
+
+// Prefer a real Person author for E-E-A-T on health content; fall back to the
+// clinic Organization when a post has no author set (some WP-migrated posts).
+const authorSchema = post.author?.name
+  ? {
+      '@type': 'Person',
+      name: post.author.name,
+      ...(post.author.role && { jobTitle: post.author.role }),
+      ...(post.author.slug?.current && {
+        url: `${SITE_URL}/team/${post.author.slug.current}`,
+      }),
+    }
+  : {
+      '@type': 'Organization',
+      name: 'Acupuncture & Holistic Health Associates',
+      url: SITE_URL,
+    };
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
   headline: decodeHtmlEntities(post.title),
   description: post.excerpt || '',
   url: postUrl,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   datePublished: post.publishedAt,
-  dateModified: post.publishedAt,
-  author: {
-    '@type': 'Organization',
-    name: 'Acupuncture & Holistic Health Associates',
-    url: SITE_URL
-  },
+  dateModified: post._updatedAt || post.publishedAt,
+  author: authorSchema,
   publisher: {
     '@type': 'Organization',
     name: 'Acupuncture & Holistic Health Associates',
     logo: {
       '@type': 'ImageObject',
-      url: `${SITE_URL}/favicon.svg`,
-      width: 512,
-      height: 512
+      url: `${SITE_URL}/logo.png`,
+      width: 703,
+      height: 827
     }
   },
   ...(ogImageUrl && { image: ogImageUrl })
@@ -157,6 +172,7 @@ const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.
   title={metaTitle}
   description={metaDescription}
   image={ogImageUrl}
+  ogType="article"
   breadcrumbs={[{name:'Home',url:'/'},{name:'Blog',url:'/blog'},{name:decodeHtmlEntities(post.title)}]}
 >
   <!-- Article structured data for rich results -->

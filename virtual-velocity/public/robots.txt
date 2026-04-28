@@ -13,4 +13,4 @@ Disallow: /*?p=
 Disallow: /*?preview=
 
 # Sitemap location
-Sitemap: https://holisticacupuncture.net/sitemap.xml
+Sitemap: https://holisticacupuncture.net/sitemap-index.xml

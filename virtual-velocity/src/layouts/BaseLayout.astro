@@ -11,10 +11,11 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  ogType?: 'website' | 'article';
   breadcrumbs?: { name: string; url?: string }[];
 }
 
-const { title, description, image, breadcrumbs } = Astro.props;
+const { title, description, image, ogType = 'website', breadcrumbs } = Astro.props;
 const siteOrigin = Astro.site?.origin || SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
 const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates | Milwaukee, WI' : `${title} | Acupuncture & Holistic Health Associates`;
@@ -124,9 +125,10 @@ const twitterHandle = SOCIAL.twitter;
 
     <!-- SEO -->
     <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -155,10 +157,22 @@ const twitterHandle = SOCIAL.twitter;
     <meta name="theme-color" content="#657a52" />
 
     <!-- Fonts loaded via Google Fonts (rewritten by Cloudflare Fonts at the edge) -->
+    <!-- Preconnect to font origins so the async stylesheet swap is fast -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Non-blocking stylesheet load: print -> onload swap to all -->
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+      />
+    </noscript>
 
     <!-- Structured Data -->
     <StructuredData />
@@ -184,11 +198,13 @@ const twitterHandle = SOCIAL.twitter;
     <Footer />
     <CookieConsent />
 
-    <!-- Mobile sticky Book Now bar (hidden on lg+ where header button is visible) -->
+    <!-- Mobile sticky Book Now bar (hidden on lg+ where header button is visible).
+         Uses `inert` so the bar's links are removed from the tab order and
+         a11y tree until shown — `aria-hidden="true"` alone leaves them tabbable. -->
     <div
       id="mobile-book-bar"
       class="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-white border-t border-gray-200 shadow-lg px-4 py-3 flex items-center gap-3 translate-y-full transition-transform duration-300"
-      aria-hidden="true"
+      inert
     >
       <a
         href={`tel:${CONTACT.phoneRaw}`}
@@ -222,7 +238,7 @@ const twitterHandle = SOCIAL.twitter;
           if (window.scrollY > 300 && !shown) {
             shown = true;
             bar.classList.remove('translate-y-full');
-            bar.removeAttribute('aria-hidden');
+            bar.removeAttribute('inert');
           }
         }, { passive: true });
       })();
@@ -297,21 +313,36 @@ const twitterHandle = SOCIAL.twitter;
 
       // Dynamically load canvas-confetti only during a holiday week
       var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js';
+      s.src = '/vendor/confetti.browser.min.js';
       s.onload = runEffect;
       document.body.appendChild(s);
     })();
   </script>
-    <!-- Tawk.to live chat -->
+    <!-- Tawk.to live chat: deferred until the browser is idle to protect CWV/INP.
+         Also loads on first user interaction in case requestIdleCallback never fires. -->
     <script type="text/javascript" is:inline>
       var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
       (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/69c2d84affb4f81c353b5392/1jkghpok1';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
+        var loaded = false;
+        function loadTawk() {
+          if (loaded) return;
+          loaded = true;
+          var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+          s1.async=true;
+          s1.src='https://embed.tawk.to/69c2d84affb4f81c353b5392/1jkghpok1';
+          s1.charset='UTF-8';
+          s1.setAttribute('crossorigin','*');
+          s0.parentNode.insertBefore(s1,s0);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadTawk, { timeout: 5000 });
+        } else {
+          setTimeout(loadTawk, 3000);
+        }
+        // Fallback: load immediately on first interaction (user wants the chat)
+        ['scroll','pointerdown','keydown','touchstart'].forEach(function(evt){
+          window.addEventListener(evt, loadTawk, { once: true, passive: true });
+        });
       })();
     </script>
   </body>

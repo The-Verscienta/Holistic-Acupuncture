@@ -29,6 +29,7 @@ export interface SanityBlock {
 export interface BlogPost {
   _id: string;
   _type: 'blog';
+  _updatedAt?: string;
   title: string;
   slug: SanitySlug;
   author?: TeamMember;
