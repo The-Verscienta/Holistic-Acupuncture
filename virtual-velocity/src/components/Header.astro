@@ -27,7 +27,7 @@ const mobileNav: { name: string; href: string }[] = [
   class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300"
   data-pagefind-ignore
 >
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20 gap-8">
       <!-- Logo/Brand -->
       <a
@@ -50,7 +50,7 @@ const mobileNav: { name: string; href: string }[] = [
         <!-- Phone (primary conversion path: must be visible on desktop) -->
         <a
           href={`tel:${CONTACT.phoneRaw}`}
-          class="hidden xl:inline-flex items-center gap-2 text-sage-700 hover:text-sage-600 font-semibold whitespace-nowrap transition-colors flex-shrink-0"
+          class="hidden 2xl:inline-flex items-center gap-2 text-sage-700 hover:text-sage-600 font-semibold whitespace-nowrap transition-colors flex-shrink-0"
           aria-label={`Call us at ${CONTACT.phone}`}
         >
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
