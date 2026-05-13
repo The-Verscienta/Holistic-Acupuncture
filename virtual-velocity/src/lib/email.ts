@@ -29,6 +29,18 @@ export interface EmailOptions {
   replyTo?: string;
 }
 
+/**
+ * Runtime email config. On Cloudflare Pages, `import.meta.env` only sees
+ * variables present at build time. Secrets/config set in the CF dashboard are
+ * delivered at runtime via `locals.runtime.env` and must be passed in here.
+ */
+export interface EmailEnv {
+  resendApiKey?: string;
+  resendFromEmail?: string;
+  resendFromName?: string;
+  adminEmail?: string;
+}
+
 export interface ContactFormData {
   name: string;
   email: string;
@@ -48,16 +60,16 @@ export interface TestimonialData {
 /**
  * Send email using Resend SDK (https://resend.com/docs/send-with-astro)
  */
-export async function sendEmail(options: EmailOptions, apiKey?: string): Promise<boolean> {
-  const resolvedApiKey = apiKey ?? import.meta.env.RESEND_API_KEY;
+export async function sendEmail(options: EmailOptions, env?: EmailEnv): Promise<boolean> {
+  const resolvedApiKey = env?.resendApiKey ?? import.meta.env.RESEND_API_KEY;
 
   if (!resolvedApiKey) {
     console.error('RESEND_API_KEY not configured');
     return false;
   }
 
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL || 'info@milwaukeeacu.com';
-  const fromName = import.meta.env.RESEND_FROM_NAME || 'Milwaukee Acupuncture';
+  const fromEmail = env?.resendFromEmail ?? import.meta.env.RESEND_FROM_EMAIL ?? 'info@milwaukeeacu.com';
+  const fromName = env?.resendFromName ?? import.meta.env.RESEND_FROM_NAME ?? 'Milwaukee Acupuncture';
   const from = `${fromName} <${fromEmail}>`;
 
   const to = Array.isArray(options.to) ? options.to : [options.to];
@@ -89,8 +101,8 @@ export async function sendEmail(options: EmailOptions, apiKey?: string): Promise
 /**
  * Send contact form notification email
  */
-export async function sendContactFormNotification(data: ContactFormData, apiKey?: string): Promise<boolean> {
-  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@milwaukeeacu.com';
+export async function sendContactFormNotification(data: ContactFormData, env?: EmailEnv): Promise<boolean> {
+  const adminEmail = env?.adminEmail ?? import.meta.env.PUBLIC_ADMIN_EMAIL ?? 'info@milwaukeeacu.com';
 
   const html = `
     <!DOCTYPE html>
@@ -237,14 +249,14 @@ Reply to this email to respond to ${data.name}
     text,
     html,
     replyTo: data.email,
-  }, apiKey);
+  }, env);
 }
 
 /**
  * Send testimonial submission notification email
  */
-export async function sendTestimonialNotification(data: TestimonialData, apiKey?: string): Promise<boolean> {
-  const adminEmail = import.meta.env.PUBLIC_ADMIN_EMAIL || 'info@milwaukeeacu.com';
+export async function sendTestimonialNotification(data: TestimonialData, env?: EmailEnv): Promise<boolean> {
+  const adminEmail = env?.adminEmail ?? import.meta.env.PUBLIC_ADMIN_EMAIL ?? 'info@milwaukeeacu.com';
 
   const stars = '⭐'.repeat(data.rating);
 
@@ -406,13 +418,13 @@ Review and approve in admin dashboard: https://holisticacupuncture.net/admin
     text,
     html,
     replyTo: data.email,
-  }, apiKey);
+  }, env);
 }
 
 /**
  * Send confirmation email to form submitter
  */
-export async function sendConfirmationEmail(to: string, name: string, apiKey?: string): Promise<boolean> {
+export async function sendConfirmationEmail(to: string, name: string, env?: EmailEnv): Promise<boolean> {
   const html = `
     <!DOCTYPE html>
     <html>
@@ -533,13 +545,13 @@ holisticacupuncture.net
     subject: 'Thank you for contacting us',
     text,
     html,
-  }, apiKey);
+  }, env);
 }
 
 /**
  * Send newsletter welcome email to new subscriber
  */
-export async function sendNewsletterWelcomeEmail(to: string, apiKey?: string): Promise<boolean> {
+export async function sendNewsletterWelcomeEmail(to: string, env?: EmailEnv): Promise<boolean> {
   const html = `
     <!DOCTYPE html>
     <html>
@@ -683,6 +695,6 @@ holisticacupuncture.net
     subject: 'Welcome to the Acupuncture & Holistic Health Newsletter!',
     text,
     html,
-  }, apiKey);
+  }, env);
 }
 

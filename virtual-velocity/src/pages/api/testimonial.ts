@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { sendTestimonialNotification } from '../../lib/email';
+import { sendTestimonialNotification, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
 
@@ -47,7 +47,13 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request, locals }) => {
   // Cloudflare Pages passes secrets via locals.runtime.env (runtime); import.meta.env is build-time only.
-  const resendApiKey = (locals as any).runtime?.env?.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+  const runtimeEnv = (locals as any).runtime?.env ?? {};
+  const emailEnv: EmailEnv = {
+    resendApiKey: runtimeEnv.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY,
+    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
+    resendFromName: runtimeEnv.RESEND_FROM_NAME ?? import.meta.env.RESEND_FROM_NAME,
+    adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
+  };
 
   try {
     // Reject oversized bodies before reading them into memory
@@ -153,7 +159,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       condition: data.condition?.trim().slice(0, MAX_CONDITION_LENGTH) || undefined,
       testimonial,
       rating: data.rating || 5,
-    }, resendApiKey);
+    }, emailEnv);
 
     if (!notificationSent) {
       console.error('Testimonial notification email failed to send');

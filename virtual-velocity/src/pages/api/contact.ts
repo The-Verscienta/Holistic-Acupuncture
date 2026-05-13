@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { createClient } from '@sanity/client';
-import { sendContactFormNotification, sendConfirmationEmail } from '../../lib/email';
+import { sendContactFormNotification, sendConfirmationEmail, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
 import { sendContactFormConversion } from '../../lib/meta';
@@ -58,6 +58,12 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const runtimeEnv = (locals as any).runtime?.env ?? {};
   const resendApiKey = runtimeEnv.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
   const sanityWriteToken = runtimeEnv.SANITY_WRITE_TOKEN ?? import.meta.env.SANITY_WRITE_TOKEN;
+  const emailEnv: EmailEnv = {
+    resendApiKey,
+    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
+    resendFromName: runtimeEnv.RESEND_FROM_NAME ?? import.meta.env.RESEND_FROM_NAME,
+    adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
+  };
 
   try {
     // Reject oversized bodies before reading them into memory
@@ -155,7 +161,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
       message,
       referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
-    }, resendApiKey);
+    }, emailEnv);
 
     if (!notificationSent) {
       console.error('Contact notification email failed to send');
@@ -172,7 +178,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     // Send confirmation email to user (non-critical, don't fail if this doesn't send)
-    await sendConfirmationEmail(email, name, resendApiKey);
+    await sendConfirmationEmail(email, name, emailEnv);
 
     // Save submission to Sanity for record-keeping (non-critical)
     if (sanityWriteToken) {
