@@ -201,6 +201,14 @@
   const searchClose = document.getElementById('search-close');
   const pagefindContainer = document.getElementById('pagefind-container');
 
+  // The modal is rendered inside the desktop nav cluster, which is display:none
+  // below 2xl. display:none cascades to all descendants regardless of position:fixed,
+  // so the modal can never paint at sub-2xl viewports unless we re-parent it.
+  // Move it to document.body once on init so it always has a visible parent.
+  if (searchModal && searchModal.parentNode !== document.body) {
+    document.body.appendChild(searchModal);
+  }
+
   async function loadPagefind() {
     if (pagefindLoaded) return;
 
