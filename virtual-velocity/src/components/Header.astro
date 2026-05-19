@@ -59,10 +59,15 @@ const mobileNav: { name: string; href: string }[] = [
           {CONTACT.phone}
         </a>
 
-        <!-- CTA Button -->
-        <Button variant="primary" size="md" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
-          <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
-        </Button>
+        <!-- CTA Buttons: Contact (secondary) + Book (primary) — twin CTAs -->
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <Button variant="tertiary" size="md" icon="mail" href="/contact" class="flex-shrink-0">
+            Contact Us
+          </Button>
+          <Button variant="primary" size="md" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
+            <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
+          </Button>
+        </div>
       </div>
 
       <!-- Mobile: search + hamburger -->
