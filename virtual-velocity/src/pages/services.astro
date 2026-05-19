@@ -5,7 +5,7 @@ import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
-import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+import { JANE_BOOKING_URL } from '../lib/config';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
@@ -396,6 +396,6 @@ const packages = [
     heading="Ready to Start Your Healing Journey?"
     description="Book your appointment today and take the first step towards better health."
     primaryButton={{ label: 'Book Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
-    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/[^0-9]/g, '')}`, icon: 'phone' }}
+    secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
   />
 </BaseLayout>
