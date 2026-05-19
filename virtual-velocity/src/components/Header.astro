@@ -130,7 +130,7 @@ const mobileNav: { name: string; href: string }[] = [
         );
       })}
 
-      <!-- Mobile: Phone & CTA -->
+      <!-- Mobile: Phone & CTAs (twin: Contact + Book) -->
       <div class="mt-6 flex flex-col gap-3">
         <a
           href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}
@@ -142,6 +142,9 @@ const mobileNav: { name: string; href: string }[] = [
           </svg>
           {CONTACT.phone}
         </a>
+        <Button variant="tertiary" size="lg" icon="mail" href="/contact" class="w-full justify-center">
+          Contact Us
+        </Button>
         <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="w-full justify-center">
           <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
         </Button>
