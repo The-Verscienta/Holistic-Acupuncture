@@ -18,7 +18,7 @@ interface Props {
 const { title, description, image, ogType = 'website', breadcrumbs } = Astro.props;
 const siteOrigin = Astro.site?.origin || SITE_URL;
 const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
-const fullTitle = title === 'Home' ? 'Acupuncture & Holistic Health Associates | Milwaukee, WI' : `${title} | Acupuncture & Holistic Health Associates`;
+const fullTitle = title === 'Home' ? 'Milwaukee Acupuncture | Acupuncture & Holistic Health Associates' : `${title} | Acupuncture & Holistic Health Associates`;
 
 // OG/Twitter require absolute image URLs; fall back to site logo if no page-specific image
 const resolvedImage = image || DEFAULT_OG_IMAGE;

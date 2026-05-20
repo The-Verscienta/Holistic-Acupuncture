@@ -33,6 +33,20 @@ const faqCategories = Object.keys(categoryMapping).map(categoryKey => {
   };
 }).filter(cat => cat.questions.length > 0);
 
+// FAQPage structured data for rich results (built from all Sanity FAQs)
+const faqSchema = allFAQs.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: allFAQs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+} : null;
+
 // Legacy static data below will be removed
 const _oldFaqCategories = [
   {
@@ -203,6 +217,8 @@ const _oldFaqCategories = [
   description="Find answers to common questions about acupuncture, our treatments, insurance coverage, and what to expect at Acupuncture & Holistic Health Associates."
   breadcrumbs={[{name:'Home',url:'/'},{name:'FAQ'}]}
 >
+  {faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />}
+
   <!-- Hero Section -->
   <PageHero
     title="Frequently Asked Questions"

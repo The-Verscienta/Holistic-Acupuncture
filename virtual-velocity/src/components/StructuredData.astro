@@ -7,8 +7,10 @@ const structuredData = {
   "@type": ["MedicalBusiness", "LocalBusiness"],
   "@id": `${SITE_URL}/#organization`,
   name: "Acupuncture & Holistic Health Associates",
+  alternateName: "Milwaukee Acupuncture",
   description: "Expert acupuncture and traditional Chinese medicine in Milwaukee. Over 25 years of experience treating chronic pain, stress, fertility issues, and more.",
   url: SITE_URL,
+  hasMap: `https://www.google.com/maps/dir/?api=1&destination_place_id=${CONTACT.address.googlePlaceId}`,
   logo: {
     "@type": "ImageObject",
     url: `${SITE_URL}/logo.png`,
@@ -51,14 +53,22 @@ const structuredData = {
   priceRange: "$$",
   paymentAccepted: ["Cash", "Credit Card", "Insurance"],
   currenciesAccepted: "USD",
-  areaServed: {
+  areaServed: [
+    "Milwaukee",
+    "Glendale",
+    "Whitefish Bay",
+    "Shorewood",
+    "Mequon",
+    "Bayside",
+    "Fox Point",
+    "River Hills",
+    "Brown Deer",
+    "Wauwatosa"
+  ].map((city) => ({
     "@type": "City",
-    name: "Milwaukee",
-    containedIn: {
-      "@type": "State",
-      name: "Wisconsin"
-    }
-  },
+    name: city,
+    containedIn: { "@type": "State", name: "Wisconsin" }
+  })),
   makesOffer: [
     {
       "@type": "Offer",
@@ -97,10 +107,21 @@ const structuredData = {
     jobTitle: "Licensed Acupuncturist",
     description: "Over 25 years of experience in acupuncture and traditional Chinese medicine"
   },
+  knowsAbout: [
+    "Acupuncture",
+    "Holistic Acupuncture",
+    "Traditional Chinese Medicine",
+    "Chinese Herbal Medicine",
+    "Cupping Therapy",
+    "Chronic Pain Management",
+    "Fertility Acupuncture",
+    "Stress and Anxiety Relief"
+  ],
   sameAs: [
     SOCIAL.facebook,
     SOCIAL.instagram,
     SOCIAL.linkedin,
+    SOCIAL.twitterUrl,
   ],
   hasCredential: {
     "@type": "EducationalOccupationalCredential",
