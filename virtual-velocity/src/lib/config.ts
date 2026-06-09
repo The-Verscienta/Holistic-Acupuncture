@@ -53,6 +53,9 @@ export const CONTACT = {
 export const GOOGLE_REVIEWS_URL = `https://search.google.com/local/reviews?placeid=${CONTACT.address.googlePlaceId}`;
 export const GOOGLE_WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${CONTACT.address.googlePlaceId}`;
 
+// Canonical Google Business Profile URL for schema.org sameAs (stable, derived from Place ID).
+export const GOOGLE_BUSINESS_URL = `https://www.google.com/maps/place/?q=place_id:${CONTACT.address.googlePlaceId}`;
+
 // Review stats — single source of truth. Keep in sync with the aggregateRating
 // in src/components/StructuredData.astro.
 export const REVIEW_STATS = {
