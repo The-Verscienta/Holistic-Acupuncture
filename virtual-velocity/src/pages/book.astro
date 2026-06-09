@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import { JANE_BOOKING_URL, CONTACT, NEW_PATIENT_SPECIAL } from '../lib/config';
+---
+
+<BaseLayout
+  title="Book an Appointment"
+  description="Book your acupuncture appointment online through Jane, our secure scheduling system, or call us directly."
+  breadcrumbs={[{name:'Home',url:'/'},{name:'Book an Appointment'}]}
+>
+  <section class="py-16 md:py-24 bg-gradient-to-br from-sage-50 via-warm-white to-sage-100">
+    <Container>
+      <Card variant="elevated" padding="lg" class="max-w-2xl mx-auto bg-white text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-sage-100 rounded-full text-sage-700 text-sm font-medium mb-6">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span>Secure &amp; HIPAA-compliant booking</span>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-heading font-bold text-charcoal mb-4">
+          Book Your Appointment
+        </h1>
+        <p class="text-lg text-gray-700 mb-2">
+          You're about to head to <strong>Jane</strong>, our secure online scheduling system, where you can pick a time that works for you.
+        </p>
+        <p class="text-sm text-gray-500 mb-8">Opens in a new tab, so this page stays open for reference.</p>
+
+        <Button variant="primary" size="lg" icon="external" iconPosition="right" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+          Continue to Online Booking
+        </Button>
+
+        <div class="mt-10 text-left">
+          <h2 class="text-lg font-heading font-semibold text-charcoal text-center mb-4">What to expect</h2>
+          <ul class="space-y-3 text-gray-700 text-sm max-w-md mx-auto">
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>New patient? Your first visit includes a comprehensive assessment plus your first treatment for just <strong>${NEW_PATIENT_SPECIAL.price}</strong> (a ${NEW_PATIENT_SPECIAL.savings} savings).</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span>Working full-time? We hold <strong>evening appointments until 7&nbsp;PM, Monday&ndash;Thursday</strong>.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-10 pt-8 border-t border-sage-200">
+          <p class="text-gray-700 mb-3">Prefer to talk to someone?</p>
+          <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button variant="tertiary" size="md" icon="phone" href={`tel:${CONTACT.phoneRaw}`}>
+              Call {CONTACT.phone}
+            </Button>
+            <Button variant="tertiary" size="md" icon="mail" href="/contact">
+              Send Us a Message
+            </Button>
+          </div>
+        </div>
+      </Card>
+    </Container>
+  </section>
+</BaseLayout>
