@@ -5,7 +5,7 @@ import Card from '../../components/Card.astro';
 import Button from '../../components/Button.astro';
 import Badge from '../../components/Badge.astro';
 import { getAllConditions, getConditionBySlug } from '../../lib/sanityQueries';
-import { CONTACT } from '../../lib/config';
+import { CONTACT, SERVICE_AREAS } from '../../lib/config';
 import { conditionCategories } from '../../types/sanity';
 import { escapeHtml } from '../../lib/sanitize';
 export async function getStaticPaths() {
@@ -54,9 +54,6 @@ const metaDescription = condition.seo?.metaDescription || `${condition.descripti
 const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
 const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
 const categoryLabel = conditionCategories[condition.category] || condition.category;
-
-// Suburbs we serve — keep in sync with areaServed in StructuredData.astro.
-const SERVICE_AREAS = ['Milwaukee', 'Glendale', 'Shorewood', 'Whitefish Bay', 'Mequon', 'Bayside', 'Fox Point', 'Wauwatosa'];
 
 // Generated, condition-specific FAQ (used for both on-page UI and JSON-LD).
 const conditionFaqs = [
@@ -145,7 +142,7 @@ const conditionFaqSchema = {
             treat the root cause — not just the symptoms.
           </p>
           <p class="text-gray-700 leading-relaxed">
-            We welcome patients from {SERVICE_AREAS.slice(1).join(', ')} and across greater Milwaukee.
+            We welcome patients from {SERVICE_AREAS.filter((a) => a !== 'Milwaukee').join(', ')} and across greater Milwaukee.
             Conveniently located with free parking, our calm clinic makes it easy to fit care into
             your week. <a href="/contact" class="text-sage-600 hover:text-sage-700 underline">Contact us</a>
             or <a href="/services" class="text-sage-600 hover:text-sage-700 underline">view our pricing</a> to get started.
@@ -211,7 +208,7 @@ const conditionFaqSchema = {
         <Button variant="primary" size="lg" href="/contact">
           Contact Us
         </Button>
-        <Button variant="tertiary" size="lg" icon="phone" href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`}>
+        <Button variant="tertiary" size="lg" icon="phone" href={`tel:${CONTACT.phoneRaw}`}>
           Call {CONTACT.phone}
         </Button>
       </div>

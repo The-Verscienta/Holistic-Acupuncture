@@ -1,5 +1,5 @@
 ---
-import { CONTACT, HOURS, SITE_URL, SOCIAL, REVIEW_STATS, GOOGLE_BUSINESS_URL } from '../lib/config';
+import { CONTACT, HOURS, SITE_URL, SOCIAL, REVIEW_STATS, GOOGLE_BUSINESS_URL, SERVICE_AREAS } from '../lib/config';
 
 // Structured Data for LocalBusiness (Acupuncture Clinic)
 const structuredData = {
@@ -60,18 +60,7 @@ const structuredData = {
   priceRange: "$$",
   paymentAccepted: ["Cash", "Credit Card", "Insurance"],
   currenciesAccepted: "USD",
-  areaServed: [
-    "Milwaukee",
-    "Glendale",
-    "Whitefish Bay",
-    "Shorewood",
-    "Mequon",
-    "Bayside",
-    "Fox Point",
-    "River Hills",
-    "Brown Deer",
-    "Wauwatosa"
-  ].map((city) => ({
+  areaServed: SERVICE_AREAS.map((city) => ({
     "@type": "City",
     name: city,
     containedIn: { "@type": "State", name: "Wisconsin" }

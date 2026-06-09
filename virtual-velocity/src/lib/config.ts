@@ -56,6 +56,21 @@ export const GOOGLE_WRITE_REVIEW_URL = `https://search.google.com/local/writerev
 // Canonical Google Business Profile URL for schema.org sameAs (stable, derived from Place ID).
 export const GOOGLE_BUSINESS_URL = `https://www.google.com/maps/place/?q=place_id:${CONTACT.address.googlePlaceId}`;
 
+// Cities/suburbs the practice serves — single source of truth for the schema.org
+// areaServed (StructuredData.astro) and on-page local copy. Milwaukee first.
+export const SERVICE_AREAS = [
+  'Milwaukee',
+  'Glendale',
+  'Whitefish Bay',
+  'Shorewood',
+  'Mequon',
+  'Bayside',
+  'Fox Point',
+  'River Hills',
+  'Brown Deer',
+  'Wauwatosa',
+];
+
 // Review stats — single source of truth. Keep in sync with the aggregateRating
 // in src/components/StructuredData.astro.
 export const REVIEW_STATS = {
