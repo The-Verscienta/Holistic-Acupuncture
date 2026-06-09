@@ -27,8 +27,8 @@ const ratingBreakdown = [
 ---
 
 <BaseLayout
-  title="Patient Reviews"
-  description="Read what our patients say about their experience with Acupuncture & Holistic Health Associates. Real reviews from real people who have experienced natural healing."
+  title="Patient Reviews — Best Acupuncture in Milwaukee, WI | Acupuncture & Holistic Health Associates"
+  description="Read real patient reviews of our Milwaukee & Glendale, WI acupuncture clinic. See why patients rate our care 4.8 stars across 171 Google reviews."
   breadcrumbs={[{name:'Home',url:'/'},{name:'Patient Reviews'}]}
 >
   <!-- Hero Section -->
@@ -57,6 +57,16 @@ const ratingBreakdown = [
       </div>
     </div>
   </PageHero>
+
+  <section class="py-10 md:py-12 bg-white">
+    <Container>
+      <p class="max-w-3xl mx-auto text-center text-lg text-gray-700 leading-relaxed">
+        Serving Milwaukee, Glendale, and the North Shore suburbs, our {REVIEW_STATS.rating}-star
+        rating across {REVIEW_STATS.count} Google reviews reflects the trust patients place in our
+        acupuncture and traditional Chinese medicine care. Here's what they have to say.
+      </p>
+    </Container>
+  </section>
 
   <!-- Rating Breakdown -->
   <section class="py-12 md:py-16 bg-white border-b border-sage-200">
