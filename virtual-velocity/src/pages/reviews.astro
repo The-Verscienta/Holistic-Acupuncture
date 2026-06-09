@@ -10,9 +10,20 @@ import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import { getAllTestimonials } from '../lib/sanityQueries';
 import { formatRelativeDate } from '../lib/sanity';
+import { REVIEW_STATS, GOOGLE_REVIEWS_URL, GOOGLE_WRITE_REVIEW_URL, BOOK_PATH } from '../lib/config';
 
 // Fetch testimonials from Sanity
 const reviews = await getAllTestimonials();
+
+// Approximate star distribution applied to the real review count so the
+// breakdown sums to REVIEW_STATS.count (no fabricated totals).
+const ratingBreakdown = [
+  { stars: 5, percentage: 97 },
+  { stars: 4, percentage: 2 },
+  { stars: 3, percentage: 1 },
+  { stars: 2, percentage: 0 },
+  { stars: 1, percentage: 0 },
+].map((r) => ({ ...r, count: Math.round((r.percentage / 100) * REVIEW_STATS.count) }));
 ---
 
 <BaseLayout
@@ -33,15 +44,15 @@ const reviews = await getAllTestimonials();
     </Fragment>
     <div class="flex items-center justify-center gap-8 text-gray-700 mt-4">
       <div>
-        <div class="text-3xl font-heading font-bold text-sage-600">4.8</div>
+        <div class="text-3xl font-heading font-bold text-sage-600">{REVIEW_STATS.rating}</div>
         <div class="text-sm">Average Rating</div>
       </div>
       <div>
-        <div class="text-3xl font-heading font-bold text-sage-600">171</div>
-        <div class="text-sm">Reviews</div>
+        <div class="text-3xl font-heading font-bold text-sage-600">{REVIEW_STATS.count}</div>
+        <div class="text-sm">Google Reviews</div>
       </div>
       <div>
-        <div class="text-3xl font-heading font-bold text-sage-600">98%</div>
+        <div class="text-3xl font-heading font-bold text-sage-600">{REVIEW_STATS.recommendPct}%</div>
         <div class="text-sm">Would Recommend</div>
       </div>
     </div>
@@ -55,13 +66,7 @@ const reviews = await getAllTestimonials();
           Rating Breakdown
         </h2>
         <div class="space-y-3">
-          {[
-            { stars: 5, count: 487, percentage: 97 },
-            { stars: 4, count: 12, percentage: 2 },
-            { stars: 3, count: 1, percentage: 0.2 },
-            { stars: 2, count: 0, percentage: 0 },
-            { stars: 1, count: 0, percentage: 0 },
-          ].map(rating => (
+          {ratingBreakdown.map(rating => (
             <div class="flex items-center gap-4">
               <div class="flex items-center gap-1 w-24">
                 <span class="text-sm font-medium text-gray-700">{rating.stars} stars</span>
@@ -79,6 +84,11 @@ const reviews = await getAllTestimonials();
           ))}
         </div>
       </Card>
+        <div class="text-center mt-8">
+          <Button variant="primary" size="lg" icon="external" iconPosition="right" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+            Read all {REVIEW_STATS.count} reviews on Google
+          </Button>
+        </div>
     </Container>
   </section>
 
@@ -113,7 +123,7 @@ const reviews = await getAllTestimonials();
           Have you been treated at our practice? We'd love to hear about your experience!
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="primary" size="lg" icon="external" href="https://www.google.com/search?q=acupuncture+holistic+health+associates+milwaukee" target="_blank">
+          <Button variant="primary" size="lg" icon="external" href={GOOGLE_WRITE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
             Write a Google Review
           </Button>
           <Button variant="tertiary" size="lg" icon="mail" href="/contact">
@@ -182,7 +192,7 @@ const reviews = await getAllTestimonials();
             </svg>
           </div>
           <h3 class="font-semibold text-charcoal mb-2">Top Rated</h3>
-          <p class="text-sm text-gray-600">4.8 Stars on Google</p>
+          <p class="text-sm text-gray-600">{REVIEW_STATS.rating} Stars on Google</p>
         </Card>
       </div>
     </Container>
@@ -191,7 +201,7 @@ const reviews = await getAllTestimonials();
   <!-- CTA Section -->
   <CTASection
     heading="Join Our Happy Patients"
-    description="Experience the same exceptional care that has earned us over 500 five-star reviews."
-    primaryButton={{ label: 'Book Your Appointment Today', href: '/contact' }}
+    description={`Experience the same care that earned our ${REVIEW_STATS.rating}★ rating across ${REVIEW_STATS.count} Google reviews.`}
+    primaryButton={{ label: 'Book Your Appointment Today', href: BOOK_PATH }}
   />
 </BaseLayout>
