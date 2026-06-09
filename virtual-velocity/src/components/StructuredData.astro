@@ -1,5 +1,5 @@
 ---
-import { CONTACT, HOURS, SITE_URL, SOCIAL } from '../lib/config';
+import { CONTACT, HOURS, SITE_URL, SOCIAL, REVIEW_STATS } from '../lib/config';
 
 // Structured Data for LocalBusiness (Acupuncture Clinic)
 const structuredData = {
@@ -23,8 +23,8 @@ const structuredData = {
   },
   aggregateRating: {
     "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "171",
+    ratingValue: String(REVIEW_STATS.rating),
+    reviewCount: String(REVIEW_STATS.count),
     bestRating: "5",
     worstRating: "1"
   },
