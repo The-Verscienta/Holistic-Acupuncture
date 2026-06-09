@@ -54,9 +54,41 @@ const metaDescription = condition.seo?.metaDescription || `${condition.descripti
 const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
 const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
 const categoryLabel = conditionCategories[condition.category] || condition.category;
+
+// Suburbs we serve — keep in sync with areaServed in StructuredData.astro.
+const SERVICE_AREAS = ['Milwaukee', 'Glendale', 'Shorewood', 'Whitefish Bay', 'Mequon', 'Bayside', 'Fox Point', 'Wauwatosa'];
+
+// Generated, condition-specific FAQ (used for both on-page UI and JSON-LD).
+const conditionFaqs = [
+  {
+    question: `Can acupuncture help with ${condition.name.toLowerCase()} in Milwaukee?`,
+    answer: `Yes. Our licensed acupuncturists in Glendale, WI regularly treat ${condition.name.toLowerCase()} for patients across the Milwaukee area, using acupuncture and traditional Chinese medicine to address both symptoms and root causes.`,
+  },
+  {
+    question: `How many acupuncture sessions are needed for ${condition.name.toLowerCase()}?`,
+    answer: condition.treatmentDuration
+      ? `Most patients follow a course of ${condition.treatmentDuration}. We create a personalized plan at your first visit and adjust it based on your progress.`
+      : `It varies by individual. Acute issues may improve in 3-6 sessions, while chronic conditions often need 8-12. We create a personalized plan at your first visit.`,
+  },
+  {
+    question: `Is acupuncture for ${condition.name.toLowerCase()} covered by insurance in Wisconsin?`,
+    answer: `Many Wisconsin insurance plans cover acupuncture, especially for pain-related conditions. We're in-network with several major providers and can help verify your coverage before you book.`,
+  },
+];
+
+const conditionFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: conditionFaqs.map((f) => ({
+    "@type": "Question",
+    name: f.question,
+    acceptedAnswer: { "@type": "Answer", text: f.answer },
+  })),
+};
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription} breadcrumbs={[{name:'Home',url:'/'},{name:'Conditions We Treat',url:'/conditions'},{name:condition.name}]}>
+  <script type="application/ld+json" set:html={JSON.stringify(conditionFaqSchema)} />
   <!-- Hero -->
   <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12 md:py-16">
     <Container>
@@ -101,6 +133,43 @@ const categoryLabel = conditionCategories[condition.category] || condition.categ
             <div class="prose-content" set:html={howHelpsHtml} />
           </div>
         )}
+
+        <div class="mb-12">
+          <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">
+            Why Milwaukee &amp; Glendale Patients Choose Acupuncture for {condition.name}
+          </h2>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            At Acupuncture &amp; Holistic Health Associates in Glendale, WI, we help patients
+            throughout the Milwaukee area find natural relief from {condition.name.toLowerCase()}.
+            Our licensed acupuncturists combine acupuncture with traditional Chinese medicine to
+            treat the root cause — not just the symptoms.
+          </p>
+          <p class="text-gray-700 leading-relaxed">
+            We welcome patients from {SERVICE_AREAS.slice(1).join(', ')} and across greater Milwaukee.
+            Conveniently located with free parking, our calm clinic makes it easy to fit care into
+            your week. <a href="/contact" class="text-sage-600 hover:text-sage-700 underline">Contact us</a>
+            or <a href="/services" class="text-sage-600 hover:text-sage-700 underline">view our pricing</a> to get started.
+          </p>
+        </div>
+
+        <div class="mb-12">
+          <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">Frequently Asked Questions</h2>
+          <div class="space-y-4">
+            {conditionFaqs.map((faq) => (
+              <Card variant="bordered" padding="none" class="bg-white overflow-hidden">
+                <details class="group">
+                  <summary class="flex items-center justify-between cursor-pointer p-5 hover:bg-sage-50 transition-colors list-none">
+                    <h3 class="text-base md:text-lg font-heading font-semibold text-charcoal pr-4">{faq.question}</h3>
+                    <svg class="w-5 h-5 text-sage-600 flex-shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </summary>
+                  <div class="px-5 pb-5 pt-1"><p class="text-gray-700 leading-relaxed">{faq.answer}</p></div>
+                </details>
+              </Card>
+            ))}
+          </div>
+        </div>
 
         {condition.treatmentDuration && (
           <Card variant="bordered" padding="lg" class="mb-12">
