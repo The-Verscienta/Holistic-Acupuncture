@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Button from '../../components/Button.astro';
+import CTASection from '../../components/CTASection.astro';
+import { LOCATIONS } from '../../data/locations';
+import { CONTACT } from '../../lib/config';
+
+export function getStaticPaths() {
+  return LOCATIONS.map((loc) => ({ params: { location: loc.slug }, props: { loc } }));
+}
+
+const { loc } = Astro.props;
+---
+
+<BaseLayout
+  title={loc.metaTitle}
+  description={loc.metaDescription}
+  breadcrumbs={[{name:'Home',url:'/'},{name:'Acupuncture',url:'/acupuncture'},{name:loc.name}]}
+>
+  <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12 md:py-16">
+    <Container>
+      <h1 class="text-4xl md:text-5xl font-heading font-bold text-charcoal mb-4">Acupuncture in {loc.name}, WI</h1>
+      <p class="text-lg text-gray-600 max-w-2xl">{loc.intro}</p>
+    </Container>
+  </section>
+
+  <section class="py-12 md:py-16 bg-white">
+    <Container>
+      <div class="max-w-3xl space-y-6 text-gray-700 leading-relaxed">
+        <p>{loc.proximity} At Acupuncture &amp; Holistic Health Associates, our licensed acupuncturists bring 25+ years of experience treating chronic pain, headaches, stress and anxiety, insomnia, digestive issues, women's health concerns, and more with acupuncture and traditional Chinese medicine.</p>
+
+        <h2 class="text-2xl font-heading font-bold text-charcoal pt-4">Acupuncture Care for {loc.name} Residents</h2>
+        <p>Whether you're dealing with a long-standing injury, recurring migraines, or the everyday stress of a busy life, acupuncture offers a safe, drug-free path to relief. We treat the whole person — not just the symptom — and build a personalized plan around your goals. Many {loc.name} patients come to us after trying conventional approaches and looking for a natural complement to their care.</p>
+        <p>Acupuncture has been practiced for thousands of years, and modern research continues to support its use for a wide range of concerns. Rather than masking discomfort, our approach works to restore balance and help your body heal itself. We take time to understand your full health history, lifestyle, and goals so that every treatment is tailored to you — not a one-size-fits-all protocol.</p>
+
+        <h2 class="text-2xl font-heading font-bold text-charcoal pt-4">Conditions We Treat</h2>
+        <p>We work with {loc.name} patients on a broad range of conditions, including chronic and acute pain, back and neck pain, sciatica, arthritis, frequent headaches and migraines, stress, anxiety, and low mood, insomnia and poor sleep, digestive complaints, fatigue, and women's health concerns such as menstrual issues and fertility support. If you're managing a long-term condition, acupuncture can also work alongside the care you already receive from your physician. Not sure whether acupuncture is right for what you're experiencing? Browse the full list of <a href="/conditions" class="text-sage-600 hover:text-sage-700 underline">conditions we treat</a>, or reach out and we'll be glad to talk it through with you.</p>
+
+        <h2 class="text-2xl font-heading font-bold text-charcoal pt-4">What to Expect on Your First Visit</h2>
+        <p>Your first visit includes a thorough consultation and your first treatment. We use ultra-fine, single-use sterile needles, and most patients find sessions deeply relaxing. We'll explain your plan, expected timeline, and anything you can do at home to support your results. Explore <a href="/services" class="text-sage-600 hover:text-sage-700 underline">our services and transparent pricing</a> or browse the <a href="/conditions" class="text-sage-600 hover:text-sage-700 underline">conditions we treat</a>.</p>
+        <p>Most patients feel comfortable from the very first session. The needles we use are far thinner than those used for injections, and many people are surprised by how gentle the experience is. Some notice relief right away, while others see steady improvement over a short course of treatments. Because every body responds differently, we check in regularly and adjust your plan based on how you're progressing — always keeping you informed and involved in your own care.</p>
+
+        <h2 class="text-2xl font-heading font-bold text-charcoal pt-4">Why {loc.name} Patients Choose Us</h2>
+        <p>Patients from {loc.name} return to us because of the difference our personalized, whole-person approach makes. With 25+ years of clinical experience, our licensed acupuncturists combine deep expertise with genuine care, taking the time to listen and to treat the root of your concern rather than just the symptoms. Our clinic is designed to feel calm and welcoming, and we work hard to make every visit something you look forward to.</p>
+
+        <h2 class="text-2xl font-heading font-bold text-charcoal pt-4">Convenient for the Milwaukee North Shore</h2>
+        <p>Serving {loc.name} and the surrounding Milwaukee North Shore communities, our Glendale clinic offers free parking and flexible weekday and evening appointments. New to acupuncture? Start with our overview of <a href="/acupuncture" class="text-sage-600 hover:text-sage-700 underline">acupuncture in Milwaukee</a>, or learn about our <a href="/holistic-acupuncture" class="text-sage-600 hover:text-sage-700 underline">holistic, whole-person approach</a>.</p>
+
+        <div class="pt-4">
+          <Button variant="primary" size="lg" href="/contact">Book Your First Visit</Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <CTASection
+    heading={`Ready to try acupuncture in ${loc.name}?`}
+    description="Schedule a consultation and discover how acupuncture can help you feel your best."
+    primaryButton={{ label: 'Contact Us', href: '/contact' }}
+    secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:${CONTACT.phoneRaw}`, icon: 'phone' }}
+  />
+</BaseLayout>
