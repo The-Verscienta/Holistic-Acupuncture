@@ -118,7 +118,10 @@ All scripts idempotent, dry-run-capable, and following existing `scripts/*.js` p
 
 ## Inputs Required From User
 
-1. **GBP URL** for A6 (P10).
+1. **GBP URL** for A6 (P10). Provided: `https://share.google/ZFyNAWjBqCDWWmMmG` (confirmed →
+   "Acupuncture & Holistic Health Associates"). Use as the working `sameAs` value; swap in the
+   canonical `https://maps.google.com/?cid=…` URL (copyable from the Maps address bar) during
+   implementation if available — more stable than a `share.google` redirect.
 2. `.env` with `SANITY_API_TOKEN` + `PUBLIC_SANITY_PROJECT_ID` (+ dataset) for Phase D.
 
 ## Out of Scope
