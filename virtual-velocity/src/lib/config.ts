@@ -7,6 +7,10 @@
 // Jane App booking URL - configurable via environment variable
 export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'https://ahha.janeapp.com';
 
+// Internal booking interstitial. All in-site "Book" CTAs point here; the /book
+// page itself is the only place that links out to JANE_BOOKING_URL (new tab).
+export const BOOK_PATH = '/book';
+
 // Site info
 export const SITE_NAME = 'Acupuncture & Holistic Health Associates';
 export const SITE_URL = 'https://holisticacupuncture.net';
@@ -43,6 +47,18 @@ export const CONTACT = {
     full: '500 W Silver Spring Dr. Ste K205, Glendale, WI 53217',
     googlePlaceId: 'ChIJpwaRdmAeBYgRadfuDNZDi_4'
   }
+};
+
+// Verified Google Business reviews, derived from the Place ID above.
+export const GOOGLE_REVIEWS_URL = `https://search.google.com/local/reviews?placeid=${CONTACT.address.googlePlaceId}`;
+export const GOOGLE_WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${CONTACT.address.googlePlaceId}`;
+
+// Review stats — single source of truth. Keep in sync with the aggregateRating
+// in src/components/StructuredData.astro.
+export const REVIEW_STATS = {
+  rating: 4.8,
+  count: 171,
+  recommendPct: 98,
 };
 
 // New patient special offer pricing

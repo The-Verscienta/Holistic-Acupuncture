@@ -2,7 +2,7 @@
 import Navigation from './Navigation.astro';
 import Button from './Button.astro';
 import SearchModal from './SearchModal.astro';
-import { CONTACT, JANE_BOOKING_URL } from '../lib/config';
+import { CONTACT, BOOK_PATH } from '../lib/config';
 
 // For aria-current on the mobile nav links; matches Navigation.astro logic.
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -65,7 +65,7 @@ const mobileNav: { name: string; href: string }[] = [
           <Button variant="tertiary" size="md" icon="mail" href="/contact" class="flex-shrink-0">
             Contact Us
           </Button>
-          <Button variant="primary" size="md" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="flex-shrink-0">
+          <Button variant="primary" size="md" icon="calendar" href={BOOK_PATH} class="flex-shrink-0">
             <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
           </Button>
         </div>
@@ -88,7 +88,7 @@ const mobileNav: { name: string; href: string }[] = [
         <Button variant="tertiary" size="sm" icon="mail" href="/contact" class="hidden sm:inline-flex flex-shrink-0">
           Contact Us
         </Button>
-        <Button variant="primary" size="sm" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex flex-shrink-0">
+        <Button variant="primary" size="sm" icon="calendar" href={BOOK_PATH} class="hidden sm:inline-flex flex-shrink-0">
           <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
         </Button>
 
@@ -154,7 +154,7 @@ const mobileNav: { name: string; href: string }[] = [
         <Button variant="tertiary" size="lg" icon="mail" href="/contact" class="w-full justify-center">
           Contact Us
         </Button>
-        <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer" class="w-full justify-center">
+        <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH} class="w-full justify-center">
           <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
         </Button>
       </div>

@@ -2,7 +2,7 @@
 import Container from './Container.astro';
 import Card from './Card.astro';
 import Button from './Button.astro';
-import { NEW_PATIENT_SPECIAL } from '../lib/config';
+import { NEW_PATIENT_SPECIAL, BOOK_PATH } from '../lib/config';
 
 // Always expires at midnight at the end of the current month
 const now = new Date();
@@ -40,7 +40,7 @@ const expiryISO = endOfMonth.toISOString();
           ))}
         </div>
 
-        <Button variant="primary" size="lg" icon="calendar" href="/contact">
+        <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH}>
           Schedule Your Consultation
         </Button>
         <p class="text-sm text-gray-600 mt-4">

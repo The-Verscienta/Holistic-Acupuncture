@@ -11,7 +11,7 @@ import NewPatientSpecial from '../components/NewPatientSpecial.astro';
 import Button from '../components/Button.astro';
 import PageHero from '../components/PageHero.astro';
 import { getRandomTestimonials } from '../lib/sanityQueries';
-import { JANE_BOOKING_URL, CONTACT } from '../lib/config';
+import { BOOK_PATH, CONTACT, REVIEW_STATS } from '../lib/config';
 
 // Social proof reused from Sanity (same pattern as the homepage)
 const testimonials = await getRandomTestimonials(3);
@@ -79,7 +79,7 @@ const conditions = [
     description="Whole-person care that treats the root cause, not just the symptom. We combine acupuncture, Chinese herbal medicine, and lifestyle guidance to help your body heal naturally and stay well."
   >
     <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-      <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+      <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH}>
         Book Your Appointment
       </Button>
       <Button variant="tertiary" size="lg" icon="phone" href={`tel:${CONTACT.phoneRaw}`}>
@@ -185,7 +185,7 @@ const conditions = [
       <div class="grid sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto mb-10">
         <StatCard value="25+" label="Years of Experience" />
         <StatCard value="380K+" label="Treatments Delivered" />
-        <StatCard value="4.8★" label="Average Patient Rating" description="Across 171 Google reviews" />
+        <StatCard value={`${REVIEW_STATS.rating}★`} label="Average Patient Rating" description={`Across ${REVIEW_STATS.count} Google reviews`} />
       </div>
       <p class="text-center text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
         From our Glendale clinic we proudly serve patients across Milwaukee, Whitefish Bay, Shorewood, Mequon, Bayside, Fox Point, River Hills, Brown Deer, and Wauwatosa.
@@ -232,7 +232,7 @@ const conditions = [
   <CTASection
     heading="Begin Your Holistic Healing Journey"
     description="Experience whole-person acupuncture care in Milwaukee. Book your first visit or call us with any questions."
-    primaryButton={{ label: 'Book Your Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    primaryButton={{ label: 'Book Your Appointment', href: BOOK_PATH }}
     secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:${CONTACT.phoneRaw}`, icon: 'phone' }}
   />
 </BaseLayout>

@@ -4,9 +4,10 @@ import Container from '../components/Container.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import TestimonialCard from '../components/TestimonialCard.astro';
 import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import { getRandomTestimonials } from '../lib/sanityQueries';
-import { JANE_BOOKING_URL } from '../lib/config';
+import { BOOK_PATH, REVIEW_STATS, GOOGLE_REVIEWS_URL } from '../lib/config';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import NewPatientSpecial from '../components/NewPatientSpecial.astro';
@@ -21,6 +22,21 @@ const conditions = [
   { name: 'Insomnia', description: 'Restore healthy sleep patterns and overcome insomnia with natural acupuncture treatments.', icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z', anchor: 'mental-health' },
   { name: 'Digestive Issues', description: 'Address digestive concerns and restore gut health through targeted acupuncture therapy.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', anchor: 'digestive' },
   { name: 'Women\'s Health', description: 'Support women\'s health through all life stages with specialized acupuncture care and treatment.', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', anchor: 'womens-health' },
+];
+
+const faqTeasers = [
+  {
+    question: 'Does acupuncture hurt?',
+    answer: 'Most people feel little to nothing. Acupuncture needles are hair-thin — far finer than the needles used for injections or blood draws. You may notice a slight pinch or a warm, dull sensation, and many patients find treatment deeply relaxing.',
+  },
+  {
+    question: 'How many sessions will I need?',
+    answer: 'It depends on your condition. Acute issues may resolve in 3–5 sessions, while chronic conditions often take 8–12 or more. Many patients notice improvement after just a few visits — we create a personalized plan and adjust it as you progress.',
+  },
+  {
+    question: 'Is acupuncture covered by insurance?',
+    answer: 'Many plans now cover acupuncture, especially for pain management. We are in-network with several major providers and can provide superbills for out-of-network reimbursement. Contact us and we will help verify your benefits.',
+  },
 ];
 ---
 
@@ -61,7 +77,7 @@ const conditions = [
 
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 pt-2">
-            <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH}>
               Book Your Appointment
             </Button>
             <Button variant="tertiary" size="lg" icon="info" href="/acupuncture">
@@ -80,7 +96,7 @@ const conditions = [
               <div class="text-xs md:text-sm text-gray-600">Treatments</div>
             </div>
             <div>
-              <div class="text-2xl md:text-3xl font-heading font-bold text-tcm-red">4.8★</div>
+              <div class="text-2xl md:text-3xl font-heading font-bold text-tcm-red">{REVIEW_STATS.rating}★</div>
               <div class="text-xs md:text-sm text-gray-600">Patient Rating</div>
             </div>
           </div>
@@ -149,13 +165,55 @@ const conditions = [
           />
         ))}
       </div>
+      <div class="text-center mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+        <Button variant="tertiary" size="lg" icon="arrow-right" iconPosition="right" href="/reviews">
+          See all patient reviews
+        </Button>
+        <Button variant="tertiary" size="lg" icon="external" iconPosition="right" href={GOOGLE_REVIEWS_URL} target="_blank" rel="noopener noreferrer">
+          Read all {REVIEW_STATS.count} reviews on Google
+        </Button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Common Questions (FAQ teaser) -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <SectionHeader title="Common Questions" subtitle="Quick answers to what new patients ask most. Visit our FAQ for the full list." />
+      <div class="max-w-3xl mx-auto space-y-4">
+        {faqTeasers.map(faq => (
+          <Card variant="bordered" padding="none" class="bg-white overflow-hidden">
+            <details class="group">
+              <summary class="flex items-center justify-between cursor-pointer p-6 hover:bg-sage-50 transition-colors list-none">
+                <h3 class="text-lg font-heading font-semibold text-charcoal pr-4">{faq.question}</h3>
+                <svg class="w-6 h-6 text-sage-600 flex-shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </summary>
+              <div class="px-6 pb-6 pt-2">
+                <p class="text-gray-700 leading-relaxed">{faq.answer}</p>
+              </div>
+            </details>
+          </Card>
+        ))}
+      </div>
+      <div class="text-center mt-10">
+        <Button variant="primary" size="lg" icon="arrow-right" iconPosition="right" href="/faq">
+          See all FAQs
+        </Button>
+      </div>
     </Container>
   </section>
 
   <CTASection
     heading="Ready to Begin Your Healing Journey?"
     description="Take the first step towards better health and wellness. Our experienced team is here to help you achieve your health goals."
-    primaryButton={{ label: 'Schedule Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    primaryButton={{ label: 'Schedule Appointment', href: BOOK_PATH }}
     secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
   />
 </BaseLayout>
+
+<style>
+  details summary::-webkit-details-marker { display: none; }
+  details summary::marker { display: none; }
+</style>
