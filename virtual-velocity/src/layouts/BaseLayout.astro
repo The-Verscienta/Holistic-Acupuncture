@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import StructuredData from '../components/StructuredData.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
-import { SITE_URL, SOCIAL, DEFAULT_OG_IMAGE, CONTACT, JANE_BOOKING_URL } from '../lib/config';
+import { SITE_URL, SOCIAL, DEFAULT_OG_IMAGE, CONTACT, BOOK_PATH } from '../lib/config';
 
 interface Props {
   title: string;
@@ -217,9 +217,7 @@ const twitterHandle = SOCIAL.twitter;
         Call Us
       </a>
       <a
-        href={JANE_BOOKING_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={BOOK_PATH}
         class="flex-[2] flex items-center justify-center gap-2 py-3 rounded-lg bg-sage-700 hover:bg-sage-600 text-white font-semibold text-sm transition-colors"
       >
         <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

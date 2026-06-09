@@ -6,7 +6,7 @@ import TestimonialCard from '../components/TestimonialCard.astro';
 import Button from '../components/Button.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import { getRandomTestimonials } from '../lib/sanityQueries';
-import { JANE_BOOKING_URL } from '../lib/config';
+import { BOOK_PATH } from '../lib/config';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import NewPatientSpecial from '../components/NewPatientSpecial.astro';
@@ -61,7 +61,7 @@ const conditions = [
 
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 pt-2">
-            <Button variant="primary" size="lg" icon="calendar" href={JANE_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+            <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH}>
               Book Your Appointment
             </Button>
             <Button variant="tertiary" size="lg" icon="info" href="/acupuncture">
@@ -155,7 +155,7 @@ const conditions = [
   <CTASection
     heading="Ready to Begin Your Healing Journey?"
     description="Take the first step towards better health and wellness. Our experienced team is here to help you achieve your health goals."
-    primaryButton={{ label: 'Schedule Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    primaryButton={{ label: 'Schedule Appointment', href: BOOK_PATH }}
     secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
   />
 </BaseLayout>

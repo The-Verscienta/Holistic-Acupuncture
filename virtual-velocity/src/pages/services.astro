@@ -5,7 +5,7 @@ import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
-import { JANE_BOOKING_URL } from '../lib/config';
+import { BOOK_PATH } from '../lib/config';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
@@ -250,9 +250,7 @@ const packages = [
                   </div>
                   {service.bookOnline ? (
                     <a
-                      href={JANE_BOOKING_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href={BOOK_PATH}
                       class="text-sage-600 hover:text-sage-700 font-medium text-sm flex items-center gap-1"
                     >
                       Book Now
@@ -326,9 +324,7 @@ const packages = [
               <Button
                 variant={pkg.highlight ? "primary" : "secondary"}
                 size="md"
-                href={JANE_BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={BOOK_PATH}
                 class="w-full justify-center"
               >
                 Get Started
@@ -395,7 +391,7 @@ const packages = [
   <CTASection
     heading="Ready to Start Your Healing Journey?"
     description="Book your appointment today and take the first step towards better health."
-    primaryButton={{ label: 'Book Appointment', href: JANE_BOOKING_URL, target: '_blank', rel: 'noopener noreferrer' }}
+    primaryButton={{ label: 'Book Appointment', href: BOOK_PATH }}
     secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
   />
 </BaseLayout>
