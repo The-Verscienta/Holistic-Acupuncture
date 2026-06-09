@@ -34,9 +34,11 @@ The audit is decomposed into four independently-shippable phases. A/B/C are pure
   Holistic Health Associates`. Expand visible copy to **1,500+ words** with H2 sections: why
   Milwaukee/Glendale residents seek acupuncture, what to expect at the Glendale clinic, conditions
   treated (cross-links to `/conditions/*`), insurance/cost overview. Meta description includes city.
-- **A3 (P3) `faq.astro`** — Expand to **15–25 Q&As**, each 80–150 words. Include locally-specific
-  questions ("acupuncture clinic near Shorewood or Whitefish Bay?", "how much does acupuncture cost
-  in Milwaukee?", "does insurance cover acupuncture in Wisconsin?"). Add **FAQPage JSON-LD**.
+- ~~**A3 (P3)**~~ **CORRECTION — moved to Phase D (D4).** `faq.astro` is CMS-driven
+  (`getAllFAQs()`, `_type == "faq"`) and **already emits FAQPage JSON-LD**. The ~186-word audit
+  reading means there are near-zero `faq` documents in Sanity. So P3 is a *content-seeding* task,
+  not a code edit. The file's legacy `_oldFaqCategories` array (~35 written Q&As) is ready-made
+  seed content; add ~6–8 new local Q&As (Shorewood/Whitefish Bay, Milwaukee cost, WI insurance).
 - **A2 (P5) cannibalization** — **Differentiate, do not 301.** `/acupuncture/` = general clinical
   pillar targeting "acupuncture Milwaukee"; `/holistic-acupuncture/` retains "holistic acupuncture /
   Chinese medicine Milwaukee". Ensure distinct H1s/titles/intro content and add a cross-link between
@@ -47,9 +49,11 @@ The audit is decomposed into four independently-shippable phases. A/B/C are pure
 - **A4 (P9) `reviews.astro`** — Retitle to `Patient Reviews — Best Acupuncture in Milwaukee, WI`
   (or close). Add an intro paragraph with location + rating context (sourced from `REVIEW_STATS` —
   single source of truth, per recent refactor; do not hardcode the rating/count).
-- **A6 (P10) GBP in schema** — Add the Google Business Profile URL to `sameAs` in the schema.
-  Store the URL in `config.ts` (`SOCIAL` or a new `GOOGLE_BUSINESS` const) and consume it in
-  `StructuredData.astro`. **Input required:** the GBP URL (`maps.google.com/?cid=…` or `g.page/…`).
+- **A6 (P10) GBP in schema** — Add the Google Business Profile URL to `sameAs` in
+  `StructuredData.astro`. **Resolved:** `config.ts` already has `CONTACT.address.googlePlaceId`
+  (`ChIJpwaRdmAeBYgRadfuDNZDi_4`); build a stable canonical URL from it —
+  `https://www.google.com/maps/place/?q=place_id:${googlePlaceId}` — exposed via a new
+  `GOOGLE_BUSINESS_URL` const in `config.ts`. No fragile `share.google` link needed.
 
 ### Phase B — Condition-page template upgrade (code; lifts every condition at once) — P1 structural
 
@@ -92,6 +96,11 @@ All scripts idempotent, dry-run-capable, and following existing `scripts/*.js` p
 - **D3 (P8) `scripts/localize-blog-titles.js`** — Heuristically classify symptom/condition posts vs
   pure-TCM/philosophy posts; append `| Acupuncture in Milwaukee, WI` to the former only. Idempotent
   (skip if already localized). Report reclassification counts.
+- **D4 (P3) `scripts/seed-faqs.js`** — Seed `_type == "faq"` documents (the page is CMS-driven and
+  the FAQPage schema already exists; it just has no data). Source the ~35 Q&As from the legacy
+  `_oldFaqCategories` array in `faq.astro` (question/answer/category map to the faq schema) plus
+  ~6–8 new local Q&As. Idempotent via deterministic `_id` per question (skip existing). After
+  seeding succeeds, delete the dead `_oldFaqCategories` array from `faq.astro` (code cleanup).
 
 ## Data Flow
 
