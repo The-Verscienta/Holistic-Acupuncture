@@ -41,7 +41,7 @@ This guide covers setting up email notifications for form submissions using Rese
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Admin email for notifications
-PUBLIC_ADMIN_EMAIL=info@holisticacupuncture.net
+PUBLIC_ADMIN_EMAIL=info@milwaukeeacu.com
 ```
 
 **Production (Netlify/Vercel):**
@@ -49,7 +49,7 @@ PUBLIC_ADMIN_EMAIL=info@holisticacupuncture.net
 2. Navigate to Environment Variables
 3. Add:
    - `RESEND_API_KEY` = your API key
-   - `PUBLIC_ADMIN_EMAIL` = info@holisticacupuncture.net
+   - `PUBLIC_ADMIN_EMAIL` = info@milwaukeeacu.com
 
 ### Step 4: Verify Domain (Optional but Recommended)
 

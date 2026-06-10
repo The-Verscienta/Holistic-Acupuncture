@@ -38,7 +38,7 @@ export function getAllowedOrigins(request: Request): string[] {
 export const CONTACT = {
   phone: '(414) 332-8888',
   phoneRaw: '+14143328888',
-  email: 'info@holisticacupuncture.net',
+  email: 'info@milwaukeeacu.com',
   address: {
     street: '500 W Silver Spring Dr. Ste K205',
     city: 'Glendale',

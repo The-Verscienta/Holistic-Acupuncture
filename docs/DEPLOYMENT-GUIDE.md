@@ -98,7 +98,7 @@ The `netlify.toml` file already includes:
 1. Go to **Site settings** → **Forms**
 2. Click **"Form notifications"**
 3. Add email notification for form submissions:
-   - **Email to notify:** info@holisticacupuncture.net
+   - **Email to notify:** info@milwaukeeacu.com
    - **Form name:** Contact form
 
 ---

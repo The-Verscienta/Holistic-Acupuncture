@@ -9,8 +9,8 @@ The contact form sends email via [Resend](https://resend.com). To avoid **500 er
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `RESEND_API_KEY` | **Yes** | API key from [Resend → API Keys](https://resend.com/api-keys). Create one and paste the key. |
-| `PUBLIC_ADMIN_EMAIL` | Recommended | Where contact submissions are sent (e.g. `info@holisticacupuncture.net`). Defaults to `info@holisticacupuncture.net` if unset. |
-| `RESEND_FROM_EMAIL` | If needed | Sender address; must use a [verified domain](https://resend.com/domains) in Resend. Defaults to `noreply@holisticacupuncture.net`. |
+| `PUBLIC_ADMIN_EMAIL` | Recommended | Where contact submissions are sent (e.g. `info@milwaukeeacu.com`). Defaults to `info@milwaukeeacu.com` if unset. |
+| `RESEND_FROM_EMAIL` | If needed | Sender address; must use a [verified domain](https://resend.com/domains) in Resend. Defaults to `info@milwaukeeacu.com`. |
 | `RESEND_FROM_NAME` | Optional | Sender name (e.g. "Holistic Acupuncture Website"). |
 
 **Steps:**

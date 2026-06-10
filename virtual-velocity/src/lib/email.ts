@@ -494,7 +494,7 @@ export async function sendConfirmationEmail(to: string, name: string, env?: Emai
 
           <div class="contact-info">
             <strong>Phone:</strong> (414) 332-8888<br>
-            <strong>Email:</strong> info@holisticacupuncture.net<br>
+            <strong>Email:</strong> info@milwaukeeacu.com<br>
             <strong>Location:</strong> Bayshore Town Center, Glendale, WI
           </div>
 
@@ -527,7 +527,7 @@ Thank you for reaching out to Acupuncture & Holistic Health Associates. We have 
 If you need immediate assistance, please feel free to call us during our business hours.
 
 Phone: (414) 332-8888
-Email: info@holisticacupuncture.net
+Email: info@milwaukeeacu.com
 Location: Bayshore Town Center, Glendale, WI
 
 We look forward to helping you on your wellness journey.

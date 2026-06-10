@@ -252,7 +252,7 @@ Before going live:
 
 **Current Placeholder Info (UPDATE BEFORE LAUNCH):**
 - Phone: (414) 555-1234
-- Email: info@holisticacupuncture.net
+- Email: info@milwaukeeacu.com
 - Address: Bayshore Town Center, 5800 N Bayshore Drive, Glendale, WI 53217
 
 ---

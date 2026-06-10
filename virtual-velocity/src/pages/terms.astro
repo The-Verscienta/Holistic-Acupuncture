@@ -299,7 +299,7 @@ import { CONTACT } from '../lib/config';
             Phone: <a href={`tel:+1${CONTACT.phone.replace(/\D/g, '')}`} class="text-sage-600 hover:text-sage-700">{CONTACT.phone}</a>
           </p>
           <p class="text-gray-700">
-            Email: <a href="mailto:info@holisticacupuncture.net" class="text-sage-600 hover:text-sage-700">info@holisticacupuncture.net</a>
+            Email: <a href={`mailto:${CONTACT.email}`} class="text-sage-600 hover:text-sage-700">{CONTACT.email}</a>
           </p>
         </div>
 
