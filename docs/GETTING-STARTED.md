@@ -213,7 +213,7 @@ SANITY_API_TOKEN=your_write_token
 
 2. **Update Placeholder Content**
    - Replace phone: (414) 555-1234
-   - Replace email: info@holisticacupuncture.net
+   - Replace email: info@milwaukeeacu.com
    - Add real staff photos and bios
 
 3. **Professional Photography**

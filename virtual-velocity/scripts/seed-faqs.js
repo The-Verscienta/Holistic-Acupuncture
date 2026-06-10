@@ -33,7 +33,7 @@ const dryRun = process.argv.includes('--dry-run');
 
 // Verified contact values (real values from src/lib/config.ts CONTACT).
 const PHONE = '(414) 332-8888';
-const EMAIL = 'info@holisticacupuncture.net';
+const EMAIL = 'info@milwaukeeacu.com';
 
 // FAQ content. Categories use the canonical value keys from
 // src/types/sanity.ts faqCategories:
