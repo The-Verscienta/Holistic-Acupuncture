@@ -198,6 +198,20 @@ const twitterHandle = SOCIAL.twitter;
     <Footer />
     <CookieConsent />
 
+    <!-- GA conversion tracking: fire when a "Book Appointment" link is clicked.
+         Guarded on window.gtag since GA only loads after cookie consent. -->
+    <script is:inline>
+      document.querySelectorAll('a[href*="jane"]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (typeof window.gtag !== 'function') return;
+          window.gtag('event', 'book_appointment_click', {
+            event_category: 'conversion',
+            event_label: 'Book Appointment Button'
+          });
+        });
+      });
+    </script>
+
     <!-- Mobile sticky Book Now bar (hidden on lg+ where header button is visible).
          Uses `inert` so the bar's links are removed from the tab order and
          a11y tree until shown — `aria-hidden="true"` alone leaves them tabbable. -->

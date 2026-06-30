@@ -639,6 +639,10 @@ const expiryDate = endOfMonth.toLocaleDateString('en-US', { month: 'long', day: 
               form_name: 'contact',
               contact_reason: reason || 'general',
             });
+            (window as any).gtag('event', 'contact_form_submit', {
+              event_category: 'conversion',
+              event_label: 'Contact Form',
+            });
           }
 
           // Show success

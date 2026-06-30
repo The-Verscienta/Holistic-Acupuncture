@@ -6,7 +6,9 @@
  * Google Analytics only loads after the user accepts.
  * Consent preference is stored in a cookie for 365 days.
  */
-const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+// GA Measurement IDs are public (shipped to every browser), so we default to the
+// site's real ID and let the env var override it for staging/other properties.
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-18D0JDVT23';
 ---
 
 {import.meta.env.PROD && gaId && (
