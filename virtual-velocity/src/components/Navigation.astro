@@ -52,7 +52,7 @@ function isGroupActive(item: NavItem): boolean {
             aria-controls={menuId}
             data-dropdown-trigger
             class:list={[
-              'inline-flex items-center gap-1 px-2 xl:px-3 py-2 text-sm xl:text-base font-medium transition-colors relative',
+              'inline-flex items-center gap-1 px-2.5 py-2 text-sm font-medium transition-colors relative',
               active ? 'text-sage-700' : 'text-gray-600 hover:text-sage-700',
             ]}
           >
@@ -69,7 +69,7 @@ function isGroupActive(item: NavItem): boolean {
             </svg>
             <span
               class:list={[
-                'absolute bottom-0 left-2 xl:left-3 right-2 xl:right-3 h-0.5 bg-tcm-red transition-opacity duration-300',
+                'absolute bottom-0 left-2.5 right-2.5 h-0.5 bg-tcm-red transition-opacity duration-300',
                 active ? 'opacity-100' : 'opacity-0',
               ]}
             ></span>
@@ -112,7 +112,7 @@ function isGroupActive(item: NavItem): boolean {
         href={item.href}
         aria-current={active ? 'page' : undefined}
         class:list={[
-          'px-2 xl:px-3 py-2 text-sm xl:text-base font-medium transition-colors relative group',
+          'px-2.5 py-2 text-sm font-medium transition-colors relative group',
           active ? 'text-sage-700' : 'text-gray-600 hover:text-sage-700',
         ]}
       >

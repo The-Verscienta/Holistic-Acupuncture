@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 @theme {
+  /* Breakpoints — custom 3xl gates the inline desktop header nav, which needs
+     ~1585px of room (full brand name + 6 nav items + search + phone + 2 CTAs).
+     Below this the hamburger menu takes over; the default 2xl (1536px) is too
+     narrow and caused the nav to overlap the logo. */
+  --breakpoint-3xl: 1620px;
+
   /* Color System - Wellness Palette 2026 */
   --color-sage-50: #f6f7f3;
   --color-sage-100: #e8ebe3;
