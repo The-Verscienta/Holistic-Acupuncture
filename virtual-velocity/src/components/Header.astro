@@ -28,21 +28,21 @@ const mobileNav: { name: string; href: string }[] = [
   class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300"
   data-pagefind-ignore
 >
-  <div class="max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-20 gap-8">
+  <div class="max-w-7xl 3xl:max-w-[1728px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20 gap-4">
       <!-- Logo/Brand -->
       <a
         href="/"
-        class="flex items-center gap-2 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
+        class="flex items-center gap-2 shrink-0 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
       >
         <img src="/logo.webp" alt="Acupuncture & Holistic Health Associates logo" width="40" height="40" class="h-10 w-auto shrink-0" loading="eager" />
         <span id="holiday-emoji" aria-hidden="true"></span>
-        <span class="hidden 2xl:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
-        <span class="2xl:hidden">AHH Associates</span>
+        <span class="hidden 3xl:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
+        <span class="3xl:hidden">AHH Associates</span>
       </a>
 
-      <!-- Desktop Navigation (shown at 2xl+ only — at smaller widths the hamburger takes over) -->
-      <div class="hidden 2xl:flex items-center gap-6 flex-1 min-w-0 justify-end">
+      <!-- Desktop Navigation (shown at 3xl+ only — at smaller widths the hamburger takes over) -->
+      <div class="hidden 3xl:flex items-center gap-4 flex-1 min-w-0 justify-end">
         <Navigation />
 
         <!-- Search -->
@@ -71,8 +71,8 @@ const mobileNav: { name: string; href: string }[] = [
         </div>
       </div>
 
-      <!-- Mobile + small/mid desktop: search + inline CTAs + hamburger (shown below 2xl) -->
-      <div class="2xl:hidden flex items-center gap-1 sm:gap-2">
+      <!-- Mobile + small/mid desktop: search + inline CTAs + hamburger (shown below 3xl) -->
+      <div class="3xl:hidden flex items-center gap-1 sm:gap-2">
         <button
           id="mobile-search-trigger"
           type="button"
@@ -113,7 +113,7 @@ const mobileNav: { name: string; href: string }[] = [
 <!-- Mobile Menu Overlay -->
 <div
   id="mobile-menu"
-  class="fixed inset-0 z-40 bg-warm-white/95 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto 2xl:hidden"
+  class="fixed inset-0 z-40 bg-warm-white/95 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 overflow-y-auto 3xl:hidden"
   role="dialog"
   aria-modal="true"
   aria-label="Mobile navigation menu"
