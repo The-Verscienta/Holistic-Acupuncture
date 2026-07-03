@@ -1,5 +1,6 @@
 ---
 import { BOOK_PATH, CONTACT } from '../lib/config';
+import { LOCATIONS } from '../data/locations';
 import OfficeHoursCard from './OfficeHoursCard.astro';
 const currentYear = new Date().getFullYear();
 ---
@@ -141,6 +142,15 @@ const currentYear = new Date().getFullYear();
           Schedule Appointment
         </a>
       </div>
+    </div>
+
+    <!-- Service Areas -->
+    <div class="border-t border-sage-600 mt-8 pt-6 text-sm text-sage-200 text-center md:text-left">
+      <span class="font-medium text-sage-100">Serving Milwaukee &amp; the North Shore:</span>
+      {' '}
+      <a href="/acupuncture" class="hover:text-white transition-colors">Milwaukee</a>{LOCATIONS.map((loc) => (
+        <> &middot; <a href={`/acupuncture/${loc.slug}`} class="hover:text-white transition-colors">{loc.name}</a></>
+      ))} &middot; <a href="/service-areas" class="hover:text-white transition-colors">All Areas</a>
     </div>
 
     <!-- Bottom Bar -->

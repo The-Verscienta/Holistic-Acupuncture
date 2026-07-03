@@ -65,9 +65,22 @@ const structuredData = {
     name: city,
     containedIn: { "@type": "State", name: "Wisconsin" }
   })),
+  // Prices must stay in sync with the services list in src/pages/services.astro
   makesOffer: [
     {
       "@type": "Offer",
+      price: "350",
+      priceCurrency: "USD",
+      itemOffered: {
+        "@type": "MedicalProcedure",
+        name: "Initial Consultation & Treatment",
+        description: "Comprehensive health assessment, traditional Chinese medicine diagnosis, personalized treatment plan, and first acupuncture treatment"
+      }
+    },
+    {
+      "@type": "Offer",
+      price: "90",
+      priceCurrency: "USD",
       itemOffered: {
         "@type": "MedicalProcedure",
         name: "Acupuncture Treatment",
@@ -76,14 +89,18 @@ const structuredData = {
     },
     {
       "@type": "Offer",
+      price: "60",
+      priceCurrency: "USD",
       itemOffered: {
         "@type": "MedicalProcedure",
-        name: "Chinese Herbal Medicine",
-        description: "Traditional Chinese herbal consultations and prescriptions"
+        name: "Chinese Herbal Medicine Consultation",
+        description: "Personalized Chinese herbal medicine consultation with custom formula recommendation"
       }
     },
     {
       "@type": "Offer",
+      price: "45",
+      priceCurrency: "USD",
       itemOffered: {
         "@type": "MedicalProcedure",
         name: "Cupping Therapy",
