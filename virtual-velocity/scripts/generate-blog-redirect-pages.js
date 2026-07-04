@@ -64,7 +64,8 @@ const BLOG_REDIRECTS = {
   'what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee': '/blog/what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee',
   'stevia-faq-questions-and-answers-about-stevia-sweeteners': '/blog/stevia-faq-questions-and-answers-about-stevia-sweeteners',
   'acupuncture-for-winter-immunity-boosting-defenses-against-colds': '/blog/acupuncture-for-winter-immunity-boosting-defenses-against-colds',
-  'seasonal-affective-disorder-tdp-lamps': '/blog/seasonal-affective-disorder-tdp-lamps',
+  // Post not migrated to the new site — send to the blog index rather than a dead /blog/ target.
+  'seasonal-affective-disorder-tdp-lamps': '/blog',
   'using-acupuncture-to-overcome-stress-overwhelm-and-anxiety': '/blog/using-acupuncture-to-overcome-stress-overwhelm-and-anxiety',
   'acupuncture-for-fertility': '/blog/acupuncture-for-fertility',
   '5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin': '/blog/5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin',
@@ -99,7 +100,8 @@ const BLOG_REDIRECTS = {
   'why-being-grateful-is-good-medicine': '/blog/why-being-grateful-is-good-medicine',
   'combining-acupuncture-with-yoga-a-milwaukee-wellness-guide': '/blog/combining-acupuncture-with-yoga-a-milwaukee-wellness-guide',
   'gmo-vs-non-gmo-foods': '/blog/gmo-vs-non-gmo-foods',
-  'buyer-beware-tips-for-choosing-an-acupuncturist': '/blog/buyer-beware-tips-for-choosing-an-acupuncturist',
+  // Original post not migrated — send to the closest existing article on choosing an acupuncturist.
+  'buyer-beware-tips-for-choosing-an-acupuncturist': '/blog/top-5-tips-to-help-you-choose-the-best-acupuncturist',
   'embrace-a-natural-and-healthy-lifestyle-simple-tips-for-wellness-in-milwaukee-wi': '/blog/embrace-a-natural-and-healthy-lifestyle-simple-tips-for-wellness-in-milwaukee-wi',
   'four-golden-rules-of-acupuncture': '/blog/four-golden-rules-of-acupuncture',
   'zhi-willpower-housed-in-the-kidneys': '/blog/zhi-willpower-housed-in-the-kidneys',
@@ -108,7 +110,8 @@ const BLOG_REDIRECTS = {
   'why-choose-acupuncture-over-painkillers': '/blog/why-choose-acupuncture-over-painkillers',
   'spring-cleansing': '/blog/spring-cleansing',
   'everything-you-need-to-know-about-using-acupuncture-for-pain-management': '/blog/everything-you-need-to-know-about-using-acupuncture-for-pain-management',
-  'winters-end-spring-transition': '/blog/winters-end-spring-transition',
+  // Post not migrated to the new site — send to the blog index rather than a dead /blog/ target.
+  'winters-end-spring-transition': '/blog',
   'faqs-about-perimenopause-treatment-and-acupuncture': '/blog/faqs-about-perimenopause-treatment-and-acupuncture',
   'year-of-the-water-tiger-is-almost-upon-us': '/blog/year-of-the-water-tiger-is-almost-upon-us',
   'acupuncture-for-allergies': '/blog/acupuncture-for-allergies',
@@ -127,7 +130,8 @@ const BLOG_REDIRECTS = {
   'quick-and-easy-spring-noodle-soup': '/blog/quick-and-easy-spring-noodle-soup',
   'the-dangers-of-msg': '/blog/the-dangers-of-msg',
   'summer-health-tips-from-an-acupuncturist': '/blog/summer-health-tips-from-an-acupuncturist',
-  'the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health': '/blog/the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health',
+  // Post not migrated to the new site — send to the blog index rather than a dead /blog/ target.
+  'the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health': '/blog',
 };
 
 function buildHtml(dest) {

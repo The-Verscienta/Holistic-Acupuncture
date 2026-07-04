@@ -46,7 +46,8 @@ const REDIRECTS = {
   // -------------------------------------------------------------------------
   // Old blog post that exists on new site but was missed in generate-blog-redirect-pages
   // -------------------------------------------------------------------------
-  '3d-still-showing-sciatica-nerve':     '/blog/3d-still-showing-sciatica-nerve/',
+  // Post not migrated — send to the sciatica condition page (strong topical match).
+  '3d-still-showing-sciatica-nerve':     '/conditions/sciatica/',
 
   // -------------------------------------------------------------------------
   // Blog pagination
@@ -118,7 +119,7 @@ const REDIRECTS = {
   'the-shen-in-chinese-medicine-nurturing-the-spirit-for-optimal-health/photo-by-greg-rakozy':
     '/blog/the-shen-in-chinese-medicine-nurturing-the-spirit-for-optimal-health/',
   'winters-end-spring-transition/photo-by-mary-hinton':
-    '/blog/winters-end-spring-transition/',
+    '/blog/',
   'the-yi-in-chinese-medicine/photo-by-mailchimp':
     '/blog/the-yi-in-chinese-medicine/',
   'the-po-the-bodys-soul-in-chinese-medicine/photo-by-wallace-henry':
@@ -128,7 +129,7 @@ const REDIRECTS = {
   'the-role-of-the-hun-in-chinese-medicine-understanding-the-ethereal-soul/photo-by-teslariu-mihai':
     '/blog/the-role-of-the-hun-in-chinese-medicine-understanding-the-ethereal-soul/',
   'the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health/photo-by-julien-tromeur-3':
-    '/blog/the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health/',
+    '/blog/',
   'stevia-faq-questions-and-answers-about-stevia-sweeteners/photo-by-mathilde-langevin':
     '/blog/stevia-faq-questions-and-answers-about-stevia-sweeteners/',
   'fortify-your-defenses-5-time-tested-strategies-from-classical-chinese-medicine-to-prevent-illness/photo-by-milada-vigerova':
@@ -154,6 +155,84 @@ const REDIRECTS = {
   'wp-content/uploads/2015/10/discontinuing-medication-you-currently-take-newsletter.pdf': '/blog/',
   'wp-content/uploads/2015/10/western-vs-oriental-medicine-newsletter.pdf': '/blog/',
   'wp-content/uploads/2015/10/womens-reproductive-health.pdf':     '/blog/',
+
+  // ===========================================================================
+  // Search Console 404 drilldown (2026-07-04). These old WordPress URLs were
+  // only covered by _redirects rules, which are IGNORED on this Cloudflare
+  // Worker deployment — only physical redirect pages here are served. Every
+  // destination below was verified to exist on the new site.
+  // ===========================================================================
+
+  // --- Old flat blog-post URLs → new /blog/:slug (target verified present) ---
+  'top-5-tips-to-help-you-choose-the-best-acupuncturist': '/blog/top-5-tips-to-help-you-choose-the-best-acupuncturist/',
+  'how-weather-affects-your-health':                      '/blog/how-weather-affects-your-health/',
+  'the-amazing-human-organ-system':                      '/blog/the-amazing-human-organ-system/',
+  'viruses-on-your-mind':                                 '/blog/viruses-on-your-mind/',
+  'quinoa':                                               '/blog/quinoa/',
+  'using-acupuncture-for-mood-disorders':                '/blog/using-acupuncture-for-mood-disorders/',
+  'no-ones-friend-insomina':                             '/blog/no-ones-friend-insomina/',
+  'acupuncture-chiropractic':                            '/blog/acupuncture-chiropractic/',
+  'how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee': '/blog/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee/',
+  'brendas-easy-poached-pears':                          '/blog/brendas-easy-poached-pears/',
+  'acupuncturist-quicktips-simple-steps-to-regulating-your-weight': '/blog/acupuncturist-quicktips-simple-steps-to-regulating-your-weight/',
+  // Original post not migrated → closest existing Milwaukee back-pain article.
+  'acupuncture-for-back-pain-milwaukees-natural-alternative': '/blog/why-milwaukee-residents-are-choosing-acupuncture-for-back-pain-relief/',
+
+  // --- Old WordPress static page (underscore variant) ---
+  'about_us':                                            '/about/',
+
+  // --- Low-value / test / unknown slugs ---
+  'best-of-test':                                        '/blog/',
+  'phandhealth':                                         '/',
+
+  // --- Orphan top-level attachment (photo) pages → blog index ---
+  'photo-by-usgs':                                       '/blog/',
+  'photo-by-md-duran':                                   '/blog/',
+  'photo-by-sara-bakhshi':                               '/blog/',
+  'photo-by-ian-stauffer':                               '/blog/',
+  'photo-by-camille-brodard':                            '/blog/',
+  'photo-by-julien-tromeur-2':                           '/blog/',
+
+  // --- Attachment sub-paths → parent post (verified) or blog index if unmigrated ---
+  'unlocking-chinese-herbal-medicine/photo-by-jorgeparedes1992': '/blog/unlocking-chinese-herbal-medicine/',
+  'unlocking-chinese-herbal-medicine/bottle-of-herbs-on-a-table': '/blog/unlocking-chinese-herbal-medicine/',
+  'rotator-cuff-injuries/photo-by-inge-poelman':         '/blog/rotator-cuff-injuries/',
+  'honoring-mothers-through-the-wisdom-of-chinese-medicine/photo-by-eye-for-ebony': '/blog/honoring-mothers-through-the-wisdom-of-chinese-medicine/',
+  'honoring-mothers-through-the-wisdom-of-chinese-medicine/photo-by-liv-bruce': '/blog/honoring-mothers-through-the-wisdom-of-chinese-medicine/',
+  'faqs-about-perimenopause-treatment-and-acupuncture/beautiful-middle-aged-woman-smiling-outdoors': '/blog/faqs-about-perimenopause-treatment-and-acupuncture/',
+  'embracing-autumn-how-acupuncture-can-support-your-seasonal-transition/photo-by-jeremy-thomas': '/blog/embracing-autumn-how-acupuncture-can-support-your-seasonal-transition/',
+  'four-golden-rules-of-acupuncture/4-pillars':          '/blog/four-golden-rules-of-acupuncture/',
+  'acupuncture-for-stomach-issues/photo-by-julien-tromeur': '/blog/acupuncture-for-stomach-issues/',
+  'chinese-new-year/basic-rgb':                          '/blog/chinese-new-year/',
+  // Parent posts not migrated → blog index.
+  'seasonal-affective-disorder-tdp-lamps/photo-by-dev-asangbam': '/blog/',
+  'the-digital-stagnation-healing-tech-neck-with-east-asian-medicine/photo-by-stormseeker': '/blog/',
+  'acupuncture-for-back-pain-milwaukees-natural-alternative/photo-by-sasun-bughdaryan': '/blog/why-milwaukee-residents-are-choosing-acupuncture-for-back-pain-relief/',
+
+  // --- WordPress category / tag archives (crawled) → blog index ---
+  'category/immune-system':                              '/blog/',
+  'category/stress':                                     '/blog/',
+  'category/acupuncture-treatment':                      '/blog/',
+  'tag/acupuncture-in-milwaukee':                        '/blog/',
+  'tag/milwaukee':                                       '/blog/',
+  'tag/painful-periods':                                 '/blog/',
+  'tag/recipe':                                          '/blog/',
+  'tag/functional-acupuncture':                          '/blog/',
+  'tag/chinese-new-year-and-your-health-in-milwaukee':   '/blog/',
+
+  // --- WordPress date archives (crawled) → blog index ---
+  '2015/01':                                             '/blog/',
+  '2016/01':                                             '/blog/',
+  '2016/10':                                             '/blog/',
+  '2016/12':                                             '/blog/',
+  '2017/09':                                             '/blog/',
+  '2020/11':                                             '/blog/',
+  '2022/02':                                             '/blog/',
+  '2022/09':                                             '/blog/',
+
+  // --- Stale /blog/-prefixed URLs (broken internal links, now fixed at source) ---
+  'blog/acupuncture-for-chronic-pain':                   '/blog/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee/',
+  'blog/spring-':                                        '/blog/spring-cleansing/',
 };
 
 function buildHtml(dest) {
