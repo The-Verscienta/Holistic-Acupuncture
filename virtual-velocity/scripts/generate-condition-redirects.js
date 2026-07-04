@@ -21,6 +21,28 @@ dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REDIRECTS_PATH = path.join(__dirname, '../public/_redirects');
+const PUBLIC_DIR = path.join(__dirname, '../public');
+const SITE_URL = 'https://holisticacupuncture.net';
+
+// Client-side redirect page. The _redirects file this script writes is INERT on
+// our Cloudflare Worker deployment (advanced mode ignores _redirects; _routes.json
+// serves everything but /api/* and /blog as static assets), so a physical page
+// like this is what actually makes an old /:slug URL redirect.
+function redirectPageHtml(dest) {
+  const abs = dest.startsWith('http') ? dest : `${SITE_URL}${dest}`;
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="canonical" href="${abs}" />
+    <meta http-equiv="refresh" content="0; url=${dest}" />
+    <script>window.location.replace('${dest}');</script>
+    <title>Redirecting…</title>
+  </head>
+  <body></body>
+</html>
+`;
+}
 
 // Do not redirect these paths (real pages or reserved)
 const RESERVED_SLUGS = new Set([
@@ -261,6 +283,25 @@ async function main() {
   fs.writeFileSync(REDIRECTS_PATH, content, 'utf-8');
   console.log(
     `Wrote ${staticLineCount} static redirect(s) and ${count} condition redirect(s) to public/_redirects`
+  );
+
+  // Emit a physical static redirect page for each condition at /:slug -> /conditions/:slug/.
+  // Required because _redirects does not fire on this deployment (see redirectPageHtml note).
+  // Skip any slug that already has a committed page — e.g. the hash-redirect category
+  // pages (generate-hash-redirects.js) for /headaches, /anxiety, /digestion, etc.
+  let pageCount = 0;
+  const skipped = [];
+  for (const { slug } of conditions) {
+    if (!slug || RESERVED_SLUGS.has(slug)) continue;
+    const file = path.join(PUBLIC_DIR, slug, 'index.html');
+    if (fs.existsSync(file)) { skipped.push(slug); continue; }
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, redirectPageHtml(`/conditions/${slug}/`), 'utf-8');
+    pageCount++;
+  }
+  console.log(
+    `Wrote ${pageCount} condition redirect page(s) to public/` +
+    (skipped.length ? ` (skipped ${skipped.length} with existing pages: ${skipped.join(', ')})` : '')
   );
 }
 
