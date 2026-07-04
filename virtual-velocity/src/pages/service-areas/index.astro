@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import Card from '../../components/Card.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import CTASection from '../../components/CTASection.astro';
+import { CONTACT, BOOK_PATH } from '../../lib/config';
+import { LOCATIONS } from '../../data/locations';
+---
+
+<BaseLayout
+  title="Areas We Serve — Milwaukee & North Shore Acupuncture"
+  description="Our Glendale, WI acupuncture clinic serves Milwaukee and the North Shore — Whitefish Bay, Shorewood, Mequon, Fox Point, Bayside, Brown Deer, and beyond."
+  breadcrumbs={[{name:'Home',url:'/'},{name:'Areas We Serve'}]}
+>
+  <!-- Hero Section -->
+  <PageHero
+    title="Areas We Serve"
+    description="Located in Glendale just off I-43 at Silver Spring Drive, our clinic is an easy drive from Milwaukee and every North Shore community."
+  />
+
+  <!-- Area Cards -->
+  <section class="py-16 md:py-20 lg:py-24 bg-white">
+    <Container>
+      <SectionHeader
+        title="Acupuncture Close to Home"
+        subtitle="Find your community below, or call us — wherever you're coming from, we're probably closer than you think."
+      />
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <a href="/acupuncture" class="block group">
+          <Card variant="bordered" padding="lg" class="h-full transition-shadow group-hover:shadow-lg">
+            <h3 class="text-xl font-heading font-semibold text-charcoal mb-2 group-hover:text-sage-700 transition-colors">
+              Milwaukee
+            </h3>
+            <p class="text-sm text-sage-600 font-medium mb-3">Minutes from the north side</p>
+            <p class="text-gray-600 text-sm">
+              Serving patients from across the city with expert acupuncture and traditional Chinese medicine for over 25 years.
+            </p>
+          </Card>
+        </a>
+        {LOCATIONS.map((loc) => (
+          <a href={`/acupuncture/${loc.slug}`} class="block group">
+            <Card variant="bordered" padding="lg" class="h-full transition-shadow group-hover:shadow-lg">
+              <h3 class="text-xl font-heading font-semibold text-charcoal mb-2 group-hover:text-sage-700 transition-colors">
+                {loc.name}
+              </h3>
+              <p class="text-sm text-sage-600 font-medium mb-3">{loc.driveTime}</p>
+              <p class="text-gray-600 text-sm">{loc.intro}</p>
+            </Card>
+          </a>
+        ))}
+      </div>
+
+      <div class="max-w-3xl mx-auto mt-12 text-center text-gray-700 leading-relaxed">
+        <p>
+          We also welcome patients from River Hills, Wauwatosa, Cedarburg, Thiensville, and communities
+          throughout southeastern Wisconsin. Our clinic at {CONTACT.address.full} offers free on-site parking
+          and evening appointments Monday through Thursday.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- CTA Section -->
+  <CTASection
+    heading="A Short Drive to Lasting Relief"
+    description="Wherever you're coming from, your first visit starts the same way — a conversation about your health and your goals."
+    primaryButton={{ label: 'Book Appointment', href: BOOK_PATH }}
+    secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
+  />
+</BaseLayout>

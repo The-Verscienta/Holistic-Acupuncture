@@ -6,7 +6,7 @@ import Badge from '../../components/Badge.astro';
 import Button from '../../components/Button.astro';
 import SanityImage from '../../components/SanityImage.astro';
 import { getAllTeamMembers, getTeamMemberBySlug } from '../../lib/sanityQueries';
-import { BOOK_PATH, CONTACT } from '../../lib/config';
+import { BOOK_PATH, CONTACT, SITE_URL } from '../../lib/config';
 import { escapeHtml } from '../../lib/sanitize';
 
 export async function getStaticPaths() {
@@ -73,6 +73,36 @@ function renderPortableText(blocks: any[]) {
 }
 
 const bioHtml = member.bio ? renderPortableText(member.bio) : '';
+
+// Person structured data — ties each practitioner to the LocalBusiness
+// (@id matches StructuredData.astro) for E-E-A-T on medical queries.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: member.name,
+  jobTitle: member.role,
+  url: new URL(Astro.url.pathname, Astro.site?.origin || SITE_URL).href,
+  worksFor: { "@id": `${SITE_URL}/#organization` },
+  ...(member.shortBio && { description: member.shortBio }),
+  ...(member.credentials && { honorificSuffix: member.credentials }),
+  ...(member.specialties?.length && { knowsAbout: member.specialties }),
+  ...(member.languages?.length && { knowsLanguage: member.languages }),
+  ...(member.education?.length && {
+    alumniOf: member.education.map((edu: { school: string }) => ({
+      "@type": "EducationalOrganization",
+      name: edu.school,
+    })),
+  }),
+  ...(member.certifications?.length && {
+    hasCredential: member.certifications.map((cert: { title: string; organization?: string }) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: cert.title,
+      ...(cert.organization && {
+        recognizedBy: { "@type": "Organization", name: cert.organization },
+      }),
+    })),
+  }),
+};
 ---
 
 <BaseLayout
@@ -80,6 +110,8 @@ const bioHtml = member.bio ? renderPortableText(member.bio) : '';
   description={member.shortBio || `Meet ${member.name}, ${member.role} at Acupuncture & Holistic Health Associates in Glendale, WI — serving Milwaukee and the North Shore.`}
   breadcrumbs={[{name:'Home',url:'/'},{name:'About Us',url:'/about'},{name:member.name}]}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
   <!-- Hero Section -->
   <section class="relative bg-gradient-to-br from-sage-50 to-warm-white py-16 md:py-20">
     <Container>
