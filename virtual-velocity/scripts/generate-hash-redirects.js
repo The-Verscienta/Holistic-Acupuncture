@@ -18,18 +18,15 @@ const publicDir = join(__dirname, '..', 'public');
 
 // Map of old slug → destination URL (with or without hash)
 const REDIRECTS = {
-  // Short condition category pages
-  'digestion':                                           '/conditions/#digestive',
-  'headaches':                                           '/conditions/#pain',
-  'anxiety':                                             '/conditions/#mental-health',
+  // NOTE: slugs that ARE condition pages (headaches, anxiety, digestion, hormones,
+  // sinuses-allergies, neck-pain, low-energy) are intentionally NOT listed here.
+  // generate-condition-redirects.js sends every condition slug to its individual
+  // /conditions/:slug/ page. Only old WordPress URLs WITHOUT a 1:1 condition page
+  // belong here — they redirect to the nearest /conditions/#category anchor.
   'sleep':                                               '/conditions/#mental-health',
-  'hormones':                                            '/conditions/#womens-health',
-  'sinuses-allergies':                                   '/conditions/#immune',
   'influenza':                                           '/conditions/#immune',
-  'neck-pain':                                           '/conditions/neck-pain/',
   'diabetes':                                            '/conditions/#other',
   'irregular-and-painful-menstruation':                  '/conditions/#womens-health',
-  'low-energy':                                          '/conditions/#other',
   'rotator-cuff-injuries':                               '/conditions/#pain',
   'athletes-tendon-ligament-injuries':                   '/conditions/#pain',
   'conditions-symptoms':                                 '/conditions/',
