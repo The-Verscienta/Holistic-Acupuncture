@@ -93,9 +93,14 @@ const STATIC_REDIRECTS = `\
 /welcome-website-acupuncture-holistic-health-associates/* / 301
 /2697-2 /blog 301
 /2697-2/* /blog 301
-/sleep/* /conditions/sleep 301
 
-# Blog posts with known attachment sub-paths (wildcard rules)
+# NOTE: no /sleep/* rule. Its old target /conditions/sleep does not exist, and a
+# wildcard takes precedence over the static redirect pages in public/ — so it sent
+# /sleep/ and /sleep/sleep-2/ to a 404. Those paths have their own redirect pages.
+
+# Blog posts with known attachment sub-paths (wildcard rules).
+# Only list a post here if /blog/<slug> actually exists; a wildcard pointing at an
+# unmigrated post shadows public/<slug>/index.html and 404s (see /sleep/* above).
 /summer-health-tips-from-an-acupuncturist/* /blog/summer-health-tips-from-an-acupuncturist 301
 /exploring-colon-cleanses-myths-methods-and-what-really-works/* /blog/exploring-colon-cleanses-myths-methods-and-what-really-works 301
 /oil-pulling-modern-oral-health/* /blog/oil-pulling-modern-oral-health 301
@@ -111,8 +116,6 @@ const STATIC_REDIRECTS = `\
 /the-role-of-the-hun-in-chinese-medicine-understanding-the-ethereal-soul/* /blog/the-role-of-the-hun-in-chinese-medicine-understanding-the-ethereal-soul 301
 /stevia-faq-questions-and-answers-about-stevia-sweeteners/* /blog/stevia-faq-questions-and-answers-about-stevia-sweeteners 301
 /exploring-the-depths-of-acupuncture-unraveling-its-mechanisms-and-latest-scientific-insights/* /blog/exploring-the-depths-of-acupuncture-unraveling-its-mechanisms-and-latest-scientific-insights 301
-/winters-end-spring-transition/* /blog/winters-end-spring-transition 301
-/the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health/* /blog/the-liver-in-chinese-medicine-nurturing-your-bodys-general-for-optimal-health 301
 /fluid-metabolism-in-chinese-medicine/* /blog/fluid-metabolism-in-chinese-medicine 301
 /the-dangers-of-msg/* /blog/the-dangers-of-msg 301
 /how-does-your-immune-system-work/* /blog/how-does-your-immune-system-work 301
