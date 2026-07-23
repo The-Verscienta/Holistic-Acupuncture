@@ -25,29 +25,50 @@ function urlForDocument(type: string, slug: string): string | null {
   }
 }
 
+/** Constant-time comparison of two hex strings. */
+function timingSafeEqualHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
-  // Validate webhook secret (set INDEXNOW_WEBHOOK_SECRET in Cloudflare env vars
-  // and add x-webhook-secret header in the Sanity webhook config).
+  // Verify Kiln's webhook signature: HMAC-SHA256 of the raw body, hex-encoded
+  // in x-kilncms-signature, keyed by the endpoint's signing secret (shown in
+  // Kiln admin → Webhooks). Set INDEXNOW_WEBHOOK_SECRET to that signing
+  // secret in the Cloudflare Pages runtime env.
   // Fail-closed: if the secret env var is unset, refuse all requests rather
-  // than accepting any caller — the previous opt-in behavior was a footgun.
+  // than accepting any caller.
   const runtimeEnv = (locals as any).runtime?.env ?? {};
   const secret = runtimeEnv.INDEXNOW_WEBHOOK_SECRET ?? import.meta.env.INDEXNOW_WEBHOOK_SECRET;
   if (!secret) {
     console.error('INDEXNOW_WEBHOOK_SECRET is not configured; rejecting webhook');
     return new Response('Service not configured', { status: 503 });
   }
-  const header = request.headers.get('x-webhook-secret');
-  if (header !== secret) {
+
+  // Reject oversized bodies before reading them
+  const tooBig = checkBodySize(request, 50_000);
+  if (tooBig) return tooBig;
+
+  const raw = await request.text();
+  const signature = request.headers.get('x-kilncms-signature') || '';
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const mac = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(raw));
+  const expected = [...new Uint8Array(mac)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  if (!timingSafeEqualHex(expected, signature.toLowerCase())) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  // Reject oversized bodies before parsing
-  const tooBig = checkBodySize(request, 10_000);
-  if (tooBig) return tooBig;
-
   let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
     return new Response('Bad Request: invalid JSON', { status: 400 });
   }
