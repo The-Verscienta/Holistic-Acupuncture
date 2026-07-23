@@ -9,7 +9,14 @@
  * images split into Kiln image blocks referencing media by Sanity asset ref
  * (the importer swaps refs for MediaItem UUIDs).
  *
- *   node scripts/export-to-kiln.js [output-path]   (default: kiln-export.json)
+ *   node scripts/export-to-kiln.js [output-path] [--all-media]
+ *                                  (default output: kiln-export.json)
+ *
+ * By default only media referenced by content documents are exported.
+ * --all-media additionally emits one media item per entry in
+ * public/cloudflare-images-index.json (the full 700+ image library,
+ * including unreferenced WordPress-era uploads), deduped against the
+ * content-referenced set.
  *
  * Requires PUBLIC_SANITY_PROJECT_ID / PUBLIC_SANITY_DATASET in .env.
  */
@@ -23,7 +30,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const OUT_PATH = process.argv[2] || path.join(__dirname, '../kiln-export.json');
+const args = process.argv.slice(2);
+const ALL_MEDIA = args.includes('--all-media');
+const OUT_PATH =
+  args.find((a) => !a.startsWith('--')) || path.join(__dirname, '../kiln-export.json');
 const INDEX_PATH = path.join(__dirname, '../public/cloudflare-images-index.json');
 const ACCOUNT_HASH = 't5tnnNBoCpmnml-JZw7JMA';
 
@@ -75,7 +85,9 @@ function registerMedia(sanityImage, altFallback = '') {
     media.set(ref, {
       sanity_ref: ref,
       filename: cf.filename || `${ref}.${ext}`,
-      content_type: ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg',
+      content_type:
+        cf.mimeType ||
+        (ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg'),
       width,
       height,
       url: cfUrl(cf.cloudflare.id),
@@ -317,6 +329,27 @@ async function main() {
         }),
         blocks: textBlock(doc.answer),
       })
+    );
+  }
+
+  // --all-media: sweep the rest of the Cloudflare Images library into the
+  // media list so the whole library lands in Kiln, not just images that
+  // content documents happen to reference.
+  if (ALL_MEDIA) {
+    const before = media.size;
+    let unmapped = 0;
+    for (const entry of cfIndex) {
+      if (!entry.cloudflare) {
+        unmapped++;
+        continue;
+      }
+      const ref = entry.sanity?.asset?._ref;
+      if (!ref || media.has(ref)) continue;
+      registerMedia({ asset: { _ref: ref } }, entry.title || '');
+    }
+    console.log(
+      `  --all-media: +${media.size - before} unreferenced library images` +
+        (unmapped ? ` (${unmapped} index entries without a Cloudflare id skipped)` : '')
     );
   }
 
