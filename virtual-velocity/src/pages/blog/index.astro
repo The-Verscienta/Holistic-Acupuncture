@@ -4,8 +4,8 @@ import Container from '../../components/Container.astro';
 import PageHero from '../../components/PageHero.astro';
 import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
-import HybridImage from '../../components/HybridImage.astro';
-import { getAllBlogPosts } from '../../lib/sanityQueries';
+import KilnImage from '../../components/KilnImage.astro';
+import { getAllBlogPosts } from '../../lib/kilnQueries';
 import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
 
@@ -20,8 +20,9 @@ const url = new URL(Astro.request.url);
 const currentPage = parseInt(url.searchParams.get('page') || '1');
 const categoryFilter = url.searchParams.get('category') || 'All';
 
-// Fetch all blog posts from Sanity
-const allPosts = await getAllBlogPosts();
+// Fetch all blog posts from Kiln (runtime env carries the base URL on Cloudflare)
+const kilnUrl = (Astro.locals as any).runtime?.env?.KILN_API_URL;
+const allPosts = await getAllBlogPosts(kilnUrl);
 
 // Filter posts by category if needed
 const filteredPosts = categoryFilter === 'All'
@@ -115,14 +116,12 @@ const buildUrl = (page: number, category: string = categoryFilter) => {
               <Card variant="elevated" padding="none" hoverable href={`/blog/${post.slug.current}`}>
                 <!-- Featured Image (eager load first row for LCP) -->
                 {post.featuredImage ? (
-                  <HybridImage
+                  <KilnImage
                     image={post.featuredImage}
                     alt={post.featuredImage.alt || post.title}
                     width={800}
                     height={450}
-                    aspectRatio="16/9"
-                    class="w-full"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    class="w-full aspect-video object-cover"
                     loading={index < 3 ? 'eager' : 'lazy'}
                     fetchpriority={index === 0 ? 'high' : undefined}
                   />

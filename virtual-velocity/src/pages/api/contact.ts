@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { createClient } from '@sanity/client';
 import { sendContactFormNotification, sendConfirmationEmail, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
@@ -57,7 +56,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
   // Cloudflare Pages passes secrets via locals.runtime.env (runtime); import.meta.env is build-time only.
   const runtimeEnv = (locals as any).runtime?.env ?? {};
   const resendApiKey = runtimeEnv.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
-  const sanityWriteToken = runtimeEnv.SANITY_WRITE_TOKEN ?? import.meta.env.SANITY_WRITE_TOKEN;
   const emailEnv: EmailEnv = {
     resendApiKey,
     resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
@@ -180,30 +178,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // Send confirmation email to user (non-critical, don't fail if this doesn't send)
     await sendConfirmationEmail(email, name, emailEnv);
 
-    // Save submission to Sanity for record-keeping (non-critical)
-    if (sanityWriteToken) {
-      try {
-        const sanityClient = createClient({
-          projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID,
-          dataset: import.meta.env.PUBLIC_SANITY_DATASET || 'production',
-          apiVersion: '2024-01-01',
-          token: sanityWriteToken,
-          useCdn: false,
-        });
-        await sanityClient.create({
-          _type: 'contactSubmission',
-          name,
-          email,
-          phone: data.phone?.trim().slice(0, MAX_PHONE_LENGTH) || undefined,
-          message,
-          referralSource: data.referralSource?.trim().slice(0, MAX_REFERRAL_LENGTH) || undefined,
-          submittedAt: new Date().toISOString(),
-          read: false,
-        });
-      } catch (err) {
-        console.error('Failed to save contact submission to Sanity:', err);
-      }
-    }
+    // Submissions are delivered by email (admin notification + confirmation
+    // above); CMS record-keeping ended with the Sanity migration.
 
     // Track contact form submission as conversion event to Meta (non-critical)
     const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN ?? import.meta.env.META_CONVERSIONS_API_TOKEN;

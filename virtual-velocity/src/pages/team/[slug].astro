@@ -4,10 +4,9 @@ import Container from '../../components/Container.astro';
 import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
 import Button from '../../components/Button.astro';
-import HybridImage from '../../components/HybridImage.astro';
-import { getAllTeamMembers, getTeamMemberBySlug } from '../../lib/sanityQueries';
+import KilnImage from '../../components/KilnImage.astro';
+import { getAllTeamMembers, getTeamMemberBySlug } from '../../lib/kilnQueries';
 import { BOOK_PATH, CONTACT, SITE_URL } from '../../lib/config';
-import { escapeHtml } from '../../lib/sanitize';
 
 export async function getStaticPaths() {
   const members = await getAllTeamMembers();
@@ -40,39 +39,7 @@ const initials = member.name
   .toUpperCase()
   .slice(0, 2);
 
-// Render portable text to HTML (escape text for XSS safety)
-function renderPortableText(blocks: any[]) {
-  if (!blocks) return '';
-  return blocks
-    .map((block) => {
-      if (block._type === 'block') {
-        let content = block.children
-          .map((child: any) => {
-            let text = escapeHtml(child.text || '');
-            if (child.marks && child.marks.length > 0) {
-              child.marks.forEach((mark: string) => {
-                if (mark === 'strong') {
-                  text = '<strong>' + text + '</strong>';
-                } else if (mark === 'em') {
-                  text = '<em>' + text + '</em>';
-                }
-              });
-            }
-            return text;
-          })
-          .join('');
-
-        const style = block.style || 'normal';
-        if (style === 'h2') return '<h2 class="text-2xl font-heading font-bold text-charcoal mt-8 mb-4">' + content + '</h2>';
-        if (style === 'h3') return '<h3 class="text-xl font-heading font-semibold text-charcoal mt-6 mb-3">' + content + '</h3>';
-        return '<p class="text-gray-700 leading-relaxed mb-4">' + content + '</p>';
-      }
-      return '';
-    })
-    .join('');
-}
-
-const bioHtml = member.bio ? renderPortableText(member.bio) : '';
+const bioHtml = member.bioHtml || '';
 
 // Person structured data — ties each practitioner to the LocalBusiness
 // (@id matches StructuredData.astro) for E-E-A-T on medical queries.
@@ -88,7 +55,7 @@ const personSchema = {
   ...(member.specialties?.length && { knowsAbout: member.specialties }),
   ...(member.languages?.length && { knowsLanguage: member.languages }),
   ...(member.education?.length && {
-    alumniOf: member.education.map((edu: { school: string }) => ({
+    alumniOf: member.education.map((edu) => ({
       "@type": "EducationalOrganization",
       name: edu.school,
     })),
@@ -129,14 +96,12 @@ const personSchema = {
         <div class="lg:col-span-1">
           <Card variant="elevated" padding="lg" class="text-center sticky top-8">
             {member.photo ? (
-              <HybridImage
+              <KilnImage
                 image={member.photo}
                 alt={member.name}
                 width={300}
                 height={300}
-                aspectRatio="1/1"
-                class="w-48 h-48 mx-auto mb-6 rounded-full shadow-lg"
-                sizes="192px"
+                class="w-48 h-48 mx-auto mb-6 rounded-full shadow-lg object-cover"
                 quality={85}
               />
             ) : (
@@ -249,7 +214,7 @@ const personSchema = {
                 Education
               </h2>
               <ul class="space-y-3">
-                {member.education.map((edu: { degree: string; school: string; year: number }) => (
+                {member.education.map((edu) => (
                   <li class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-sage-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -274,7 +239,7 @@ const personSchema = {
                 Certifications & Licenses
               </h2>
               <ul class="space-y-3">
-                {member.certifications.map((cert: { title: string; organization: string; year: number }) => (
+                {member.certifications.map((cert) => (
                   <li class="flex items-start gap-3">
                     <svg class="w-5 h-5 text-sage-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
