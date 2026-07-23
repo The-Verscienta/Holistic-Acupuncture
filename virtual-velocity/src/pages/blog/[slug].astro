@@ -8,6 +8,8 @@ import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../l
 import { formatDate, decodeHtmlEntities, urlFor } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
 import { escapeHtml, safeHref, safeImageSrc } from '../../lib/sanitize';
+import { getCloudflareIdFromSanityImage } from '../../lib/imageMapping';
+import { getCloudflareImageUrlWithOptions } from '../../lib/cloudflare';
 import { SITE_URL } from '../../lib/config';
 import NewPatientSpecial from '../../components/NewPatientSpecial.astro';
 
@@ -98,8 +100,13 @@ function renderPortableText(blocks: any[]) {
         const alt = escapeHtml(block.alt || '');
         let src = '';
         if (block.asset) {
-          // Native Sanity image reference
-          try { src = urlFor(block).width(800).url(); } catch { src = ''; }
+          // Native Sanity image reference — serve from Cloudflare when mapped
+          const cfId = getCloudflareIdFromSanityImage(block);
+          if (cfId) {
+            src = getCloudflareImageUrlWithOptions(cfId, 'public', { width: 800, format: 'webp' });
+          } else {
+            try { src = urlFor(block).width(800).url(); } catch { src = ''; }
+          }
         } else if (block._sanityAsset) {
           // WordPress-migrated image
           src = block._sanityAsset;
@@ -118,9 +125,12 @@ function renderPortableText(blocks: any[]) {
 const contentHtml = post.body ? renderPortableText(post.body) : '';
 
 // Absolute OG image for social sharing (WebP for smaller size)
-const ogImageUrl = post.featuredImage
-  ? urlFor(post.featuredImage).width(1200).height(630).format('webp').url()
-  : undefined;
+const ogCloudflareId = post.featuredImage ? getCloudflareIdFromSanityImage(post.featuredImage) : null;
+const ogImageUrl = ogCloudflareId
+  ? getCloudflareImageUrlWithOptions(ogCloudflareId, 'public', { width: 1200, height: 630, fit: 'cover', format: 'webp' })
+  : post.featuredImage
+    ? urlFor(post.featuredImage).width(1200).height(630).format('webp').url()
+    : undefined;
 
 const postUrl = `${SITE_URL}/blog/${post.slug.current}`;
 

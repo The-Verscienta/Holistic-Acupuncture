@@ -4,7 +4,7 @@ import Container from '../components/Container.astro';
 import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
-import SanityImage from '../components/SanityImage.astro';
+import HybridImage from '../components/HybridImage.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -143,7 +143,7 @@ const teamMembers = await getAllTeamMembers();
               <div class="text-center">
                 {/* Photo or initials */}
                 {member.photo ? (
-                  <SanityImage
+                  <HybridImage
                     image={member.photo}
                     alt={member.name}
                     width={256}
