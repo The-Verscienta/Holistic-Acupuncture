@@ -26,7 +26,10 @@ export function kilnBaseUrl(override?: string): string {
         '(and as a Cloudflare Pages runtime variable for SSR endpoints).'
     );
   }
-  return url.replace(/\/$/, '');
+  // Tolerate a bare host ("api.example.com") — fetch needs an absolute URL,
+  // and a scheme-less env var otherwise fails with an opaque "Invalid URL".
+  const withScheme = /^https?:\/\//.test(url) ? url : `https://${url}`;
+  return withScheme.replace(/\/$/, '');
 }
 
 export interface JsonApiResource {
