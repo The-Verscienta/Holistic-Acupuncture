@@ -4,14 +4,14 @@ import Container from '../components/Container.astro';
 import Card from '../components/Card.astro';
 import Button from '../components/Button.astro';
 import Badge from '../components/Badge.astro';
-import HybridImage from '../components/HybridImage.astro';
+import KilnImage from '../components/KilnImage.astro';
 import CloudflareImage from '../components/CloudflareImage.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import StatCard from '../components/StatCard.astro';
-import { getAllTeamMembers } from '../lib/sanityQueries';
+import { getAllTeamMembers } from '../lib/kilnQueries';
 import { CONTACT, REVIEW_STATS } from '../lib/config';
 
 // Fetch team members from Sanity
@@ -143,14 +143,12 @@ const teamMembers = await getAllTeamMembers();
               <div class="text-center">
                 {/* Photo or initials */}
                 {member.photo ? (
-                  <HybridImage
+                  <KilnImage
                     image={member.photo}
                     alt={member.name}
                     width={256}
                     height={256}
-                    aspectRatio="1/1"
-                    class="w-32 h-32 mx-auto mb-6 rounded-full"
-                    sizes="128px"
+                    class="w-32 h-32 mx-auto mb-6 rounded-full object-cover"
                     quality={85}
                     loading={index < 3 ? 'eager' : 'lazy'}
                   />

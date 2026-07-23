@@ -4,16 +4,17 @@ import Container from '../../components/Container.astro';
 import Card from '../../components/Card.astro';
 import Button from '../../components/Button.astro';
 import Badge from '../../components/Badge.astro';
-import { getAllConditions, getConditionBySlug } from '../../lib/sanityQueries';
+import { getAllConditions, getConditionBySlug } from '../../lib/kilnQueries';
 import { CONTACT, SERVICE_AREAS } from '../../lib/config';
 import { conditionCategories } from '../../types/sanity';
-import { escapeHtml } from '../../lib/sanitize';
 export async function getStaticPaths() {
   const conditions = await getAllConditions();
-  return conditions.map((condition) => ({
-    params: { slug: condition.slug.current },
-    props: { condition },
-  }));
+  return Promise.all(
+    conditions.map(async (listed) => ({
+      params: { slug: listed.slug.current },
+      props: { condition: (await getConditionBySlug(listed.slug.current)) ?? listed },
+    }))
+  );
 }
 
 const { condition } = Astro.props;
@@ -22,37 +23,11 @@ if (!condition) {
   return Astro.redirect('/404');
 }
 
-function renderPortableText(blocks: any[]) {
-  if (!blocks) return '';
-  return blocks
-    .map((block) => {
-      if (block._type === 'block') {
-        let content = block.children
-          .map((child: any) => {
-            let text = escapeHtml(child.text || '');
-            if (child.marks && child.marks.length > 0) {
-              child.marks.forEach((mark: string) => {
-                if (mark === 'strong') text = '<strong>' + text + '</strong>';
-                else if (mark === 'em') text = '<em>' + text + '</em>';
-              });
-            }
-            return text;
-          })
-          .join('');
-        const style = block.style || 'normal';
-        if (style === 'h2') return '<h2 class="text-2xl font-heading font-bold text-charcoal mt-8 mb-4">' + content + '</h2>';
-        if (style === 'h3') return '<h3 class="text-xl font-heading font-semibold text-charcoal mt-6 mb-3">' + content + '</h3>';
-        return '<p class="text-gray-700 leading-relaxed mb-4">' + content + '</p>';
-      }
-      return '';
-    })
-    .join('');
-}
-
 const metaTitle = condition.seo?.metaTitle || `${condition.name} Treatment in Milwaukee, Wisconsin`;
 const metaDescription = condition.seo?.metaDescription || `${condition.description} Learn more about acupuncture treatment in Milwaukee, Wisconsin.`;
-const detailedHtml = condition.detailedDescription ? renderPortableText(condition.detailedDescription) : '';
-const howHelpsHtml = condition.howAcupunctureHelps ? renderPortableText(condition.howAcupunctureHelps) : '';
+// The Kiln body carries both former rich-text sections, separated by an
+// embedded "How Acupuncture Helps" heading block.
+const contentHtml = condition.contentHtml || '';
 const categoryLabel = conditionCategories[condition.category] || condition.category;
 
 // Generated, condition-specific FAQ (used for both on-page UI and JSON-LD).
@@ -109,10 +84,6 @@ const conditionFaqSchema = {
   <section class="py-12 md:py-16 bg-white">
     <Container>
       <div class="max-w-3xl">
-        {detailedHtml && (
-          <div class="prose-content mb-12" set:html={detailedHtml} />
-        )}
-
         {condition.symptoms && condition.symptoms.length > 0 && (
           <div class="mb-12">
             <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">Common Symptoms</h2>
@@ -124,11 +95,8 @@ const conditionFaqSchema = {
           </div>
         )}
 
-        {howHelpsHtml && (
-          <div class="mb-12">
-            <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">How Acupuncture Helps</h2>
-            <div class="prose-content" set:html={howHelpsHtml} />
-          </div>
+        {contentHtml && (
+          <div class="prose-content mb-12" set:html={contentHtml} />
         )}
 
         <div class="mb-12">

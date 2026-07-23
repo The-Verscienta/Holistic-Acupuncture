@@ -1,0 +1,65 @@
+---
+/**
+ * KilnImage — renders a ContentImage (full Cloudflare Images URL from Kiln)
+ * with responsive srcset via Cloudflare's URL transformations, mirroring
+ * CloudflareImage's behavior for id-based images.
+ */
+import type { ContentImage } from '../types/content';
+
+interface Props {
+  image: ContentImage;
+  alt?: string;
+  width?: number;
+  height?: number;
+  fit?: 'scale-down' | 'contain' | 'cover' | 'crop' | 'pad';
+  quality?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  /** Hint for LCP image. Use "high" only for the single above-the-fold image. */
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  image,
+  alt,
+  width,
+  height,
+  fit = 'cover',
+  quality = 85,
+  class: className,
+  loading = 'lazy',
+  fetchpriority,
+} = Astro.props;
+
+function withOptions(url: string, opts: Record<string, string | number | undefined>): string {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(opts)) {
+    if (value !== undefined) params.set(key, String(value));
+  }
+  const query = params.toString();
+  return query ? `${url}${url.includes('?') ? '&' : '?'}${query}` : url;
+}
+
+const src = withOptions(image.url, { width, height, fit, quality, format: 'webp' });
+const srcset = width
+  ? `${src} 1x, ${withOptions(image.url, {
+      width: width * 2,
+      height: height ? height * 2 : undefined,
+      fit,
+      quality,
+      format: 'webp',
+    })} 2x`
+  : undefined;
+---
+
+<img
+  src={src}
+  srcset={srcset}
+  alt={alt ?? image.alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+  fetchpriority={fetchpriority}
+  class={className}
+/>

@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import { getAllBlogPosts, getAllConditions } from '../../lib/sanityQueries';
-import type { BlogPost, Condition } from '../../types/sanity';
+import { getAllBlogPosts, getAllConditions } from '../../lib/kilnQueries';
+import type { BlogPost, Condition } from '../../types/content';
 
 export const prerender = false;
 
@@ -42,7 +42,7 @@ let corpusCache: {
 } | null = null;
 let corpusInflight: Promise<{ blogPosts: BlogPost[]; conditions: Condition[] }> | null = null;
 
-async function getCorpus(): Promise<{ blogPosts: BlogPost[]; conditions: Condition[] }> {
+async function getCorpus(kilnUrl?: string): Promise<{ blogPosts: BlogPost[]; conditions: Condition[] }> {
   const now = Date.now();
   if (corpusCache && corpusCache.expiresAt > now) {
     return { blogPosts: corpusCache.blogPosts, conditions: corpusCache.conditions };
@@ -51,8 +51,8 @@ async function getCorpus(): Promise<{ blogPosts: BlogPost[]; conditions: Conditi
   if (corpusInflight) return corpusInflight;
   corpusInflight = (async () => {
     const [blogPosts, conditions] = await Promise.all([
-      getAllBlogPosts(),
-      getAllConditions(),
+      getAllBlogPosts(kilnUrl),
+      getAllConditions(kilnUrl),
     ]);
     corpusCache = { blogPosts, conditions, expiresAt: Date.now() + CORPUS_TTL_MS };
     return { blogPosts, conditions };
@@ -78,7 +78,7 @@ interface SearchResult {
  *
  * Searches through blog posts and conditions for matching content.
  */
-export const GET: APIRoute = async ({ request, url }) => {
+export const GET: APIRoute = async ({ request, url, locals }) => {
   try {
     const clientIp = getClientIp(request);
     if (!checkRateLimit(clientIp)) {
@@ -108,7 +108,8 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // Fetch all searchable content (cached in-isolate for CORPUS_TTL_MS)
-    const { blogPosts, conditions } = await getCorpus();
+    const kilnUrl = (locals as any)?.runtime?.env?.KILN_API_URL;
+    const { blogPosts, conditions } = await getCorpus(kilnUrl);
 
     const results: SearchResult[] = [];
 

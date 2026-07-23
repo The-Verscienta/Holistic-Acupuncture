@@ -7,19 +7,18 @@ const SITE_URL = 'https://holisticacupuncture.net';
 const INDEXNOW_KEY = '81e84114cb0247a7b6c5fbd5c9f1e44d';
 const INDEXNOW_API = 'https://api.indexnow.org/indexnow';
 
-// Sanity slugs are URL-safe; restrict to a-z 0-9 and `-` to prevent
+// Kiln slugs are URL-safe; restrict to a-z 0-9 and `-` to prevent
 // path traversal or arbitrary URL injection into the IndexNow submission.
 const SLUG_PATTERN = /^[a-z0-9](?:[a-z0-9-]{0,128}[a-z0-9])?$/;
-const ALLOWED_TYPES = new Set(['blog', 'blogPost', 'condition', 'teamMember']);
+const ALLOWED_TYPES = new Set(['post', 'condition', 'team_member']);
 
 function urlForDocument(type: string, slug: string): string | null {
   switch (type) {
-    case 'blog':
-    case 'blogPost':
+    case 'post':
       return `${SITE_URL}/blog/${slug}`;
     case 'condition':
       return `${SITE_URL}/conditions/${slug}`;
-    case 'teamMember':
+    case 'team_member':
       return `${SITE_URL}/team/${slug}`;
     default:
       return null;
@@ -53,11 +52,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response('Bad Request: invalid JSON', { status: 400 });
   }
 
-  const type = body?._type as string | undefined;
-  const slug = (body?.slug as { current?: string } | undefined)?.current;
+  // Kiln webhook payload: { event: "post.published", payload: { slug, ... } }
+  const event = body?.event as string | undefined;
+  const type = event?.split('.')[0];
+  const slug = (body?.payload as { slug?: string } | undefined)?.slug;
 
   if (!type || !slug) {
-    return new Response('Bad Request: missing _type or slug.current', { status: 400 });
+    return new Response('Bad Request: missing event or payload.slug', { status: 400 });
   }
 
   // Whitelist document type before doing anything with the slug

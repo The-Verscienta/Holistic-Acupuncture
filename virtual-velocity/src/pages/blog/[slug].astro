@@ -3,13 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/Container.astro';
 import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
-import HybridImage from '../../components/HybridImage.astro';
-import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../lib/sanityQueries';
-import { formatDate, decodeHtmlEntities, urlFor } from '../../lib/sanity';
+import KilnImage from '../../components/KilnImage.astro';
+import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../lib/kilnQueries';
+import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
 import { categoryLabels } from '../../types/sanity';
-import { escapeHtml, safeHref, safeImageSrc } from '../../lib/sanitize';
-import { getCloudflareIdFromSanityImage } from '../../lib/imageMapping';
-import { getCloudflareImageUrlWithOptions } from '../../lib/cloudflare';
 import { SITE_URL } from '../../lib/config';
 import NewPatientSpecial from '../../components/NewPatientSpecial.astro';
 
@@ -40,97 +37,13 @@ if (!post) {
   return Astro.redirect('/blog');
 }
 
-// Render portable text to HTML (with XSS-safe escaping and safe URLs)
-function renderPortableText(blocks: any[]) {
-  return blocks
-    .map((block) => {
-      if (block._type === 'block') {
-        // Get the text content (escape all text for safe HTML)
-        let content = block.children
-          .map((child: any) => {
-            let text = escapeHtml(child.text || '');
-
-            // Apply marks
-            if (child.marks && child.marks.length > 0) {
-              child.marks.forEach((mark: string) => {
-                if (mark === 'strong') {
-                  text = '<strong>' + text + '</strong>';
-                } else if (mark === 'em') {
-                  text = '<em>' + text + '</em>';
-                } else if (mark === 'code') {
-                  text = '<code class="bg-gray-100 px-2 py-1 rounded text-sm">' + text + '</code>';
-                } else {
-                  // Check if this mark is a link annotation - only allow http(s) URLs
-                  const linkDef = block.markDefs?.find((def: any) => def._key === mark);
-                  const safeUrl = linkDef && linkDef._type === 'link' ? safeHref(linkDef.href) : null;
-                  if (safeUrl) {
-                    text = '<a href="' + escapeHtml(safeUrl) + '" class="text-sage-600 hover:text-sage-700 underline" target="_blank" rel="noopener noreferrer">' + text + '</a>';
-                  }
-                }
-              });
-            }
-
-            return text;
-          })
-          .join('');
-
-        // Handle content with newlines (from WordPress migration)
-        if (content.includes('\n')) {
-          const paragraphs = content
-            .split('\n')
-            .filter((p: string) => p.trim())
-            .map((p: string) => '<p class="text-gray-700 leading-relaxed mb-6">' + p.trim() + '</p>')
-            .join('');
-          return paragraphs;
-        }
-
-        // Wrap in appropriate tag based on style
-        const style = block.style || 'normal';
-        if (style === 'h1') return '<h1 class="text-4xl font-heading font-bold text-charcoal mt-12 mb-6">' + content + '</h1>';
-        if (style === 'h2') return '<h2 class="text-3xl font-heading font-bold text-charcoal mt-10 mb-5">' + content + '</h2>';
-        if (style === 'h3') return '<h3 class="text-2xl font-heading font-bold text-charcoal mt-8 mb-4">' + content + '</h3>';
-        if (style === 'h4') return '<h4 class="text-xl font-heading font-semibold text-charcoal mt-6 mb-3">' + content + '</h4>';
-        if (style === 'blockquote') return '<blockquote class="border-l-4 border-sage-500 pl-6 py-2 my-6 italic text-gray-700">' + content + '</blockquote>';
-
-        return '<p class="text-gray-700 leading-relaxed mb-6">' + content + '</p>';
-      }
-
-      // Handle images - sanitize src and alt (only allow http(s) or relative URLs)
-      if (block._type === 'image') {
-        const alt = escapeHtml(block.alt || '');
-        let src = '';
-        if (block.asset) {
-          // Native Sanity image reference — serve from Cloudflare when mapped
-          const cfId = getCloudflareIdFromSanityImage(block);
-          if (cfId) {
-            src = getCloudflareImageUrlWithOptions(cfId, 'public', { width: 800, format: 'webp' });
-          } else {
-            try { src = urlFor(block).width(800).url(); } catch { src = ''; }
-          }
-        } else if (block._sanityAsset) {
-          // WordPress-migrated image
-          src = block._sanityAsset;
-          if (src.startsWith('image@')) src = src.substring(6);
-        }
-        const safeSrc = safeImageSrc(src);
-        if (!safeSrc) return ''; // Unsafe or invalid src dropped
-        return '<figure class="my-8"><img src="' + safeSrc + '" alt="' + alt + '" class="rounded-lg shadow-md w-full" />' + (alt ? '<figcaption class="text-sm text-gray-600 mt-2 text-center">' + alt + '</figcaption>' : '') + '</figure>';
-      }
-
-      return '';
-    })
-    .join('');
-}
-
-const contentHtml = post.body ? renderPortableText(post.body) : '';
+// Block tree is rendered by the shared Kiln serializer in kilnQueries.
+const contentHtml = post.contentHtml || '';
 
 // Absolute OG image for social sharing (WebP for smaller size)
-const ogCloudflareId = post.featuredImage ? getCloudflareIdFromSanityImage(post.featuredImage) : null;
-const ogImageUrl = ogCloudflareId
-  ? getCloudflareImageUrlWithOptions(ogCloudflareId, 'public', { width: 1200, height: 630, fit: 'cover', format: 'webp' })
-  : post.featuredImage
-    ? urlFor(post.featuredImage).width(1200).height(630).format('webp').url()
-    : undefined;
+const ogImageUrl = post.featuredImage
+  ? `${post.featuredImage.url}?width=1200&height=630&fit=cover&format=webp`
+  : undefined;
 
 const postUrl = `${SITE_URL}/blog/${post.slug.current}`;
 
@@ -159,7 +72,7 @@ const articleSchema = {
   url: postUrl,
   mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
   datePublished: post.publishedAt,
-  dateModified: post._updatedAt || post.publishedAt,
+  dateModified: post.updatedAt || post.publishedAt,
   author: authorSchema,
   publisher: {
     '@type': 'Organization',
@@ -233,13 +146,12 @@ const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.
       <!-- Featured Image -->
       {post.featuredImage && (
         <div class="aspect-video rounded-[var(--radius-xl)] shadow-lg overflow-hidden mb-12">
-          <HybridImage
+          <KilnImage
             image={post.featuredImage}
             alt={post.featuredImage.alt || post.title}
             width={1200}
             height={675}
-            aspectRatio="16/9"
-            class="w-full"
+            class="w-full aspect-video object-cover"
             loading="eager"
           />
         </div>
@@ -321,13 +233,12 @@ const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.
           {relatedPosts.map((relatedPost) => (
             <Card variant="elevated" padding="none" hoverable href={`/blog/${relatedPost.slug.current}`}>
               {relatedPost.featuredImage ? (
-                <HybridImage
+                <KilnImage
                   image={relatedPost.featuredImage}
                   alt={relatedPost.featuredImage.alt || relatedPost.title}
                   width={400}
                   height={225}
-                  aspectRatio="16/9"
-                  class="w-full"
+                  class="w-full aspect-video object-cover"
                 />
               ) : (
                 <div class="aspect-video bg-gradient-to-br from-sage-200 to-healing-blue flex items-center justify-center">
