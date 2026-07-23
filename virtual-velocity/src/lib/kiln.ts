@@ -16,12 +16,17 @@
 const DEFAULT_KILN_URL = 'http://localhost:4000';
 
 export function kilnBaseUrl(override?: string): string {
-  return (
-    override ||
-    import.meta.env.KILN_API_URL ||
-    import.meta.env.PUBLIC_KILN_URL ||
-    DEFAULT_KILN_URL
-  ).replace(/\/$/, '');
+  const url = override || import.meta.env.KILN_API_URL || import.meta.env.PUBLIC_KILN_URL;
+  if (!url) {
+    // Fall back to the local dev server only in dev — a production build
+    // without the env var should fail loudly, not dial localhost in CI.
+    if (import.meta.env.DEV) return DEFAULT_KILN_URL;
+    throw new Error(
+      'KILN_API_URL is not set. Configure it in the build environment ' +
+        '(and as a Cloudflare Pages runtime variable for SSR endpoints).'
+    );
+  }
+  return url.replace(/\/$/, '');
 }
 
 export interface JsonApiResource {
