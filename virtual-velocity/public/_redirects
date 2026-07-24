@@ -165,34 +165,34 @@
 
 # =============================================================================
 # Condition redirects: /:slug -> /conditions/:slug
-# Generated dynamically from Sanity condition documents
+# Generated dynamically from published Kiln condition records
 # =============================================================================
 
-/digestion  /conditions/digestion  301
-/neck-pain  /conditions/neck-pain  301
-/headaches  /conditions/headaches  301
-/smoking-cessation  /conditions/smoking-cessation  301
-/menopause  /conditions/menopause  301
-/fertility-support  /conditions/fertility-support  301
-/arthritis  /conditions/arthritis  301
-/nausea  /conditions/nausea  301
-/hormones  /conditions/hormones  301
-/fibromyalgia  /conditions/fibromyalgia  301
-/insomnia  /conditions/insomnia  301
-/acid-reflux  /conditions/acid-reflux  301
-/immune-support  /conditions/immune-support  301
-/sciatica  /conditions/sciatica  301
-/sports-injuries  /conditions/sports-injuries  301
-/bells-palsy  /conditions/bells-palsy  301
-/pregnancy-support  /conditions/pregnancy-support  301
-/anxiety  /conditions/anxiety  301
-/low-energy  /conditions/low-energy  301
-/weight-management  /conditions/weight-management  301
-/depression  /conditions/depression  301
-/constipation  /conditions/constipation  301
-/sinus-issues  /conditions/sinus-issues  301
-/sinuses-allergies  /conditions/sinuses-allergies  301
 /asthma  /conditions/asthma  301
+/sinuses-allergies  /conditions/sinuses-allergies  301
+/sinus-issues  /conditions/sinus-issues  301
+/constipation  /conditions/constipation  301
+/depression  /conditions/depression  301
+/weight-management  /conditions/weight-management  301
+/low-energy  /conditions/low-energy  301
+/anxiety  /conditions/anxiety  301
+/pregnancy-support  /conditions/pregnancy-support  301
+/bells-palsy  /conditions/bells-palsy  301
+/sports-injuries  /conditions/sports-injuries  301
+/sciatica  /conditions/sciatica  301
+/immune-support  /conditions/immune-support  301
+/acid-reflux  /conditions/acid-reflux  301
+/insomnia  /conditions/insomnia  301
+/fibromyalgia  /conditions/fibromyalgia  301
+/hormones  /conditions/hormones  301
+/nausea  /conditions/nausea  301
+/arthritis  /conditions/arthritis  301
+/fertility-support  /conditions/fertility-support  301
+/menopause  /conditions/menopause  301
+/smoking-cessation  /conditions/smoking-cessation  301
+/headaches  /conditions/headaches  301
+/neck-pain  /conditions/neck-pain  301
+/digestion  /conditions/digestion  301
 
 # --- Trailing-slash variants for blog slugs (auto-generated) ---
 /what-you-didnt-know-about-acupuncture-faqs-answered/ /blog/what-you-didnt-know-about-acupuncture-faqs-answered 301

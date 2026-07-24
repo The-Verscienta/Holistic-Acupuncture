@@ -95,5 +95,30 @@ export interface FAQ {
   featured: boolean;
 }
 
-// Category label maps (unchanged from the Sanity era).
-export { categoryLabels, conditionCategories, faqCategories } from './sanity';
+// Category label maps
+export const categoryLabels: Record<string, string> = {
+  'wellness': 'Wellness',
+  'pain-management': 'Pain Management',
+  'getting-started': 'Getting Started',
+  'mental-health': 'Mental Health',
+  'womens-health': "Women's Health",
+  'nutrition': 'Nutrition',
+};
+
+export const conditionCategories: Record<string, string> = {
+  'pain': 'Pain Management',
+  'mental-health': 'Mental Health & Wellness',
+  'womens-health': "Women's Health",
+  'digestive': 'Digestive Health',
+  'immune': 'Immune & Allergies',
+  'other': 'Other Conditions',
+};
+
+export const faqCategories: Record<string, string> = {
+  'about-acupuncture': 'About Acupuncture',
+  'treatment-process': 'Treatment & Process',
+  'insurance-payment': 'Insurance & Payment',
+  'appointments-policies': 'Appointments & Policies',
+  'safety-side-effects': 'Safety & Side Effects',
+  'our-practice': 'Our Practice',
+};

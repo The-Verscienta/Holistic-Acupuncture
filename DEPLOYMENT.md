@@ -1,6 +1,6 @@
-# Deployment: Cloudflare Pages + Sanity.io
+# Deployment: Cloudflare Pages + Kiln CMS
 
-This project is deployed on **Cloudflare Pages** with content from **Sanity.io**.
+This project is deployed on **Cloudflare Pages** with content from **Kiln CMS** (self-hosted, https://api.verscienta.com).
 
 ## Quick setup
 
@@ -18,34 +18,29 @@ This project is deployed on **Cloudflare Pages** with content from **Sanity.io**
 
 3. Add **Environment variables** (Settings → Environment variables):
 
-**Required (Sanity):**
+**Required (Kiln — set in BOTH Production and Preview environments; include the `https://`):**
 ```env
-PUBLIC_SANITY_PROJECT_ID=your_project_id
-PUBLIC_SANITY_DATASET=production
+KILN_API_URL=https://api.verscienta.com
 ```
 
 **Optional:**
 ```env
-SANITY_API_TOKEN=your_write_token
 PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 PUBLIC_JANE_BOOKING_URL=https://yourpractice.janeapp.com
 ```
 
 4. Deploy. The site will be available at `https://<project>.pages.dev` (or your custom domain).
 
-### 2. Sanity.io
+### 2. Kiln CMS
 
-- Content is managed in [Sanity](https://sanity.io). Use your existing Sanity project; the site reads from it at build time.
-- For full CMS setup and schemas, see **docs/** (e.g. [Sanity CMS Guide](docs/SANITY-CMS-GUIDE.md)).
+- Content is managed in the self-hosted [Kiln CMS](https://api.verscienta.com) (repo: `kiln_cms`, deployed via Coolify with the `PROJECT=acupuncture` overlay). The site reads published content from its JSON:API at build time, plus at runtime for the blog index and search API.
 
-### 3. Rebuild when content changes (optional)
+### 3. Rebuild when content changes
 
-To trigger a new Cloudflare Pages deploy when you publish in Sanity:
+Static pages are built at deploy time, so publishing in Kiln needs a new Pages deploy:
 
 1. Create a **Deploy hook** in Cloudflare Pages (Settings → Builds & Deployments → Deploy hooks).
-2. Add a **webhook** in Sanity that calls that URL on publish.
-
-Step-by-step: **[virtual-velocity/docs/sanity-cloudflare-webhook-setup.md](virtual-velocity/docs/sanity-cloudflare-webhook-setup.md)**.
+2. Add a **webhook** in Kiln that calls that URL on publish (Admin → Webhooks).
 
 ---
 

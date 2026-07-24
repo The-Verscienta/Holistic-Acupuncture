@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import node from '@astrojs/node';
 
@@ -19,7 +18,7 @@ try {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://holisticacupuncture.net',
-  integrations: [sitemap(), react()],
+  integrations: [sitemap()],
   output: 'static', // Static by default, use prerender = false for SSR routes
   adapter: cloudflare
     ? cloudflare({
