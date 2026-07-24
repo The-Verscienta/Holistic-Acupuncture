@@ -1,25 +1,6 @@
-import { createClient } from '@sanity/client';
-import { createImageUrlBuilder } from '@sanity/image-url';
-
-// Type for Sanity image sources
-type SanityImageSource = Parameters<ReturnType<typeof createImageUrlBuilder>['image']>[0];
-
-const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID || '';
-const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
-const apiVersion = '2024-01-01';
-
-export const sanityClient = createClient({
-  projectId,
-  dataset,
-  apiVersion,
-  useCdn: import.meta.env.PROD,
-});
-
-const builder = createImageUrlBuilder(sanityClient);
-
-export function urlFor(source: SanityImageSource) {
-  return builder.image(source);
-}
+// Date/text formatting helpers shared by the blog and reviews pages.
+// (Formerly part of lib/sanity.ts; the Sanity client half was removed with the
+// Sanity → Kiln migration.)
 
 // Helper function to format dates
 export function formatDate(dateString: string): string {
@@ -54,12 +35,12 @@ const UNSAFE_CHAR_CODES = new Set([34, 38, 39, 60, 62]); // " & ' < >
 export function decodeHtmlEntities(text: string): string {
   if (!text) return '';
   return text
-    .replace(/&#8217;/g, "\u2019")
-    .replace(/&#8216;/g, "\u2018")
-    .replace(/&#8220;/g, "\u201C")
-    .replace(/&#8221;/g, "\u201D")
-    .replace(/&#8211;/g, "\u2013")
-    .replace(/&#8212;/g, "\u2014")
+    .replace(/&#8217;/g, "’")
+    .replace(/&#8216;/g, "‘")
+    .replace(/&#8220;/g, "“")
+    .replace(/&#8221;/g, "”")
+    .replace(/&#8211;/g, "–")
+    .replace(/&#8212;/g, "—")
     .replace(/&#038;/g, '&')
     .replace(/&amp;/g, '&')
     .replace(/&nbsp;/g, ' ')
@@ -68,24 +49,4 @@ export function decodeHtmlEntities(text: string): string {
       if (UNSAFE_CHAR_CODES.has(charCode)) return match;
       return String.fromCharCode(charCode);
     });
-}
-
-// Portable Text serializer for rendering content
-export function toPlainText(blocks: any[] = []): string {
-  return (
-    blocks
-      // loop through each block
-      .map((block) => {
-        // if it's not a text block with children,
-        // return nothing
-        if (block._type !== 'block' || !block.children) {
-          return '';
-        }
-        // loop through the children spans, and join the
-        // text strings
-        return block.children.map((child: any) => child.text).join('');
-      })
-      // join the paragraphs leaving split by two linebreaks
-      .join('\n\n')
-  );
 }

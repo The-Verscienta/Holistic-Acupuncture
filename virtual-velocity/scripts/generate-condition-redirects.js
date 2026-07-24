@@ -1,6 +1,7 @@
 /**
- * Generate 301 redirects from /:slug to /conditions/:slug for every condition in Sanity.
- * Used so old URLs like /headaches continue to work and redirect to /conditions/headaches.
+ * Generate 301 redirects from /:slug to /conditions/:slug for every published
+ * condition in Kiln. Used so old URLs like /headaches continue to work and
+ * redirect to /conditions/headaches.
  *
  * Also prepends static redirects for old WordPress page URLs and blog post URLs
  * crawled from holisticacupuncture.net (see STATIC_REDIRECTS below).
@@ -8,10 +9,10 @@
  * Writes public/_redirects (Netlify/Cloudflare Pages format).
  * Run at prebuild so the file is in dist when deploying.
  *
- * Requires: PUBLIC_SANITY_PROJECT_ID, PUBLIC_SANITY_DATASET in .env (token optional for read).
+ * Requires: KILN_API_URL (or PUBLIC_KILN_URL) in the environment; without it,
+ * only the static redirects are written.
  */
 
-import { createClient } from '@sanity/client';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -229,30 +230,39 @@ const STATIC_REDIRECTS = `\
 
 `;
 
+// Published condition slugs from the Kiln JSON:API, following offset pages.
+async function fetchConditionSlugs(base) {
+  const slugs = [];
+  const limit = 100;
+  for (let offset = 0; ; offset += limit) {
+    const url = `${base}/api/json/conditions/published?page[limit]=${limit}&page[offset]=${offset}`;
+    const res = await fetch(url, { headers: { accept: 'application/vnd.api+json' } });
+    if (!res.ok) throw new Error(`Kiln responded ${res.status} for ${url}`);
+    const { data } = await res.json();
+    for (const record of data || []) {
+      if (record?.attributes?.slug) slugs.push({ slug: record.attributes.slug });
+    }
+    if (!data || data.length < limit) break;
+  }
+  return slugs;
+}
+
 async function main() {
-  const projectId = process.env.PUBLIC_SANITY_PROJECT_ID;
-  const dataset = process.env.PUBLIC_SANITY_DATASET || 'production';
-  if (!projectId) {
-    console.warn('generate-condition-redirects: PUBLIC_SANITY_PROJECT_ID not set, writing static redirects only.');
-    fs.writeFileSync(REDIRECTS_PATH, STATIC_REDIRECTS + '# No condition redirects (Sanity not configured)\n', 'utf-8');
+  let base = process.env.KILN_API_URL || process.env.PUBLIC_KILN_URL;
+  if (!base) {
+    console.warn('generate-condition-redirects: KILN_API_URL not set, writing static redirects only.');
+    fs.writeFileSync(REDIRECTS_PATH, STATIC_REDIRECTS + '# No condition redirects (Kiln not configured)\n', 'utf-8');
     return;
   }
+  if (!/^https?:\/\//.test(base)) base = `https://${base}`;
+  base = base.replace(/\/+$/, '');
 
-  const client = createClient({
-    projectId,
-    dataset,
-    apiVersion: '2024-01-01',
-    useCdn: true,
-  });
-
-  const conditions = await client.fetch(
-    `*[_type == "condition" && defined(slug.current)] { "slug": slug.current }`
-  );
+  const conditions = await fetchConditionSlugs(base);
 
   const conditionLines = [
     '# =============================================================================',
     '# Condition redirects: /:slug -> /conditions/:slug',
-    '# Generated dynamically from Sanity condition documents',
+    '# Generated dynamically from published Kiln condition records',
     '# =============================================================================',
     '',
   ];

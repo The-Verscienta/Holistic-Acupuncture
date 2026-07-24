@@ -6,8 +6,8 @@ import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
 import KilnImage from '../../components/KilnImage.astro';
 import { getAllBlogPosts } from '../../lib/kilnQueries';
-import { formatDate, decodeHtmlEntities } from '../../lib/sanity';
-import { categoryLabels } from '../../types/sanity';
+import { formatDate, decodeHtmlEntities } from '../../lib/format';
+import { categoryLabels } from '../../types/content';
 
 // Enable SSR for this page to support dynamic pagination and filtering
 export const prerender = false;
