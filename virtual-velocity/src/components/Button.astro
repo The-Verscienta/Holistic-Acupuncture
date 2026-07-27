@@ -11,6 +11,7 @@ export interface Props {
   icon?: 'calendar' | 'phone' | 'mail' | 'arrow-right' | 'arrow-left' | 'info' | 'external';
   iconPosition?: 'left' | 'right';
   class?: string;
+  [key: `data-${string}`]: string | boolean | undefined;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   icon,
   iconPosition = 'left',
   class: className = '',
+  ...rest
 } = Astro.props;
 
 // Base styles
@@ -67,7 +69,7 @@ const iconPath = icon ? iconPaths[icon] : null;
 ---
 
 {href ? (
-  <a href={href} target={target} rel={rel} class={combinedClasses}>
+  <a href={href} target={target} rel={rel} class={combinedClasses} {...rest}>
     {icon && iconPosition === 'left' && (
       <svg class={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={iconPath}></path>
@@ -81,7 +83,7 @@ const iconPath = icon ? iconPaths[icon] : null;
     )}
   </a>
 ) : (
-  <button type={type} disabled={disabled} class={combinedClasses}>
+  <button type={type} disabled={disabled} class={combinedClasses} {...rest}>
     {icon && iconPosition === 'left' && (
       <svg class={iconSize} fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={iconPath}></path>
