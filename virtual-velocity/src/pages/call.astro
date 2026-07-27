@@ -1,0 +1,397 @@
+---
+import '../styles/global.css';
+import StructuredData from '../components/StructuredData.astro';
+import {
+  SITE_URL,
+  CONTACT,
+  HOURS,
+  NEW_PATIENT_SPECIAL,
+  REVIEW_STATS,
+} from '../lib/config';
+
+// Call-focused landing page: no site nav, no search, no cookie banner —
+// just the offer and the phone number. Kept intentionally lightweight.
+
+const title = 'Acupuncture in Milwaukee — New Patient Special | Acupuncture & Holistic Health Associates';
+const description = `Natural relief and root-cause care in Milwaukee. Call ${CONTACT.phone} — full evaluation + first treatment for only $${NEW_PATIENT_SPECIAL.price} (regularly $${NEW_PATIENT_SPECIAL.regularPrice}). New patients only.`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site?.origin || SITE_URL);
+
+// Offer always expires at the end of the current month (same convention as
+// NewPatientSpecial.astro; site rebuilds keep this fresh).
+const now = new Date();
+const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+const expiryDate = endOfMonth.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+const telHref = `tel:${CONTACT.phoneRaw}`;
+
+const trustStats = [
+  { value: '25+', label: 'Years in practice' },
+  { value: '380,000+', label: 'Treatments given' },
+  { value: `${REVIEW_STATS.rating}★`, label: 'Google rating' },
+  { value: 'Glendale', label: 'Milwaukee location' },
+];
+
+const whyUs = [
+  'Drug-free, root-cause approach — not just symptom relief',
+  'Licensed, experienced practitioners focused on lasting results',
+  'Calm, professional clinic with free covered parking above Trader Joe’s',
+  'Flexible hours — open until 7 pm Monday–Thursday',
+  'Transparent pricing and new-patient specials',
+];
+
+const firstVisitSteps = [
+  {
+    title: 'Consultation (30–45 minutes)',
+    text: 'We listen carefully and examine tongue and pulse to understand the root of your concerns.',
+  },
+  {
+    title: 'Personalized Plan',
+    text: 'You’ll leave knowing exactly what we recommend and why.',
+  },
+  {
+    title: 'Gentle Treatment',
+    text: 'Ultra-fine needles, quiet room, 20–30 minutes of deep rest.',
+  },
+];
+
+const commonReasons = [
+  'Chronic pain & joint issues',
+  'Headaches & migraines',
+  'Stress, anxiety & sleep problems',
+  'Digestive concerns',
+  'Women’s health & fertility support',
+  'Allergies & seasonal issues',
+];
+
+const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Acupuncture & Holistic Health Associates" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="geo.region" content="US-WI" />
+    <meta name="geo.placename" content="Glendale" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#657a52" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&display=swap"
+      />
+    </noscript>
+
+    <StructuredData />
+
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-warm-white">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-sage-700 focus:text-white focus:rounded-md focus:shadow-lg"
+    >
+      Skip to main content
+    </a>
+
+    <!-- 1. Minimal sticky header: logo + click-to-call, no site nav -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-3 min-w-0" aria-label="Acupuncture & Holistic Health Associates home">
+          <img src="/logo.webp" alt="Acupuncture & Holistic Health Associates logo" width="40" height="40" class="h-10 w-auto shrink-0" loading="eager" />
+          <span class="hidden sm:block font-heading font-semibold text-charcoal text-sm leading-tight">
+            Acupuncture &amp; Holistic<br class="md:hidden" /> Health Associates
+          </span>
+        </a>
+        <a href={telHref} class="text-right group" aria-label={`Call ${CONTACT.phone} now to schedule`}>
+          <span class="flex items-center justify-end gap-2 font-heading font-bold text-xl sm:text-2xl text-sage-700 group-hover:text-sage-600 whitespace-nowrap">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
+            </svg>
+            {CONTACT.phone}
+          </span>
+          <span class="block text-xs text-gray-600">Call now to schedule</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main-content" class="flex-1">
+      <!-- 2. Hero -->
+      <section class="bg-gradient-to-b from-sage-50 to-warm-white py-14 md:py-20">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+          <h1 class="font-heading font-bold text-charcoal text-4xl md:text-5xl leading-tight mb-4">
+            Acupuncture in Milwaukee
+            <span class="block text-sage-700 mt-2">Natural Relief. Root-Cause Care.</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-8">
+            Call today and start with a full evaluation + first treatment for only
+            <strong class="text-charcoal">${NEW_PATIENT_SPECIAL.price}</strong>
+            <span class="block text-base text-gray-600 mt-1">(Regularly ${NEW_PATIENT_SPECIAL.regularPrice} — New patients only)</span>
+          </p>
+          <a
+            href={telHref}
+            class="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-[var(--radius-button)] bg-earth-orange hover:bg-earth-terracotta text-white font-heading font-bold text-xl md:text-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-earth-orange"
+          >
+            <svg class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
+            </svg>
+            Call {CONTACT.phone}
+          </a>
+          <p class="text-sm md:text-base text-gray-600 mt-5">
+            Evening appointments available &bull; Free covered parking &bull; 25+ years of experience
+          </p>
+        </div>
+      </section>
+
+      <!-- 3. Trust bar -->
+      <section class="bg-white border-y border-gray-200" aria-label="Practice highlights">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {trustStats.map((stat) => (
+            <div>
+              <div class="font-heading font-bold text-2xl md:text-3xl text-sage-700">{stat.value}</div>
+              <div class="text-sm text-gray-600 mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 4. Why patients call us -->
+      <section class="py-14 md:py-20">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal text-center mb-8">
+            Why Milwaukee Chooses Us for Acupuncture
+          </h2>
+          <ul class="space-y-4">
+            {whyUs.map((reason) => (
+              <li class="flex items-start gap-3 text-lg text-gray-700">
+                <svg class="w-6 h-6 shrink-0 text-sage-600 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- 5. New patient offer -->
+      <section class="py-14 md:py-20 bg-sage-50">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <div class="bg-white rounded-[var(--radius-2xl)] shadow-[var(--shadow-soft)] border-2 border-earth-orange p-8 md:p-12 text-center">
+            <div class="inline-block px-4 py-2 bg-earth-orange text-white font-semibold rounded-[var(--radius-button)] text-sm mb-6">
+              New Patient Special &ndash; Limited Time
+            </div>
+            <div class="font-heading font-bold text-tcm-red text-6xl md:text-7xl mb-3">
+              ${NEW_PATIENT_SPECIAL.price}
+            </div>
+            <p class="text-lg md:text-xl text-gray-700 mb-6">
+              Comprehensive assessment + first acupuncture treatment
+              <span class="block text-base text-gray-600 mt-1">(Normally ${NEW_PATIENT_SPECIAL.regularPrice})</span>
+            </p>
+            <ul class="text-left max-w-md mx-auto space-y-2 text-gray-700 mb-4">
+              <li class="flex items-start gap-2">
+                <span class="text-sage-600 font-bold" aria-hidden="true">&check;</span>
+                Full health history and TCM diagnosis
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sage-600 font-bold" aria-hidden="true">&check;</span>
+                Personalized treatment plan
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-sage-600 font-bold" aria-hidden="true">&check;</span>
+                First acupuncture session
+              </li>
+            </ul>
+            <p class="text-sm text-gray-600 mb-8">
+              New patients only &bull; Cannot be combined with insurance &bull; Offer ends {expiryDate}
+            </p>
+            <a
+              href={telHref}
+              class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-[var(--radius-button)] bg-sage-600 hover:bg-sage-700 text-white font-heading font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sage-500"
+            >
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
+              </svg>
+              Call {CONTACT.phone} to claim this offer
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. What to expect -->
+      <section class="py-14 md:py-20">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal text-center mb-10">
+            Your First Visit &mdash; Simple &amp; Comfortable
+          </h2>
+          <ol class="grid md:grid-cols-3 gap-8">
+            {firstVisitSteps.map((step, i) => (
+              <li class="text-center">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-sage-600 text-white font-heading font-bold text-xl flex items-center justify-center" aria-hidden="true">
+                  {i + 1}
+                </div>
+                <h3 class="font-heading font-semibold text-xl text-charcoal mb-2">{step.title}</h3>
+                <p class="text-gray-700">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="text-center text-lg text-gray-700 mt-10">
+            Most patients feel relaxed and notice shifts even after the first session.
+          </p>
+        </div>
+      </section>
+
+      <!-- 7. Common reasons people call -->
+      <section class="py-14 md:py-20 bg-white border-y border-gray-200">
+        <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal text-center mb-10">
+            Common Reasons People Call
+          </h2>
+          <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {commonReasons.map((reason) => (
+              <li class="flex items-center gap-3 bg-sage-50 rounded-[var(--radius-lg)] px-5 py-4 text-gray-700 font-medium">
+                <svg class="w-5 h-5 shrink-0 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                {reason}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- 8. Location & practical info -->
+      <section class="py-14 md:py-20">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 class="font-heading font-bold text-3xl md:text-4xl text-charcoal text-center mb-10">
+            Convenient Glendale Location
+          </h2>
+          <div class="bg-white rounded-[var(--radius-xl)] shadow-[var(--shadow-card)] border border-gray-200 p-8 grid sm:grid-cols-2 gap-8">
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-charcoal mb-2">Address</h3>
+              <address class="not-italic text-gray-700">
+                500 W. Silver Spring Drive, Suite K-205<br />
+                Glendale, WI 53217<br />
+                <span class="text-gray-600 text-sm">(Bayshore Town Center &mdash; above Trader Joe&rsquo;s)</span>
+              </address>
+              <h3 class="font-heading font-semibold text-lg text-charcoal mt-6 mb-2">Parking</h3>
+              <p class="text-gray-700">Free covered parking available</p>
+              <h3 class="font-heading font-semibold text-lg text-charcoal mt-6 mb-2">Phone</h3>
+              <p><a href={telHref} class="text-sage-700 font-semibold hover:text-sage-600">{CONTACT.phone}</a></p>
+            </div>
+            <div>
+              <h3 class="font-heading font-semibold text-lg text-charcoal mb-2">Hours</h3>
+              <dl class="text-gray-700 space-y-1">
+                <div class="flex justify-between gap-4">
+                  <dt>Monday &ndash; Thursday</dt>
+                  <dd class="text-right">9:00 am &ndash; 7:00 pm</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt>Friday</dt>
+                  <dd class="text-right">{HOURS.friday}</dd>
+                </div>
+                <div class="flex justify-between gap-4">
+                  <dt>Saturday &amp; Sunday</dt>
+                  <dd class="text-right">Closed</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Final CTA -->
+      <section class="py-16 md:py-24 bg-sage-700">
+        <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+          <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-4">
+            Ready to Feel Better Naturally?
+          </h2>
+          <p class="text-lg text-sage-100 mb-8">
+            Call now and secure your new patient appointment while the ${NEW_PATIENT_SPECIAL.price} special is still available.
+          </p>
+          <a
+            href={telHref}
+            class="inline-flex items-center justify-center gap-3 px-10 py-5 rounded-[var(--radius-button)] bg-earth-orange hover:bg-earth-terracotta text-white font-heading font-bold text-xl md:text-2xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-earth-orange focus:ring-offset-sage-700"
+          >
+            <svg class="w-7 h-7 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
+            </svg>
+            Call {CONTACT.phone}
+          </a>
+          <p class="text-sm text-sage-200 mt-5">
+            Same-day or next-day appointments often available. We look forward to helping you.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Minimal footer: no site nav on this landing page -->
+    <footer class="bg-charcoal text-gray-400 text-sm">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p>&copy; {now.getFullYear()} Acupuncture &amp; Holistic Health Associates &bull; {CONTACT.address.full}</p>
+        <p class="flex gap-4">
+          <a href="/" class="hover:text-white">Main site</a>
+          <a href="/privacy" class="hover:text-white">Privacy</a>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Mobile sticky call bar: appears after light scrolling so the hero CTA isn't duplicated -->
+    <div
+      id="mobile-call-bar"
+      class="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-gray-200 shadow-lg px-4 py-3 translate-y-full transition-transform duration-300"
+      inert
+    >
+      <a
+        href={telHref}
+        class="flex items-center justify-center gap-2 py-3 rounded-lg bg-earth-orange text-white font-heading font-bold text-lg"
+        aria-label={`Call ${CONTACT.phone}`}
+      >
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
+        </svg>
+        Call {CONTACT.phone}
+      </a>
+    </div>
+
+    <script is:inline>
+      (function () {
+        var bar = document.getElementById('mobile-call-bar');
+        if (!bar) return;
+        var shown = false;
+        window.addEventListener('scroll', function () {
+          if (window.scrollY > 300 && !shown) {
+            shown = true;
+            bar.classList.remove('translate-y-full');
+            bar.removeAttribute('inert');
+          }
+        }, { passive: true });
+      })();
+    </script>
+  </body>
+</html>
