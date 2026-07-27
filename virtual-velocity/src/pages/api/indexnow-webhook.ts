@@ -73,13 +73,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response('Bad Request: invalid JSON', { status: 400 });
   }
 
-  // Kiln webhook payload: { event: "post.published", payload: { slug, ... } }
+  // Kiln webhook body: { event: "post.published", data: <serialized content> }
+  // (KilnCMS.Webhooks.DeliveryWorker encodes %{event: event, data: payload};
+  // the serialized content carries a top-level slug).
   const event = body?.event as string | undefined;
   const type = event?.split('.')[0];
-  const slug = (body?.payload as { slug?: string } | undefined)?.slug;
+  const slug = (body?.data as { slug?: string } | undefined)?.slug;
 
   if (!type || !slug) {
-    return new Response('Bad Request: missing event or payload.slug', { status: 400 });
+    return new Response('Bad Request: missing event or data.slug', { status: 400 });
   }
 
   // Whitelist document type before doing anything with the slug
