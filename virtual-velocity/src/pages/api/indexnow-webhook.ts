@@ -106,16 +106,25 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   }
 
-  const res = await fetch(INDEXNOW_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      host: 'holisticacupuncture.net',
-      key: INDEXNOW_KEY,
-      keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
-      urlList: [url],
-    }),
-  });
+  let res: Response;
+  try {
+    res = await fetch(INDEXNOW_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        host: 'holisticacupuncture.net',
+        key: INDEXNOW_KEY,
+        keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
+        urlList: [url],
+      }),
+    });
+  } catch (err) {
+    // Without the catch, a failed upstream fetch surfaces as an opaque
+    // Cloudflare error page; log it so `wrangler pages deployment tail`
+    // (or dashboard real-time logs) shows the cause.
+    console.error(`IndexNow fetch for ${url} threw: ${err}`);
+    return new Response('IndexNow unreachable', { status: 502 });
+  }
 
   if (res.ok || res.status === 202) {
     return new Response(JSON.stringify({ submitted: url }), {
@@ -124,5 +133,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   }
 
+  const detail = (await res.text().catch(() => '')).slice(0, 500);
+  console.error(`IndexNow rejected ${url}: HTTP ${res.status} ${detail}`);
   return new Response(`IndexNow error: ${res.status}`, { status: 502 });
 };
