@@ -5,12 +5,19 @@ export const prerender = false;
 
 const SITE_URL = 'https://holisticacupuncture.net';
 const INDEXNOW_KEY = '81e84114cb0247a7b6c5fbd5c9f1e44d';
-// Bing's engine endpoint rather than the api.indexnow.org aggregator: the
-// aggregator 429s Cloudflare Workers' shared egress IPs (verified 2026-07-27 —
-// the same submission got 200 from a residential IP while the Pages function
-// got TooManyRequests). Participating engines share IndexNow submissions, so
-// one engine endpoint is sufficient.
-const INDEXNOW_API = 'https://www.bing.com/indexnow';
+// Any participating engine relays IndexNow submissions to all the others, so
+// the first endpoint that accepts is sufficient. The cascade exists because
+// Microsoft's infrastructure (api.indexnow.org AND www.bing.com) 429s
+// Cloudflare Workers' shared egress IPs by source IP (verified 2026-07-27:
+// identical submissions — same key/host/URL — get 200 from a residential IP
+// while this function gets TooManyRequests). Yandex and Seznam run separate
+// infrastructure and accept this site's key; Naver is excluded (422 for
+// sites not registered with its Search Advisor).
+const INDEXNOW_ENDPOINTS = [
+  'https://www.bing.com/indexnow',
+  'https://yandex.com/indexnow',
+  'https://search.seznam.cz/indexnow',
+];
 
 // Kiln slugs are URL-safe; restrict to a-z 0-9 and `-` to prevent
 // path traversal or arbitrary URL injection into the IndexNow submission.
@@ -111,39 +118,48 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
   }
 
-  let res: Response;
-  try {
-    res = await fetch(INDEXNOW_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        host: 'holisticacupuncture.net',
-        key: INDEXNOW_KEY,
-        keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
-        urlList: [url],
-      }),
-    });
-  } catch (err) {
-    // Without the catch, a failed upstream fetch surfaces as an opaque
-    // Cloudflare error page; log it so `wrangler pages deployment tail`
-    // (or dashboard real-time logs) shows the cause.
-    console.error(`IndexNow fetch for ${url} threw: ${err}`);
-    return new Response('IndexNow unreachable', { status: 502 });
+  const submission = JSON.stringify({
+    host: 'holisticacupuncture.net',
+    key: INDEXNOW_KEY,
+    keyLocation: `${SITE_URL}/${INDEXNOW_KEY}.txt`,
+    urlList: [url],
+  });
+
+  // Walk the engines until one accepts; each failure is logged so real-time
+  // function logs show the whole cascade, not just the final verdict.
+  let lastStatus = 0;
+  let lastDetail = '';
+  for (const endpoint of INDEXNOW_ENDPOINTS) {
+    let res: Response;
+    try {
+      res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: submission,
+      });
+    } catch (err) {
+      console.error(`IndexNow fetch to ${endpoint} for ${url} threw: ${err}`);
+      lastStatus = 502;
+      lastDetail = 'unreachable';
+      continue;
+    }
+
+    if (res.ok || res.status === 202) {
+      return new Response(JSON.stringify({ submitted: url, engine: endpoint }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    lastStatus = res.status;
+    lastDetail = (await res.text().catch(() => '')).slice(0, 500);
+    console.error(`${endpoint} rejected ${url}: HTTP ${lastStatus} ${lastDetail}`);
   }
 
-  if (res.ok || res.status === 202) {
-    return new Response(JSON.stringify({ submitted: url }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const detail = (await res.text().catch(() => '')).slice(0, 500);
-  console.error(`IndexNow rejected ${url}: HTTP ${res.status} ${detail}`);
-  // Mirror the upstream status (4xx/5xx) instead of a flat 502: Kiln's
+  // Mirror the last upstream status (4xx/5xx) instead of a flat 502: Kiln's
   // delivery ledger records our status line, so "endpoint returned HTTP 429"
-  // in its logs directly names IndexNow's complaint without needing
+  // in its logs directly names the upstream complaint without needing
   // real-time function logs. Kiln retries any non-2xx either way.
-  const status = res.status >= 400 && res.status < 600 ? res.status : 502;
-  return new Response(`IndexNow error: ${res.status} ${detail}`, { status });
+  const status = lastStatus >= 400 && lastStatus < 600 ? lastStatus : 502;
+  return new Response(`IndexNow error: ${lastStatus} ${lastDetail}`, { status });
 };
