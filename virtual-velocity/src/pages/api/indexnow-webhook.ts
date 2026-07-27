@@ -5,7 +5,12 @@ export const prerender = false;
 
 const SITE_URL = 'https://holisticacupuncture.net';
 const INDEXNOW_KEY = '81e84114cb0247a7b6c5fbd5c9f1e44d';
-const INDEXNOW_API = 'https://api.indexnow.org/indexnow';
+// Bing's engine endpoint rather than the api.indexnow.org aggregator: the
+// aggregator 429s Cloudflare Workers' shared egress IPs (verified 2026-07-27 —
+// the same submission got 200 from a residential IP while the Pages function
+// got TooManyRequests). Participating engines share IndexNow submissions, so
+// one engine endpoint is sufficient.
+const INDEXNOW_API = 'https://www.bing.com/indexnow';
 
 // Kiln slugs are URL-safe; restrict to a-z 0-9 and `-` to prevent
 // path traversal or arbitrary URL injection into the IndexNow submission.
