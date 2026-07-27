@@ -5,7 +5,12 @@ export const prerender = false;
 
 const SITE_URL = 'https://holisticacupuncture.net';
 const INDEXNOW_KEY = '81e84114cb0247a7b6c5fbd5c9f1e44d';
-const INDEXNOW_API = 'https://api.indexnow.org/indexnow';
+// Bing's engine endpoint rather than the api.indexnow.org aggregator: the
+// aggregator 429s Cloudflare Workers' shared egress IPs (verified 2026-07-27 —
+// the same submission got 200 from a residential IP while the Pages function
+// got TooManyRequests). Participating engines share IndexNow submissions, so
+// one engine endpoint is sufficient.
+const INDEXNOW_API = 'https://www.bing.com/indexnow';
 
 // Kiln slugs are URL-safe; restrict to a-z 0-9 and `-` to prevent
 // path traversal or arbitrary URL injection into the IndexNow submission.
@@ -135,5 +140,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const detail = (await res.text().catch(() => '')).slice(0, 500);
   console.error(`IndexNow rejected ${url}: HTTP ${res.status} ${detail}`);
-  return new Response(`IndexNow error: ${res.status}`, { status: 502 });
+  // Mirror the upstream status (4xx/5xx) instead of a flat 502: Kiln's
+  // delivery ledger records our status line, so "endpoint returned HTTP 429"
+  // in its logs directly names IndexNow's complaint without needing
+  // real-time function logs. Kiln retries any non-2xx either way.
+  const status = res.status >= 400 && res.status < 600 ? res.status : 502;
+  return new Response(`IndexNow error: ${res.status} ${detail}`, { status });
 };
