@@ -135,5 +135,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
   const detail = (await res.text().catch(() => '')).slice(0, 500);
   console.error(`IndexNow rejected ${url}: HTTP ${res.status} ${detail}`);
-  return new Response(`IndexNow error: ${res.status}`, { status: 502 });
+  // Mirror the upstream status (4xx/5xx) instead of a flat 502: Kiln's
+  // delivery ledger records our status line, so "endpoint returned HTTP 429"
+  // in its logs directly names IndexNow's complaint without needing
+  // real-time function logs. Kiln retries any non-2xx either way.
+  const status = res.status >= 400 && res.status < 600 ? res.status : 502;
+  return new Response(`IndexNow error: ${res.status} ${detail}`, { status });
 };
