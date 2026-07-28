@@ -7,6 +7,9 @@ Allow: /
 Disallow: /api/
 Disallow: /_astro/
 
+# Cloudflare utility endpoints (email-protection, challenge scripts) — not content
+Disallow: /cdn-cgi/
+
 # Disallow WordPress legacy query-string URLs
 Disallow: /*?page_id=
 Disallow: /*?p=

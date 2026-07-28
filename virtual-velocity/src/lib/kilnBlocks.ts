@@ -52,8 +52,10 @@ function renderPtBlock(block: Block): string {
   }
 
   switch (block.style || 'normal') {
+    // Body h1s render as h2 — the page template owns the sole <h1> (the
+    // post/record title), and duplicate h1s get flagged by crawlers.
     case 'h1':
-      return `<h1 class="text-4xl font-heading font-bold text-charcoal mt-12 mb-6">${content}</h1>`;
+      return `<h2 class="text-4xl font-heading font-bold text-charcoal mt-12 mb-6">${content}</h2>`;
     case 'h2':
       return `<h2 class="text-3xl font-heading font-bold text-charcoal mt-10 mb-5">${content}</h2>`;
     case 'h3':
@@ -115,11 +117,15 @@ export function renderBlocks(blocks: Block[]): string {
             return renderPortableText(block.body);
           }
           // legacy_html blocks are sanitized by Kiln on write; still, only
-          // trust them as a fallback for un-migrated content.
-          return block.legacy_html || '';
+          // trust them as a fallback for un-migrated content. Demote any h1s
+          // — the page template owns the sole <h1>.
+          return (block.legacy_html || '')
+            .replace(/<h1(\s|>)/gi, '<h2$1')
+            .replace(/<\/h1>/gi, '</h2>');
         }
         case 'heading': {
-          const level = Math.min(Math.max(Number(block.level) || 2, 1), 6);
+          // Clamp to h2–h6: the page template owns the sole <h1>.
+          const level = Math.min(Math.max(Number(block.level) || 2, 2), 6);
           const classes =
             level <= 2
               ? 'text-3xl font-heading font-bold text-charcoal mt-10 mb-5'
