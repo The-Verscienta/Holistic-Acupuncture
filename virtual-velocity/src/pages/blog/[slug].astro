@@ -87,12 +87,20 @@ const articleSchema = {
   ...(ogImageUrl && { image: ogImageUrl })
 };
 
-const metaTitle = post.seo?.metaTitle || `${decodeHtmlEntities(post.title)} in Milwaukee, Wisconsin`;
+// Bing warns on <title> over 70 chars (Google truncates around 60). A CMS
+// meta title is used verbatim; otherwise the post title gets a short local
+// suffix only when the result stays within 60 chars.
+const rawTitle = decodeHtmlEntities(post.title);
+const TITLE_SUFFIX = ' | Milwaukee Acupuncture';
+const metaTitle =
+  post.seo?.metaTitle ||
+  (rawTitle.length + TITLE_SUFFIX.length <= 60 ? `${rawTitle}${TITLE_SUFFIX}` : rawTitle);
 const metaDescription = post.seo?.metaDescription || `${decodeHtmlEntities(post.excerpt)} Learn more about acupuncture in Milwaukee, Wisconsin.`;
 ---
 
 <BaseLayout
   title={metaTitle}
+  titleIsFull
   description={metaDescription}
   image={ogImageUrl}
   ogType="article"
