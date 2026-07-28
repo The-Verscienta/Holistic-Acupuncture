@@ -1,20 +1,25 @@
 # SEO title backlog — blog posts over Bing's 70-char limit
 
-Source: Bing Webmaster "Title too long" warnings (July 2026 scan, 105 posts
-flagged). The blog title template fix resolved 57 of them; the 48 posts below
-have titles in Kiln that are themselves over 70 characters, so they need a
-content edit in the CMS.
+> **Status: COMPLETED 2026-07-27.** All 48 suggested meta titles below were
+> applied to Kiln (`seo_title` via JSON:API) and are live in production — a
+> full crawl of every blog page confirmed zero titles over 70 characters.
+> This file is kept as a record of what was set and why. If a title needs
+> changing, edit the post's SEO meta title in Kiln directly.
 
-**How to fix:** in Kiln, open each post and set the **SEO meta title** field
-to the suggested title (or your own — target ≤60 characters, hard limit 70).
+Source: Bing Webmaster "Title too long" warnings (July 2026 scan, 105 posts
+flagged). The blog title template fix (PR #26) resolved 57 of them; the 48
+posts below had titles in Kiln that were themselves over 70 characters, so
+they needed a content edit in the CMS.
+
 The template uses a CMS meta title *verbatim* (no site-name suffix is
 appended), and the on-page H1 (the post title) is unaffected. Posts with no
 meta title fall back to the post title, plus " | Milwaukee Acupuncture" when
 the result stays within 60 characters.
 
-Sorted by current rendered length, worst first. Delete rows as they're done.
+Sorted by pre-fix rendered length, worst first. The "Len" column is the
+*old* title length; the suggested title in each row is what's now set.
 
-| Len | Slug | Suggested meta title (≤60) |
+| Len | Slug | Meta title set in Kiln (≤60) |
 |----:|------|----------------------------|
 | 153 | `what-is-acupuncture-and-how-does-it-work` | What Is Acupuncture and How Does It Work? |
 | 147 | `oriental-nutrition-secrets-for-eating-healthy-in-the-spring-season-a-guide-from-acupuncture-and-holistic-health-associates-in-milwaukee-wisconsin` | Eating Healthy in Spring: East Asian Nutrition Tips |
