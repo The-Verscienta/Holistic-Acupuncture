@@ -23,7 +23,19 @@ if (!condition) {
   return Astro.redirect('/404');
 }
 
-const metaTitle = condition.seo?.metaTitle || `${condition.name} Treatment in Milwaukee, Wisconsin`;
+// Bing warns on <title> over 70 chars (Google truncates around 60). A CMS
+// meta title is used verbatim; otherwise build the shortest local title that
+// keeps "Milwaukee" without blowing the 60-char budget.
+const TITLE_SUFFIX = ' | Milwaukee Acupuncture';
+const withTreatment = `${condition.name} Treatment${TITLE_SUFFIX}`;
+const withoutTreatment = `${condition.name}${TITLE_SUFFIX}`;
+const metaTitle =
+  condition.seo?.metaTitle ||
+  (withTreatment.length <= 60
+    ? withTreatment
+    : withoutTreatment.length <= 60
+      ? withoutTreatment
+      : `${condition.name} Treatment`);
 const metaDescription = condition.seo?.metaDescription || `${condition.description} Learn more about acupuncture treatment in Milwaukee, Wisconsin.`;
 // The Kiln body carries both former rich-text sections, separated by an
 // embedded "How Acupuncture Helps" heading block.
@@ -59,7 +71,7 @@ const conditionFaqSchema = {
 };
 ---
 
-<BaseLayout title={metaTitle} description={metaDescription} breadcrumbs={[{name:'Home',url:'/'},{name:'Conditions We Treat',url:'/conditions'},{name:condition.name}]}>
+<BaseLayout title={metaTitle} titleIsFull description={metaDescription} breadcrumbs={[{name:'Home',url:'/'},{name:'Conditions We Treat',url:'/conditions'},{name:condition.name}]}>
   <script type="application/ld+json" set:html={JSON.stringify(conditionFaqSchema)} />
   <!-- Hero -->
   <section class="bg-gradient-to-br from-sage-50 to-warm-white py-12 md:py-16">
