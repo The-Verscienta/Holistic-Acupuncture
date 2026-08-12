@@ -26,3 +26,6 @@ pnpm-debug.log*
 .claude/
 
 .superpowers/
+
+# kiln/dev-assemble.sh's assembled working tree (default target)
+.kiln-dev/
