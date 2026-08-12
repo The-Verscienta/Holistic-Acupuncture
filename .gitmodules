@@ -1,0 +1,3 @@
+[submodule "kiln/upstream"]
+	path = kiln/upstream
+	url = https://github.com/The-Verscienta/kiln_cms.git

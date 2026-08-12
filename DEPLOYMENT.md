@@ -33,7 +33,9 @@ PUBLIC_JANE_BOOKING_URL=https://yourpractice.janeapp.com
 
 ### 2. Kiln CMS
 
-- Content is managed in the self-hosted [Kiln CMS](https://api.verscienta.com) (repo: `kiln_cms`, deployed via Coolify with the `PROJECT=acupuncture` overlay). The site reads published content from its JSON:API at build time, plus at runtime for the blog index and search API.
+- Content is managed in the self-hosted [Kiln CMS](https://api.verscienta.com). The site reads published content from its JSON:API at build time, plus at runtime for the blog index and search API.
+- The backend is built from this repo's [`kiln/`](kiln/) directory — a git submodule pinning the generic [`The-Verscienta/kiln_cms`](https://github.com/The-Verscienta/kiln_cms) core plus the acupuncture-specific overlay (content types, Sanity import), following the same pattern as [`verscienta-base`](https://github.com/The-Verscienta/verscienta-base)'s `kiln/`. See [`kiln/README.md`](kiln/README.md).
+- `.github/workflows/deploy-kiln.yml` builds and pushes the image to `ghcr.io/the-verscienta/holistic-acupuncture-kiln` on every push to `main` touching `kiln/**`, then triggers a Coolify webhook to redeploy. Coolify pulls the prebuilt image rather than building from source.
 
 ### 3. Rebuild when content changes
 
