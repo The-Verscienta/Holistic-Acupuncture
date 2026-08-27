@@ -112,36 +112,45 @@ const packages = [
       'First acupuncture treatment',
       'Personalized treatment plan',
       'Limited time offer'
-    ]
+    ],
+    limitations: []
   },
   {
     name: '5-Session Package',
     description: 'Ideal for acute conditions or those starting their healing journey.',
     sessions: '5 follow-up sessions',
-    price: 390,
+    price: 410,
     originalPrice: 450,
-    savings: 60,
+    savings: 40,
     highlight: false,
     features: [
-      '5 acupuncture sessions',
-      '13% savings',
+      '5 acupuncture sessions ($82 each)',
+      'Save $8 per session',
       'Flexible scheduling',
       'Valid for 3 months'
+    ],
+    limitations: [
+      'Re-exams are not included, so progress is not formally charted',
+      'Point prescription stays the same for every session'
     ]
   },
   {
     name: '10-Session Package',
     description: 'Best value for chronic conditions requiring ongoing treatment. Best for those whose schedule is always changing.',
     sessions: '10 follow-up sessions',
-    price: 735,
+    price: 800,
     originalPrice: 900,
-    savings: 165,
+    savings: 100,
     highlight: false,
     features: [
-      '10 acupuncture sessions',
-      '18% savings',
+      '10 acupuncture sessions ($80 each)',
+      'Save $10 per session',
       'Priority scheduling',
       'Valid for 6 months'
+    ],
+    limitations: [
+      'Re-exams are not included, so progress is not formally charted',
+      'Point prescription stays the same for every session'
     ]
   }
 ];
@@ -320,6 +329,24 @@ const packages = [
                   </li>
                 ))}
               </ul>
+
+              {pkg.limitations.length > 0 && (
+                <div class="mb-6 pt-4 border-t border-gray-200">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
+                    Good to know
+                  </p>
+                  <ul class="space-y-3">
+                    {pkg.limitations.map(limitation => (
+                      <li class="flex items-start gap-2 text-sm text-gray-600">
+                        <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>{limitation}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <Button
                 variant={pkg.highlight ? "primary" : "secondary"}
