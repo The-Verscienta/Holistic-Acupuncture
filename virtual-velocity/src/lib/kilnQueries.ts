@@ -69,7 +69,7 @@ function mapPost(record: JsonApiResource, included: Map<string, JsonApiResource>
     featuredImage: image(related(record, 'featured_image', included), attrs.title),
     publishedAt: attrs.published_at,
     updatedAt: attrs.updated_at,
-    readTime: 3, // placeholder; corrected on detail fetch where blocks exist
+    readTime: attrs.reading_time_minutes ?? 3,
     featured: cf.featured === true,
     author: cf.author_name
       ? {
@@ -90,6 +90,14 @@ export function getAllBlogPosts(baseUrl?: string): Promise<BlogPost[]> {
       include: ['category', 'tags', 'featured_image'],
       sort: '-published_at',
       baseUrl,
+      params: {
+        // Default JSON:API attributes plus the `reading_time_minutes`
+        // calculation, which Ash only returns when explicitly requested via
+        // a sparse fieldset — omitting it here is what left every post on
+        // the index page showing the mapPost() placeholder (3 min read).
+        'fields[post]':
+          'title,slug,excerpt,custom_fields,published_at,updated_at,seo_title,seo_description,reading_time_minutes',
+      },
     });
     return records.map((record) => mapPost(record, included));
   });
