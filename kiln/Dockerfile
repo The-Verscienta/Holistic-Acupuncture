@@ -12,10 +12,13 @@
 #
 # Unlike the Verscienta overlay, this one needs none of upstream's optional
 # heavy machinery (semantic search / EXLA) — the four content types compile
-# in one pass with upstream's own two-phase ML-deps split, so this Dockerfile
-# stays a straight COPY-and-compile over upstream's own stages. Diff against
-# `upstream/Dockerfile` when bumping the pinned ref; these ARGs are expected
-# to match it exactly (same hexpm/elixir tag pieces).
+# in one pass, so this Dockerfile stays a straight COPY-and-compile over
+# upstream's own stages. Since kiln_cms v0.9.0 the ML stack is opt-in
+# (`KILN_ML=1`, #1321), and this overlay leaves it OFF: semantic search was
+# never enabled for this site, and the lean tree is ~670 MB of deps smaller.
+# Pass `--build-arg KILN_ML=1` to opt in. Diff against `upstream/Dockerfile`
+# when bumping the pinned ref; these ARGs are expected to match it exactly
+# (same hexpm/elixir tag pieces).
 ARG ELIXIR_VERSION=1.19.5
 ARG OTP_VERSION=27.3.4.15
 ARG DEBIAN_VERSION=bookworm-20260713-slim
@@ -37,17 +40,29 @@ RUN mix local.hex --force && mix local.rebar --force
 
 ENV MIX_ENV="prod"
 
+# The ML stack (Bumblebee/Nx/EXLA) is opt-in upstream (#1321): empty leaves
+# it out of the dep tree entirely. See the header comment.
+ARG KILN_ML=""
+ENV KILN_ML=${KILN_ML}
+
 COPY upstream/mix.exs upstream/mix.lock ./
+# upstream mix.exs requires config/ml_flag.exs (which requires
+# strict_test_flag.exs) to decide its dep list, so both must be in place
+# before the first `mix` command that loads the project.
+COPY upstream/config/ml_flag.exs upstream/config/strict_test_flag.exs config/
 RUN mix deps.get --only $MIX_ENV
-RUN mkdir config
 
 COPY upstream/config/config.exs upstream/config/${MIX_ENV}.exs config/
-# Same split as upstream/Dockerfile: the ML/Nx stack compiles in its own BEAM
-# (freed on exit) before the rest, capping peak build RAM. See that file for
-# the full rationale — nothing here changes it, so keep the two lists synced.
-RUN ERL_FLAGS="+S 2:2" mix deps.compile \
+# Same split as upstream/Dockerfile: when the ML/Nx stack is in the tree it
+# compiles in its own BEAM (freed on exit) before the rest, capping peak build
+# RAM. See that file for the full rationale — nothing here changes it, so keep
+# the two lists synced. Guarded because `mix deps.compile <name>` on an absent
+# dep is an error, and without KILN_ML the stack is absent.
+RUN if [ -d deps/bumblebee ]; then \
+  ERL_FLAGS="+S 2:2" mix deps.compile \
   complex nx nx_image nx_signal polaris axon safetensors unpickler \
-  rustler_precompiled unzip tokenizers bumblebee
+  rustler_precompiled unzip tokenizers bumblebee; \
+  fi
 RUN ERL_FLAGS="+S 2:2" mix deps.compile
 
 COPY upstream/priv priv
@@ -83,7 +98,12 @@ RUN npm --prefix assets ci
 RUN ERL_FLAGS="+S 2:2" mix compile
 RUN mix assets.deploy
 
+# `config/runtime/` holds the per-concern fragments runtime.exs imports
+# (#1322). Both halves are required: this puts them in the build context, and
+# the `:steps` hook in upstream mix.exs copies them next to runtime.exs inside
+# the assembled release. Drop either and the image builds and fails on boot.
 COPY upstream/config/runtime.exs config/
+COPY upstream/config/runtime config/runtime
 COPY upstream/rel rel
 
 # Package application source so Sentry can show code context around stack
@@ -143,7 +163,10 @@ RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
 WORKDIR /app
-RUN chown nobody /app
+# /var/backups/kiln is the default BACKUP_DIR (upstream config/runtime.exs);
+# owning it here means a fresh named volume mounted there inherits `nobody`
+# and the in-app Backups page can write without a manual chown.
+RUN mkdir -p /var/backups/kiln && chown nobody /app /var/backups/kiln
 
 ENV MIX_ENV="prod"
 
