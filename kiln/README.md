@@ -17,7 +17,7 @@ mirroring the pattern established by
 | `config/project.exs` | Registers `Acupuncture.Catalog` in `ash_domains`/`content_domains`. Upstream's `config/config.exs` imports it (when present) as its final step, so the domain is wired into the admin, importer, GraphQL and JSON:API surfaces with zero core edits. |
 | `priv/repo/migrations/`, `priv/resource_snapshots/` | Ash migrations + snapshots for the four acupuncture content types. Kept downstream so upstream kiln_cms ships zero acupuncture schema; overlaid onto upstream's `priv/` at build time. |
 | `priv/repo/acupuncture_field_definitions.exs`, `priv/repo/acupuncture_import.exs` | The one-time Sanity migration — see [`projects/acupuncture/README.md`](projects/acupuncture/README.md). |
-| `Dockerfile` | Multi-stage release build: upstream sources + overlay. Mirrors upstream's own Dockerfile (same builder args, split ML-stack deps compile, libvips runtime) — this overlay needs none of Verscienta's optional EXLA/semantic-search machinery, so it stays a straight single-pass compile. |
+| `Dockerfile` | Multi-stage release build: upstream sources + overlay. Mirrors upstream's own Dockerfile (same builder args, libvips runtime) — this overlay needs none of Verscienta's optional EXLA/semantic-search machinery, so it builds upstream's lean tree (`KILN_ML` unset) in a straight single-pass compile. |
 
 The running service is deployed by Coolify from the image this repo's CI
 builds (see "Building & deploying" below) — Coolify no longer builds directly
@@ -84,12 +84,41 @@ mix compile
 
 ## Bumping the pinned upstream
 
-1. `cd kiln/upstream && git fetch && git checkout <new-tag-or-sha>`
+Pin to a release tag, not `main` — upstream's
+[overlay contract](upstream/docs/overlay-contract.md) only covers tagged
+minors. Read every `Upgrade notes` section between the old and new tag in
+upstream's `CHANGELOG.md` (or the GitHub release) first.
+
+1. `cd kiln/upstream && git fetch --tags && git checkout <new-tag>`
 2. Diff the things the overlay duplicates against upstream:
    - `config/project.exs` — re-sync the `ash_domains` list with upstream
      `config/config.exs` (ours must be *core list + `Acupuncture.Catalog`*).
-   - `Dockerfile` — diff against `upstream/Dockerfile` for changed build steps.
-3. Re-assemble and compile (above). If upstream added core migrations, run
-   `mix ash.codegen --check` in the assembled tree to confirm this overlay's
-   `priv/` snapshots are still consistent (regenerate if not).
-4. Commit the submodule pointer together with any re-sync.
+     `:plugins` and `:content_domains` replace the core list the same way.
+   - `Dockerfile` — diff the builder and runtime stages against
+     `upstream/Dockerfile` for changed build steps; the ARG pins must match.
+3. Regenerate the overlay's schema. A core minor may add columns to *our*
+   tables (the `KilnCMS.CMS.Content` macro contributes attributes to every
+   overlay resource, and the core's codegen can't see our `priv/`) — this is
+   the failure mode that has taken production down before (`undefined_column`
+   on the first content API request). In the assembled tree, or in the
+   built image's `builder` stage:
+
+   ```bash
+   mix ash.codegen <migration_name>   # writes priv/repo/migrations + snapshots
+   mix ash.codegen --check            # must then be clean
+   mix kiln.plugins.doctor            # domains registered, no collisions
+   ```
+
+   Copy the new migration and snapshot files back into `kiln/priv/`. Only the
+   acupuncture tables should appear — a core table in the diff means
+   `ash_domains` drifted (step 2).
+4. Commit the submodule pointer together with the re-sync and the new
+   migration in one commit; `deploy-kiln.yml` builds it on merge.
+
+Without a local Elixir 1.19 toolchain, step 3's commands run inside the
+image's builder stage:
+
+```bash
+docker build --target builder -t kiln-acu-builder kiln/
+docker run --rm kiln-acu-builder mix ash.codegen --check
+```

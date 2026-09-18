@@ -26,6 +26,7 @@ config :kiln_cms,
     KilnCMS.History,
     KilnCMS.SearchIndex,
     KilnCMS.Mail,
+    KilnCMS.Notifications,
     KilnCMS.Newsletter,
     KilnCMS.Automation,
     KilnCMS.Billing,
@@ -39,6 +40,19 @@ config :kiln_cms,
   # registering the catalog here exposes conditions/team-members/testimonials/
   # faqs on every delivery surface with no core edits.
   content_domains: [KilnCMS.CMS, Acupuncture.Catalog]
+
+# Per-deployment session-cookie salts (kiln_cms v0.9.0, #1326). Both are
+# combined with SECRET_KEY_BASE via PBKDF2 to derive the cookie's signing and
+# encryption keys, so on their own they are not secrets — but the core's
+# defaults are public literals shared by every KilnCMS deployment ever built,
+# and upstream asks each overlay to set its own. Compile-time config
+# (`KilnCMSWeb.SessionCookie` reads them via `Application.compile_env/3`), so
+# they MUST be literals here: wiring them to `System.get_env/1` compiles to
+# nil in the image build, and a nil or blank salt fails the build on purpose.
+# Changing either value logs every editor out once.
+config :kiln_cms,
+  session_signing_salt: "c7SyEwlOK8QlRChM",
+  session_encryption_salt: "E6kMoVgY8VQ3nJ"
 
 # The migrated media library serves from Cloudflare Images, so the admin,
 # preview and delivery CSPs must allow its host in `img-src` or every
