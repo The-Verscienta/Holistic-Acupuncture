@@ -84,7 +84,12 @@ jobs:
           # Build stamp read by Kiln.Version / the admin /editor/system page.
           # Without these the page can only report the release version, which
           # never changes between overlay commits.
+          # KILN_ML=1 compiles in the Bumblebee/Nx stack behind semantic
+          # search (enabled in kiln/config/project.exs). Drop it and the
+          # editor's similar-content panel goes back to "Semantic search is
+          # off".
           build-args: |
+            KILN_ML=1
             GIT_SHA=${{ github.sha }}
             BUILD_DATE=${{ steps.stamp.outputs.date }}
           cache-from: type=gha

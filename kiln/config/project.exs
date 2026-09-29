@@ -67,3 +67,22 @@ if config_env() == :test do
 else
   config :kiln_cms, :plugins, [Acupuncture.Plugin]
 end
+
+# Semantic search: similar-content / near-duplicate / suggested-tag panels in
+# the editor, plus the semantic leg of hybrid search. Compile-time config with
+# no env var, so it lives here. Needs the ML stack in the image — the
+# deploy-kiln workflow builds with `KILN_ML=1`; without it the app boots, logs
+# a "semantic_without_ml" warning and nothing semantic happens. After first
+# enabling (or changing the model), backfill embeddings once — see
+# kiln/README.md.
+#
+# Prod runs on Nx.BinaryBackend (upstream keeps EXLA out of prod builds), so
+# every embedding is pure-Elixir CPU work. The compiled shape — not the real
+# input — is what each call costs, so shrink it for a low-traffic single-site
+# install: batch of 1 (upstream's 8 pads every lone save to 8), and a short
+# 128-token computation that queries and short pages route to, with the full
+# 512 window kept for long documents.
+config :kiln_cms, KilnCMS.Search,
+  semantic: true,
+  batch_size: 1,
+  sequence_length: [128, 512]

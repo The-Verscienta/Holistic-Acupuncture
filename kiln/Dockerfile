@@ -14,9 +14,10 @@
 # heavy machinery (semantic search / EXLA) — the four content types compile
 # in one pass, so this Dockerfile stays a straight COPY-and-compile over
 # upstream's own stages. Since kiln_cms v0.9.0 the ML stack is opt-in
-# (`KILN_ML=1`, #1321), and this overlay leaves it OFF: semantic search was
-# never enabled for this site, and the lean tree is ~670 MB of deps smaller.
-# Pass `--build-arg KILN_ML=1` to opt in. Diff against `upstream/Dockerfile`
+# (`KILN_ML=1`, #1321). This Dockerfile defaults it OFF to match upstream, but
+# the deploy-kiln workflow passes `--build-arg KILN_ML=1` because semantic
+# search is enabled in config/project.exs. A local `docker build kiln/` without
+# the arg produces a lean image that boots with semantic search inert. Diff against `upstream/Dockerfile`
 # when bumping the pinned ref; these ARGs are expected to match it exactly
 # (same hexpm/elixir tag pieces).
 ARG ELIXIR_VERSION=1.19.5
@@ -169,6 +170,13 @@ WORKDIR /app
 RUN mkdir -p /var/backups/kiln && chown nobody /app /var/backups/kiln
 
 ENV MIX_ENV="prod"
+
+# Bumblebee downloads the embedding model from Hugging Face on first boot and
+# caches it under $HOME/.cache by default — but the release runs as `nobody`,
+# whose home (/nonexistent) is unwritable, and the failed download crashes the
+# serving at supervisor start. Point it inside /app (owned by nobody, above).
+# Mount a volume here in Coolify to skip the ~130 MB re-download per deploy.
+ENV BUMBLEBEE_CACHE_DIR=/app/.cache/bumblebee
 
 COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/kiln_cms ./
 
