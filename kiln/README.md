@@ -17,7 +17,7 @@ mirroring the pattern established by
 | `config/project.exs` | Registers `Acupuncture.Catalog` in `ash_domains`/`content_domains`. Upstream's `config/config.exs` imports it (when present) as its final step, so the domain is wired into the admin, importer, GraphQL and JSON:API surfaces with zero core edits. |
 | `priv/repo/migrations/`, `priv/resource_snapshots/` | Ash migrations + snapshots for the four acupuncture content types. Kept downstream so upstream kiln_cms ships zero acupuncture schema; overlaid onto upstream's `priv/` at build time. |
 | `priv/repo/acupuncture_field_definitions.exs`, `priv/repo/acupuncture_import.exs` | The one-time Sanity migration — see [`projects/acupuncture/README.md`](projects/acupuncture/README.md). |
-| `Dockerfile` | Multi-stage release build: upstream sources + overlay. Mirrors upstream's own Dockerfile (same builder args, libvips runtime) — this overlay needs none of Verscienta's optional EXLA/semantic-search machinery, so it builds upstream's lean tree (`KILN_ML` unset) in a straight single-pass compile. |
+| `Dockerfile` | Multi-stage release build: upstream sources + overlay. Mirrors upstream's own Dockerfile (same builder args, libvips runtime). Defaults to upstream's lean tree (`KILN_ML` unset); CI builds with `KILN_ML=1` for semantic search — see [Semantic search](#semantic-search). |
 
 The running service is deployed by Coolify from the image this repo's CI
 builds (see "Building & deploying" below) — Coolify no longer builds directly
@@ -68,6 +68,51 @@ bin/kiln_cms rpc 'Code.eval_file("priv/repo/acupuncture_import.exs", ["/path/to/
 
 See [`projects/acupuncture/README.md`](projects/acupuncture/README.md) for
 what each script does and the Sanity → Kiln field mapping.
+
+## Semantic search
+
+Enabled (`semantic: true` in `config/project.exs`) for the editor's
+similar-content / near-duplicate / suggested-tag panels. Two halves, both
+required:
+
+- **`KILN_ML=1` build arg** — compiles in Bumblebee/Nx. Passed by
+  `deploy-kiln.yml`; a bare `docker build kiln/` omits it.
+- **`semantic: true`** — compile-time config in `config/project.exs` (there is
+  no env var; setting `KILN_ML` on the Coolify resource does nothing).
+
+EXLA is kept out of prod builds upstream, so embeddings run on
+`Nx.BinaryBackend` (slow, CPU-only). They are computed by Oban jobs on save,
+so this only delays the panels, never an editor save. The model downloads from
+Hugging Face into `BUMBLEBEE_CACHE_DIR` (`/app/.cache/bumblebee`) on boot;
+mount a Coolify volume there to avoid re-downloading on every deploy.
+
+**Backfill** — once after first enabling, and again after changing the model.
+New and edited content embeds itself; this covers everything that existed
+before. The release has no `mix`, so this is `mix kiln.embed_all` inlined for
+`rpc` (runs in the live node, where Oban is up):
+
+```bash
+bin/kiln_cms rpc '
+alias KilnCMS.CMS
+orgs = KilnCMS.Accounts.list_org_ids()
+opts = fn org -> [authorize?: false, tenant: org, query: [select: [:id, :org_id]]] end
+
+content =
+  for {res, list} <- [{KilnCMS.CMS.Page, &CMS.list_pages!/1}, {KilnCMS.CMS.Post, &CMS.list_posts!/1}, {KilnCMS.CMS.Entry, &CMS.list_entries!/1}],
+      org <- orgs, r <- list.(opts.(org)),
+      do: KilnCMS.Search.EmbeddingWorker.new(%{"org_id" => r.org_id, "resource" => to_string(res), "id" => r.id})
+
+tags =
+  for org <- orgs, t <- CMS.list_tags!(opts.(org)),
+      do: KilnCMS.Search.TagEmbeddingWorker.new(%{"org_id" => t.org_id, "tag_id" => t.id})
+
+(content ++ tags) |> Enum.chunk_every(500) |> Enum.each(&Oban.insert_all/1)
+IO.puts("Enqueued #{length(content)} content + #{length(tags)} tag embedding jobs")
+'
+```
+
+Re-check it against `upstream/lib/mix/tasks/kiln.embed_all.ex` when bumping
+the pinned upstream.
 
 ## Local development / running the tests
 
