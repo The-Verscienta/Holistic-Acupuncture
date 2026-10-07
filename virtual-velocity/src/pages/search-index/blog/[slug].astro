@@ -1,0 +1,33 @@
+---
+/**
+ * Build-time shadow of /blog/[slug] (which is SSR). Pagefind and the sitemap
+ * only see prerendered HTML, so this route gives them every post; the sitemap
+ * config and scripts/build-search-index.js map /search-index/blog/* back to
+ * /blog/*, and the latter deletes these files from dist so they never deploy.
+ */
+import BlogPostPage from '../../../components/BlogPostPage.astro';
+import { getAllBlogPosts, getBlogPostBySlug, getRelatedBlogPosts } from '../../../lib/kilnQueries';
+
+export async function getStaticPaths() {
+  const posts = await getAllBlogPosts();
+
+  const fullPosts = await Promise.all(
+    posts.map(async (post) => {
+      const fullPost = await getBlogPostBySlug(post.slug.current);
+      const relatedPosts = fullPost
+        ? await getRelatedBlogPosts(post.slug.current, fullPost.category, 3)
+        : [];
+      return {
+        params: { slug: post.slug.current },
+        props: { post: fullPost, relatedPosts },
+      };
+    })
+  );
+
+  return fullPosts.filter((p) => p.props.post);
+}
+
+const { post, relatedPosts } = Astro.props;
+---
+
+<BlogPostPage post={post!} relatedPosts={relatedPosts} />

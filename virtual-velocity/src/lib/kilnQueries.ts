@@ -31,6 +31,18 @@ function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
   return data;
 }
 
+// Drops a cached list older than MIN_REFRESH_MS so the next read refetches.
+// Lets an SSR detail page find a record published after its isolate cached
+// the list, while bounding refetches when bots probe nonexistent slugs.
+const MIN_REFRESH_MS = 30 * 1000;
+
+function expireIfStale(key: string): boolean {
+  const hit = listCache.get(key);
+  if (!hit || Date.now() - hit.at < MIN_REFRESH_MS) return false;
+  listCache.delete(key);
+  return true;
+}
+
 function image(resource: JsonApiResource | null, fallbackAlt = ''): ContentImage | undefined {
   if (!resource?.attributes?.url) return undefined;
   return {
@@ -109,8 +121,12 @@ export async function getFeaturedBlogPosts(limit = 3, baseUrl?: string): Promise
 }
 
 export async function getBlogPostBySlug(slug: string, baseUrl?: string): Promise<BlogPost | null> {
-  const posts = await getAllBlogPosts(baseUrl);
-  const post = posts.find((p) => p.slug.current === slug);
+  const findIn = (posts: BlogPost[]) => posts.find((p) => p.slug.current === slug);
+  let post = findIn(await getAllBlogPosts(baseUrl));
+  // A post published after this isolate cached the list: refetch once
+  if (!post && expireIfStale(`posts:${baseUrl || ''}`)) {
+    post = findIn(await getAllBlogPosts(baseUrl));
+  }
   if (!post) return null;
   const artifact = await kilnArtifact('post', slug, baseUrl);
   if (!artifact) return post;
