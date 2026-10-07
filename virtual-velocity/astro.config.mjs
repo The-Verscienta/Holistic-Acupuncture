@@ -18,7 +18,16 @@ try {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://holisticacupuncture.net',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // Blog posts are SSR; their prerendered shadow copies (see
+      // src/pages/search-index/blog/[slug].astro) stand in at the real URL.
+      serialize(item) {
+        item.url = item.url.replace('/search-index/blog/', '/blog/');
+        return item;
+      },
+    }),
+  ],
   output: 'static', // Static by default, use prerender = false for SSR routes
   adapter: cloudflare
     ? cloudflare({
