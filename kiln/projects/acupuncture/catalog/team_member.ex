@@ -9,6 +9,5 @@ defmodule Acupuncture.Catalog.TeamMember do
   use KilnCMS.CMS.Content,
     type: :team_member,
     domain: Acupuncture.Catalog,
-    excerpt?: true,
-    published?: true
+    excerpt?: true
 end

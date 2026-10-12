@@ -9,6 +9,5 @@ defmodule Acupuncture.Catalog.Testimonial do
   use KilnCMS.CMS.Content,
     type: :testimonial,
     domain: Acupuncture.Catalog,
-    excerpt?: true,
-    published?: true
+    excerpt?: true
 end

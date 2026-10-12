@@ -20,20 +20,33 @@
 # the arg produces a lean image that boots with semantic search inert. Diff against `upstream/Dockerfile`
 # when bumping the pinned ref; these ARGs are expected to match it exactly
 # (same hexpm/elixir tag pieces).
-ARG ELIXIR_VERSION=1.19.5
-ARG OTP_VERSION=27.3.4.15
-ARG DEBIAN_VERSION=bookworm-20260713-slim
-ARG RUNNER_DEBIAN_VERSION=trixie-20260713-slim
+ARG ELIXIR_VERSION=1.20.4
+ARG OTP_VERSION=29.1.1
+ARG DEBIAN_VERSION=bookworm-20261005-slim
+# Node builds the assets. Since kiln_cms v1.2.0 upstream copies the binary from
+# the official node image instead of Debian's `apt install nodejs` (Node 18 on
+# bookworm); the `node` stage's codename must match the builder's (bookworm).
+ARG NODE_VERSION=22.23.3
+ARG RUNNER_DEBIAN_VERSION=trixie-20261005-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${RUNNER_DEBIAN_VERSION}"
+
+FROM node:${NODE_VERSION}-bookworm-slim AS node
 
 # ---- Build stage ----
 FROM ${BUILDER_IMAGE} AS builder
 
 RUN apt-get update -y \
-  && apt-get install -y build-essential git libvips-dev nodejs npm \
+  && apt-get install -y build-essential git libvips-dev \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# npm's bin is a symlink in the node image, which COPY would flatten, so it is
+# relinked here (same as upstream/Dockerfile).
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+  && node --version && npm --version
 
 WORKDIR /app
 
@@ -166,8 +179,10 @@ ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 WORKDIR /app
 # /var/backups/kiln is the default BACKUP_DIR (upstream config/runtime.exs);
 # owning it here means a fresh named volume mounted there inherits `nobody`
-# and the in-app Backups page can write without a manual chown.
-RUN mkdir -p /var/backups/kiln && chown nobody /app /var/backups/kiln
+# and the in-app Backups page can write without a manual chown. /app/media is
+# the KILN_MEDIA_ROOT upstream's one-click templates mount (v1.0, #1529),
+# owned for the same reason; unset, media stays in priv/uploads.
+RUN mkdir -p /var/backups/kiln /app/media && chown nobody /app /var/backups/kiln /app/media
 
 ENV MIX_ENV="prod"
 
