@@ -9,6 +9,5 @@ defmodule Acupuncture.Catalog.Condition do
   use KilnCMS.CMS.Content,
     type: :condition,
     domain: Acupuncture.Catalog,
-    excerpt?: true,
-    published?: true
+    excerpt?: true
 end

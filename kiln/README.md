@@ -117,8 +117,9 @@ the pinned upstream.
 ## Local development / running the tests
 
 Assemble a working tree that mimics what the Dockerfile builds (upstream +
-overlay), then run kiln's usual mix workflow. Needs **Elixir 1.19+** — upstream
-declares `elixir: "~> 1.19"`, so an older toolchain stops at `mix deps.get`:
+overlay), then run kiln's usual mix workflow. Needs **Elixir 1.20 / OTP 29**
+(upstream pins 1.20.4 / OTP 29.1.1 in `upstream/.tool-versions` and declares
+`elixir: "~> 1.20"`), so an older toolchain stops at `mix deps.get`:
 
 ```bash
 ./dev-assemble.sh /tmp/kiln-acupuncture   # copies upstream + overlays this dir
@@ -140,7 +141,11 @@ upstream's `CHANGELOG.md` (or the GitHub release) first.
      `config/config.exs` (ours must be *core list + `Acupuncture.Catalog`*).
      `:plugins` and `:content_domains` replace the core list the same way.
    - `Dockerfile` — diff the builder and runtime stages against
-     `upstream/Dockerfile` for changed build steps; the ARG pins must match.
+     `upstream/Dockerfile` for changed build steps; the ARG pins (Elixir, OTP,
+     Debian dates, `NODE_VERSION`) must match `upstream/.tool-versions`.
+   - `projects/acupuncture/` — act on every **Breaking** entry too, not just
+     the upgrade notes (1.0 removed the `published?:` option on
+     `use KilnCMS.CMS.Content`; an unknown option warns now and errors in 2.0).
 3. Regenerate the overlay's schema. A core minor may add columns to *our*
    tables (the `KilnCMS.CMS.Content` macro contributes attributes to every
    overlay resource, and the core's codegen can't see our `priv/`) — this is
@@ -160,7 +165,7 @@ upstream's `CHANGELOG.md` (or the GitHub release) first.
 4. Commit the submodule pointer together with the re-sync and the new
    migration in one commit; `deploy-kiln.yml` builds it on merge.
 
-Without a local Elixir 1.19 toolchain, step 3's commands run inside the
+Without a local Elixir 1.20 toolchain, step 3's commands run inside the
 image's builder stage:
 
 ```bash

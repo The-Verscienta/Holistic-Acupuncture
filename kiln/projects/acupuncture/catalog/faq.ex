@@ -8,6 +8,5 @@ defmodule Acupuncture.Catalog.Faq do
   """
   use KilnCMS.CMS.Content,
     type: :faq,
-    domain: Acupuncture.Catalog,
-    published?: true
+    domain: Acupuncture.Catalog
 end
