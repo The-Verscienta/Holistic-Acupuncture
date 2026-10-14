@@ -15,6 +15,7 @@ mirroring the pattern established by
 | --- | --- |
 | `projects/acupuncture/` | The acupuncture subproject: `Acupuncture.Catalog` Ash domain (condition, team member, testimonial, faq), the one-time Sanity import scripts. Extracted from kiln_cms (originally landed there in kiln_cms#439/#441; previously built in-tree via kiln_cms's `PROJECT=acupuncture`/`PROJECT=example` build arg until kiln_cms#1230 renamed that in-tree demo away from the business it was actually serving). |
 | `config/project.exs` | Registers `Acupuncture.Catalog` in `ash_domains`/`content_domains`. Upstream's `config/config.exs` imports it (when present) as its final step, so the domain is wired into the admin, importer, GraphQL and JSON:API surfaces with zero core edits. |
+| `config/project_deps.exs`, `config/project.lock` | The overlay's own Mix dependencies (kiln_cms #1967): currently [`kiln_cloudflare_images`](https://github.com/The-Verscienta/kiln_cloudflare_images), which sends new image uploads to Cloudflare Images. While `project_deps.exs` exists Mix locks into `project.lock` (core `mix.lock` + our deps) instead of `mix.lock`. See [Cloudflare Images](#cloudflare-images). |
 | `priv/repo/migrations/`, `priv/resource_snapshots/` | Ash migrations + snapshots for the four acupuncture content types. Kept downstream so upstream kiln_cms ships zero acupuncture schema; overlaid onto upstream's `priv/` at build time. |
 | `priv/repo/acupuncture_field_definitions.exs`, `priv/repo/acupuncture_import.exs` | The one-time Sanity migration — see [`projects/acupuncture/README.md`](projects/acupuncture/README.md). |
 | `Dockerfile` | Multi-stage release build: upstream sources + overlay. Mirrors upstream's own Dockerfile (same builder args, libvips runtime). Defaults to upstream's lean tree (`KILN_ML` unset); CI builds with `KILN_ML=1` for semantic search — see [Semantic search](#semantic-search). |
@@ -68,6 +69,37 @@ bin/kiln_cms rpc 'Code.eval_file("priv/repo/acupuncture_import.exs", ["/path/to/
 
 See [`projects/acupuncture/README.md`](projects/acupuncture/README.md) for
 what each script does and the Sanity → Kiln field mapping.
+
+## Cloudflare Images
+
+New image uploads go to Cloudflare Images through the `kiln_cloudflare_images`
+plugin (registered and selected as `:image_backend` in `config/project.exs`),
+so they get `imagedelivery.net` URLs like the migrated library. It needs
+three runtime env vars on the Coolify service — until all three are set the
+backend reports itself unconfigured and uploads stay on local disk
+(`/uploads/…`):
+
+| Variable | |
+| --- | --- |
+| `CLOUDFLARE_ACCOUNT_ID` | |
+| `CLOUDFLARE_IMAGES_TOKEN` | API token with **Cloudflare Images: Edit** |
+| `CLOUDFLARE_IMAGES_ACCOUNT_HASH` | `t5tnnNBoCpmnml-JZw7JMA` (the hash in the existing delivery URLs) |
+
+Flexible variants must be on (Cloudflare dashboard → Images → Delivery), or
+set `CLOUDFLARE_IMAGES_FLEXIBLE_VARIANTS=false`. **System → Image backend**
+(`/editor/system/image-backend`) shows whether it's receiving uploads and
+whether the token works. To hand the backend the migrated `imagedelivery.net`
+rows so Kiln manages their variants/deletion too:
+
+```bash
+# In the running container (a release has no mix tasks; this is what
+# `mix kiln.media.adopt_image_backend [--dry-run]` calls):
+bin/kiln_cms rpc 'IO.inspect(KilnCMS.Media.Adoption.run(KilnCMS.Accounts.default_org_id(), dry_run?: true))'
+bin/kiln_cms rpc 'IO.inspect(KilnCMS.Media.Adoption.run(KilnCMS.Accounts.default_org_id()))'
+```
+
+Images uploaded before the backend was configured stay on local disk; re-upload
+one to move it.
 
 ## Semantic search
 
@@ -137,6 +169,9 @@ upstream's `CHANGELOG.md` (or the GitHub release) first.
 
 1. `cd kiln/upstream && git fetch --tags && git checkout <new-tag>`
 2. Diff the things the overlay duplicates against upstream:
+   - `config/project.lock` — regenerate it after the bump (delete it, then
+     `mix deps.get` in the builder stage and `docker cp` it out); it must be
+     the new core `mix.lock` plus only our `project_deps.exs` entries.
    - `config/project.exs` — re-sync the `ash_domains` list with upstream
      `config/config.exs` (ours must be *core list + `Acupuncture.Catalog`*).
      `:plugins` and `:content_domains` replace the core list the same way.
