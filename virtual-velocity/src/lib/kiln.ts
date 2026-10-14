@@ -32,6 +32,18 @@ export function kilnBaseUrl(override?: string): string {
   return withScheme.replace(/\/$/, '');
 }
 
+/**
+ * Media uploaded through Kiln's local storage adapter comes back as a
+ * root-relative path ("/uploads/<id>.jpg") served by the Kiln host itself.
+ * Left as-is, the browser requests it from the site's origin and 404s, so
+ * anchor it to the Kiln base. Absolute URLs (Cloudflare Images) pass through.
+ */
+function absoluteMediaUrl(url: unknown, base: string): unknown {
+  return typeof url === 'string' && url.startsWith('/') && !url.startsWith('//')
+    ? `${base}${url}`
+    : url;
+}
+
 export interface JsonApiResource {
   id: string;
   type: string;
@@ -76,6 +88,7 @@ export async function kilnList(path: string, options: ListOptions = {}): Promise
     const body: any = await res.json();
     records.push(...(body.data || []));
     for (const inc of body.included || []) {
+      if (inc.attributes?.url) inc.attributes.url = absoluteMediaUrl(inc.attributes.url, base);
       included.set(`${inc.type}:${inc.id}`, inc);
     }
     const next = body.links?.next;
@@ -162,9 +175,16 @@ export async function kilnArtifact(
   slug: string,
   baseUrl?: string
 ): Promise<KilnArtifact | null> {
-  const url = `${kilnBaseUrl(baseUrl)}/api/content/${type}/${encodeURIComponent(slug)}`;
+  const base = kilnBaseUrl(baseUrl);
+  const url = `${base}/api/content/${type}/${encodeURIComponent(slug)}`;
   const res = await fetchWithRetry(url);
-  if (res.ok) return (await res.json()) as KilnArtifact;
+  if (res.ok) {
+    const artifact = (await res.json()) as KilnArtifact;
+    for (const block of artifact.blocks || []) {
+      if (block._type === 'image' && block.url) block.url = absoluteMediaUrl(block.url, base);
+    }
+    return artifact;
+  }
   if (res.status === 404) return null;
   throw new Error(`Kiln artifact ${res.status} for ${url}`);
 }
