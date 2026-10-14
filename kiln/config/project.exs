@@ -63,10 +63,18 @@ config :kiln_cms, :csp_img_src, ["https://imagedelivery.net"]
 # In test, the core's test.exs registers KilnCMS.FixturePlugin — this file is
 # imported after it and replaces the list, so restate the fixture plugin too.
 if config_env() == :test do
-  config :kiln_cms, :plugins, [KilnCMS.FixturePlugin, Acupuncture.Plugin]
+  config :kiln_cms, :plugins, [KilnCMS.FixturePlugin, Acupuncture.Plugin, KilnCloudflareImages.Plugin]
 else
-  config :kiln_cms, :plugins, [Acupuncture.Plugin]
+  config :kiln_cms, :plugins, [Acupuncture.Plugin, KilnCloudflareImages.Plugin]
 end
+
+# New image uploads go to Cloudflare Images (kiln_cloudflare_images, a
+# dependency in config/project_deps.exs), matching the imagedelivery.net URLs
+# the migrated library already uses. Until CLOUDFLARE_ACCOUNT_ID,
+# CLOUDFLARE_IMAGES_TOKEN and CLOUDFLARE_IMAGES_ACCOUNT_HASH are set at
+# runtime the backend reports itself unconfigured and uploads stay local;
+# System → Image backend shows which state it's in.
+config :kiln_cms, :image_backend, KilnCloudflareImages.Backend
 
 # Semantic search: similar-content / near-duplicate / suggested-tag panels in
 # the editor, plus the semantic leg of hybrid search. Compile-time config with

@@ -61,9 +61,18 @@ ENV KILN_ML=${KILN_ML}
 
 COPY upstream/mix.exs upstream/mix.lock ./
 # upstream mix.exs requires config/ml_flag.exs (which requires
-# strict_test_flag.exs) to decide its dep list, so both must be in place
-# before the first `mix` command that loads the project.
-COPY upstream/config/ml_flag.exs upstream/config/strict_test_flag.exs config/
+# strict_test_flag.exs) to decide its dep list, and config/project_deps_hook.exs
+# (v1.4.0, #1967) to append the overlay's own dependencies, so all three must
+# be in place before the first `mix` command that loads the project.
+COPY upstream/config/ml_flag.exs upstream/config/strict_test_flag.exs \
+  upstream/config/project_deps_hook.exs config/
+# The overlay's dependency list (kiln_cloudflare_images) and its lock. While
+# project_deps.exs exists Mix locks into config/project.lock, not mix.lock.
+# The bracket glob keeps the lock optional so a fresh pin can generate it.
+COPY config/project_deps.exs config/project.loc[k] config/
+# The plugin SDK is a `path:` dependency of the core (#1909), so deps.get
+# needs its source (upstream's Dockerfile copies just the package too).
+COPY upstream/sdk/kiln_plugin sdk/kiln_plugin
 RUN mix deps.get --only $MIX_ENV
 
 COPY upstream/config/config.exs upstream/config/${MIX_ENV}.exs config/
