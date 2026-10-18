@@ -64,8 +64,8 @@ const BLOG_REDIRECTS = {
   'what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee': '/blog/what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee',
   'stevia-faq-questions-and-answers-about-stevia-sweeteners': '/blog/stevia-faq-questions-and-answers-about-stevia-sweeteners',
   'acupuncture-for-winter-immunity-boosting-defenses-against-colds': '/blog/acupuncture-for-winter-immunity-boosting-defenses-against-colds',
-  // Post not migrated to the new site — send to the blog index rather than a dead /blog/ target.
-  'seasonal-affective-disorder-tdp-lamps': '/blog',
+  // Post not migrated — its SAD half lives on as a standalone post (TDP half: what-is-a-tdp-lamp-and-how-does-it-work).
+  'seasonal-affective-disorder-tdp-lamps': '/blog/seasonal-affective-disorder-and-chinese-medicine',
   'using-acupuncture-to-overcome-stress-overwhelm-and-anxiety': '/blog/using-acupuncture-to-overcome-stress-overwhelm-and-anxiety',
   'acupuncture-for-fertility': '/blog/acupuncture-for-fertility',
   '5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin': '/blog/5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin',

@@ -162,7 +162,7 @@ const STATIC_REDIRECTS = `\
 /what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee /blog/what-the-chinese-lunar-new-year-means-to-you-and-your-health-in-milwaukee 301
 /stevia-faq-questions-and-answers-about-stevia-sweeteners /blog/stevia-faq-questions-and-answers-about-stevia-sweeteners 301
 /acupuncture-for-winter-immunity-boosting-defenses-against-colds /blog/acupuncture-for-winter-immunity-boosting-defenses-against-colds 301
-/seasonal-affective-disorder-tdp-lamps /blog/seasonal-affective-disorder-tdp-lamps 301
+/seasonal-affective-disorder-tdp-lamps /blog/seasonal-affective-disorder-and-chinese-medicine 301
 /using-acupuncture-to-overcome-stress-overwhelm-and-anxiety /blog/using-acupuncture-to-overcome-stress-overwhelm-and-anxiety 301
 /acupuncture-for-fertility /blog/acupuncture-for-fertility 301
 /5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin /blog/5-common-myths-about-acupuncture-debunked-milwaukee-wisconsin 301

@@ -91,7 +91,7 @@ const REDIRECTS = {
   // -------------------------------------------------------------------------
   // sleep/* sub-paths
   // -------------------------------------------------------------------------
-  'sleep/sleep-2':                       '/conditions/#mental-health',
+  'sleep/sleep-2':                       '/conditions/insomnia/',
 
   // -------------------------------------------------------------------------
   // Blog post attachment/sub-path pages → parent blog post
@@ -204,8 +204,8 @@ const REDIRECTS = {
   'four-golden-rules-of-acupuncture/4-pillars':          '/blog/four-golden-rules-of-acupuncture/',
   'acupuncture-for-stomach-issues/photo-by-julien-tromeur': '/blog/acupuncture-for-stomach-issues/',
   'chinese-new-year/basic-rgb':                          '/blog/chinese-new-year/',
+  'seasonal-affective-disorder-tdp-lamps/photo-by-dev-asangbam': '/blog/seasonal-affective-disorder-and-chinese-medicine/',
   // Parent posts not migrated → blog index.
-  'seasonal-affective-disorder-tdp-lamps/photo-by-dev-asangbam': '/blog/',
   'the-digital-stagnation-healing-tech-neck-with-east-asian-medicine/photo-by-stormseeker': '/blog/',
   'acupuncture-for-back-pain-milwaukees-natural-alternative/photo-by-sasun-bughdaryan': '/blog/why-milwaukee-residents-are-choosing-acupuncture-for-back-pain-relief/',
 
@@ -233,6 +233,15 @@ const REDIRECTS = {
   // --- Stale /blog/-prefixed URLs (broken internal links, now fixed at source) ---
   'blog/acupuncture-for-chronic-pain':                   '/blog/how-acupuncture-helps-with-chronic-pain-relief-in-milwaukee/',
   'blog/spring-':                                        '/blog/spring-cleansing/',
+  'blog/first-acupuncture-visit':                        '/blog/first-time-acupuncture-in-milwaukee-wisconsin-heres-what-to-expect/',
+  'blog/acupuncture-for-stress-anxiety':                 '/blog/using-acupuncture-to-overcome-stress-overwhelm-and-anxiety/',
+
+  // --- Old URLs with no 1:1 successor (Cloudflare crawl, 2026-09) ---
+  // No chronic-pain condition page exists → pain category on the conditions index.
+  'conditions/chronic-pain':                             '/conditions/#pain',
+  'current-specials':                                    '/services/',
+  // Post not migrated → closest existing article on emotions in Chinese medicine.
+  'brain-chemistry-and-emotion':                         '/blog/oriental-medicine-and-your-emotions-2/',
 };
 
 function buildHtml(dest) {
