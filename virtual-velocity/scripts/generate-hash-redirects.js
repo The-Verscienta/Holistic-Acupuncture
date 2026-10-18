@@ -18,12 +18,13 @@ const publicDir = join(__dirname, '..', 'public');
 
 // Map of old slug → destination URL (with or without hash)
 const REDIRECTS = {
+  // /sleep has a 1:1 successor now: the insomnia condition page.
+  'sleep':                                               '/conditions/insomnia/',
   // NOTE: slugs that ARE condition pages (headaches, anxiety, digestion, hormones,
   // sinuses-allergies, neck-pain, low-energy) are intentionally NOT listed here.
   // generate-condition-redirects.js sends every condition slug to its individual
   // /conditions/:slug/ page. Only old WordPress URLs WITHOUT a 1:1 condition page
   // belong here — they redirect to the nearest /conditions/#category anchor.
-  'sleep':                                               '/conditions/#mental-health',
   'influenza':                                           '/conditions/#immune',
   'diabetes':                                            '/conditions/#other',
   'irregular-and-painful-menstruation':                  '/conditions/#womens-health',
