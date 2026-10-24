@@ -50,6 +50,18 @@ RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
 
 WORKDIR /app
 
+# Lift `:httpc`'s response-header limit for the build only (kiln_cms v1.5.1,
+# #2062). OTP 29.1.1's `:httpc` caps response headers at 10240 bytes, and
+# GitHub's release-download redirects now send ~10.7 KB, so tailwind and the
+# precompiled NIFs (y_ex, lazy_html, vix) fail with `header_too_long`. The
+# escript rebuilds `httpc` with the default set to `nolimit`; the stock beam
+# is restored before `mix release` below. See upstream/Dockerfile.
+COPY upstream/rel/docker/httpc_header_limit.escript /opt/httpc_header_limit.escript
+RUN set -eu; \
+  beam="$(erl -noshell -eval 'io:format("~s", [code:which(httpc)]), halt().')"; \
+  mkdir -p /opt/httpc-stock && cp "$beam" /opt/httpc-stock/httpc.beam; \
+  escript /opt/httpc_header_limit.escript
+
 RUN mix local.hex --force && mix local.rebar --force
 
 ENV MIX_ENV="prod"
@@ -133,6 +145,13 @@ COPY upstream/rel rel
 # frames in error reports. Must run after `lib` is present and before the
 # release is assembled.
 RUN mix sentry.package_source_code
+
+# Put back the stock `httpc` patched in above: nothing downloads from here
+# on, and the release copies OTP's apps into the image.
+RUN set -eu; \
+  beam="$(erl -noshell -eval 'io:format("~s", [code:which(httpc)]), halt().')"; \
+  cp /opt/httpc-stock/httpc.beam "$beam"; \
+  rm -rf /opt/httpc-stock /opt/httpc_header_limit.escript
 
 RUN mix release
 
