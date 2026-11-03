@@ -15,7 +15,7 @@ Holiday detection runs client-side using the visitor's local clock, via a synchr
 | Holiday | Window | Date logic |
 |---------|--------|------------|
 | Christmas | Dec 11 – Jan 1 | Explicit date range (year-boundary safe) |
-| Halloween | Oct 27 – Nov 4 | ±4 days around Oct 31 |
+| Halloween | Oct 24 – Oct 31 | week leading up to Oct 31 |
 | 4th of July | Jun 27 – Jul 11 | ±7 days around Jul 4 |
 | St. Patrick's Day | Mar 10 – Mar 24 | ±7 days around Mar 17 |
 | Valentine's Day | Feb 7 – Feb 21 | ±7 days around Feb 14 |
@@ -26,7 +26,7 @@ Holiday detection runs client-side using the visitor's local clock, via a synchr
 **Overlap rule (priority order, highest first):**
 Christmas → Halloween → Chinese New Year → Valentine's Day → St. Patrick's Day → 4th of July → MLK Day → Veterans Day
 
-- Halloween (Oct 27–Nov 4) and Veterans Day (Nov 4–Nov 18) overlap on Nov 4 only; Halloween takes priority via detection order.
+- Halloween (Oct 24–31) and Veterans Day (Nov 4–Nov 18) do not overlap.
 - MLK Day (earliest start: Jan 12 — the 3rd Monday is Jan 15 at earliest, minus 3 days) never overlaps Christmas (ends Jan 1).
 - Years outside the Chinese New Year lookup table silently produce no CNY theming — acceptable.
 - Detection uses the visitor's local clock (client-side `new Date()`). No server-side timezone normalisation is applied.
