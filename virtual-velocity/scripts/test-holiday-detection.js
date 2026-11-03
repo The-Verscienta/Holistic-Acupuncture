@@ -35,7 +35,7 @@ function detect(y, m, d) {
   if ((m === 12 && d >= 11) || (m === 1 && d === 1)) return 'christmas';
   var mlk  = nthMonday(y, 1, 3);
   var cnyd = cny[y];
-  if (inWindow(y,m,d, y,10,31, 4))                          return 'halloween';
+  if (m === 10 && d >= 24)                                  return 'halloween';
   if (cnyd && inWindow(y,m,d, y,cnyd[0],cnyd[1], 3))        return 'chinese-new-year';
   if (inWindow(y,m,d, y,2,14,  7))                          return 'valentines';
   if (inWindow(y,m,d, y,3,17,  7))                          return 'st-patricks';
@@ -78,20 +78,16 @@ expect('Jan 2  = null',       detect(2026, 1,  2),  null);
 expect('Dec 10 = null',       detect(2025, 12, 10), null);
 
 // ── Halloween ────────────────────────────────────────────────────────────────
-console.log('\nHalloween (Oct 27 – Nov 4):');
-expect('Oct 27 = halloween',  detect(2025, 10, 27), 'halloween');
+console.log('\nHalloween (Oct 24 – Oct 31):');
+expect('Oct 24 = halloween',  detect(2025, 10, 24), 'halloween');
 expect('Oct 31 = halloween',  detect(2025, 10, 31), 'halloween');
-expect('Nov 4  = halloween',  detect(2025, 11, 4),  'halloween');
-expect('Oct 26 = null',       detect(2025, 10, 26), null);
-expect('Nov 26 = null',       detect(2025, 11, 26), null);
+expect('Oct 23 = null',       detect(2025, 10, 23), null);
+expect('Nov 1  = null',       detect(2025, 11, 1),  null);
+expect('Nov 3  = null',       detect(2026, 11, 3),  null);
 
 // ── Veterans Day ─────────────────────────────────────────────────────────────
 console.log('\nVeterans Day (Nov 4 – Nov 18):');
-// Halloween window: Oct 31 ±4 days = Oct 27–Nov 4 (inclusive)
-// Veterans Day window: Nov 11 ±7 days = Nov 4–Nov 18 (inclusive)
-// Both include Nov 4 — Halloween takes priority because it is checked first in detect()
-expect('Nov 4  = halloween (priority over veterans)', detect(2025, 11, 4),  'halloween');
-expect('Nov 5  = veterans',  detect(2025, 11, 5),  'veterans');
+expect('Nov 4  = veterans',  detect(2025, 11, 4),  'veterans');
 expect('Nov 11 = veterans',  detect(2025, 11, 11), 'veterans');
 expect('Nov 18 = veterans',  detect(2025, 11, 18), 'veterans');
 expect('Nov 19 = null',      detect(2025, 11, 19), null);

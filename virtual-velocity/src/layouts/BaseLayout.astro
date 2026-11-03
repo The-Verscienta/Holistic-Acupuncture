@@ -92,8 +92,11 @@ const twitterHandle = SOCIAL.twitter;
         var mlk  = nthMonday(y, 1, 3);
         var cnyd = cny[y];
 
-        // Priority order (highest first after Christmas):
-        if (inWindow(y, m, d, y, 10, 31, 4))                      return 'halloween';
+        // Halloween window: Oct 24 – Oct 31 (week leading up, ends on the day —
+        // decorations shouldn't linger into November).
+        if (m === 10 && d >= 24)                                  return 'halloween';
+
+        // Priority order (highest first after Christmas/Halloween):
         if (cnyd && inWindow(y, m, d, y, cnyd[0], cnyd[1], 3))    return 'chinese-new-year';
         if (inWindow(y, m, d, y, 2,  14, 7))                      return 'valentines';
         if (inWindow(y, m, d, y, 3,  17, 7))                      return 'st-patricks';
