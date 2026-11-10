@@ -7,48 +7,63 @@
      narrow and caused the nav to overlap the logo. */
   --breakpoint-3xl: 1620px;
 
-  /* Color System - Wellness Palette 2026 */
-  --color-sage-50: #f6f7f3;
-  --color-sage-100: #e8ebe3;
-  --color-sage-200: #d4dac9;
-  --color-sage-300: #b8c4a6;
-  --color-sage-500: #7a9063;
-  --color-sage-600: #657a52;
-  --color-sage-700: #4f5f40;
+  /* Brand tokens — clinic style guide v2.4 (§03 Color, §15 CSS Variables) */
+  --color-teal: #4a8578;      /* labels, large text & UI only (4.3:1) */
+  --color-teal-dk: #1d5a54;   /* headlines, primary buttons (7.95:1) */
+  --color-teal-lt: rgba(74, 133, 120, 0.15);
+  --color-red: #b84035;       /* terra cotta: eyebrows, italics, links (5.5:1) */
+  --color-red-lt: #d4574a;    /* hover states, soft accents */
+  --color-gold: #c9a96e;      /* ornament only — never text */
+  --color-paper: #ffffff;     /* page background */
+  --color-paper2: #fafaf7;    /* subtle section fills */
+  --color-paper3: #f4f2ec;    /* masthead, callout fills */
+  --color-ink: #2a2a2a;       /* body copy */
+  --color-muted: #5c5c5c;     /* secondary text, captions */
+  --color-rule: rgba(74, 133, 120, 0.18);
 
-  --color-earth-orange: #d8915b;
-  --color-earth-terracotta: #c17557;
-  --color-healing-blue: #5b8a9f;
+  /* Legacy names, remapped onto the brand palette so existing markup
+     reskins in place. New code should use the brand names above. */
+  --color-sage-50: #f4f2ec;   /* → paper3 fill */
+  --color-sage-100: #e4edeb;  /* teal tint (light text on teal-dk) */
+  --color-sage-200: #c9dad5;
+  --color-sage-300: #a5c2ba;  /* borders */
+  --color-sage-500: #4a8578;  /* → teal */
+  --color-sage-600: #1d5a54;  /* → teal-dk (primary) */
+  --color-sage-700: #164843;  /* teal-dk, one step darker (hover, dark text) */
 
-  /* TCM Red - from logo pagoda */
-  --color-tcm-red: #c06050;
-  --color-tcm-red-dark: #a54d40;
-  --color-tcm-red-light: #d4786a;
+  --color-earth-orange: #b84035;     /* → red */
+  --color-earth-terracotta: #d4574a; /* → red-lt */
+  --color-healing-blue: #4a8578;     /* → teal */
 
-  --color-warm-white: #fafaf8;
-  --color-charcoal: #2d3436;
-  --color-gray-600: #636e72;
+  --color-tcm-red: #b84035;
+  --color-tcm-red-dark: #9a352c;
+  --color-tcm-red-light: #d4574a;
+
+  --color-warm-white: #ffffff;  /* cream retired — white page */
+  --color-charcoal: #2a2a2a;    /* → ink */
+  --color-gray-600: #5c5c5c;    /* → muted */
   --color-gray-400: #b2bec3;
 
-  --color-success: #6c9a7f;
-  --color-warning: #d89a5b;
-  --color-error: #c17557;
+  --color-success: #4a8578;
+  --color-warning: #b8862e;
+  --color-error: #b84035;
 
-  /* Typography (metrics-matched fallbacks reduce CLS when web fonts load) */
-  --font-sans: Inter, 'Inter-fallback', system-ui, -apple-system, sans-serif;
-  --font-heading: Sora, 'Sora-fallback', system-ui, -apple-system, sans-serif;
-  --font-serif: 'Crimson Pro', Georgia, serif;
+  /* Typography — two typefaces only (§04): Cormorant Garamond for display,
+     Jost for utility/body. */
+  --font-sans: Jost, 'Jost-fallback', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Cormorant Garamond', 'Cormorant-fallback', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', 'Cormorant-fallback', Georgia, serif;
 
   /* Fluid Typography Scale */
   --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
   --font-size-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
-  --font-size-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --font-size-base: 1.125rem; /* 18px screen base (§11) */
   --font-size-lg: clamp(1.125rem, 1.05rem + 0.375vw, 1.375rem);
   --font-size-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.625rem);
   --font-size-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
-  --font-size-3xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.625rem);
+  --font-size-3xl: clamp(1.6rem, 3.2vw, 2.1rem); /* H2 (§11) */
   --font-size-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3.25rem);
-  --font-size-5xl: clamp(2.75rem, 2.3rem + 2.25vw, 4.25rem);
+  --font-size-5xl: clamp(2.25rem, 5vw, 3.5rem); /* H1 (§11) */
 
   /* Border Radius */
   --radius-sm: 0.375rem;
@@ -56,31 +71,31 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
-  --radius-button: 9999px;
+  --radius-button: 0.25rem;
 
   /* Shadows */
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.06);
 
   /* Animations */
   --animate-fade-up: fadeUp 0.6s ease forwards;
   --animate-fade-in: fadeIn 0.4s ease forwards;
 }
 
-/* Metrics-matched fallbacks: reduce layout shift when Sora/Inter load (font swap) */
+/* Metrics-approximate fallbacks: reduce layout shift while web fonts load */
 @font-face {
-  font-family: 'Sora-fallback';
-  size-adjust: 106.5%;
-  ascent-override: 92%;
-  descent-override: 24%;
-  src: local('Arial');
+  font-family: 'Cormorant-fallback';
+  size-adjust: 92%;
+  ascent-override: 95%;
+  descent-override: 30%;
+  src: local('Georgia');
 }
 @font-face {
-  font-family: 'Inter-fallback';
-  size-adjust: 107%;
-  ascent-override: 90%;
-  descent-override: 22.5%;
+  font-family: 'Jost-fallback';
+  size-adjust: 98%;
+  ascent-override: 106%;
+  descent-override: 37%;
   src: local('Arial');
 }
 
@@ -97,17 +112,18 @@ body {
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
   line-height: 1.7;
-  color: var(--color-charcoal);
-  background-color: var(--color-warm-white);
+  font-weight: 400;
+  color: var(--color-ink);
+  background-color: var(--color-paper);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
-  color: var(--color-charcoal);
+  color: var(--color-teal-dk);
 }
 
 #footer h1, #footer h2, #footer h3, #footer h4, #footer h5, #footer h6 {
@@ -116,29 +132,29 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: var(--font-size-5xl);
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
 
 h2 {
   font-size: var(--font-size-3xl);
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 h3 {
   font-size: var(--font-size-2xl);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 h4 {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* Focus Styles for Accessibility */
 *:focus-visible {
-  outline: 2px solid var(--color-sage-600);
+  outline: 2px solid var(--color-red);
   outline-offset: 2px;
 }
 
@@ -199,12 +215,56 @@ h4 {
   }
 }
 
-/* Subtle section gradients — section elements only, cards/modals stay flat */
+/* White page, paper tones only as fills (§01.v) — the old sage gradients
+   are neutralised so sections read as plain white / paper2. */
 section.bg-white {
-  background: linear-gradient(to bottom right, var(--color-warm-white), var(--color-sage-50)) !important;
+  background: var(--color-paper) !important;
 }
 section.bg-sage-50 {
-  background: linear-gradient(to bottom right, var(--color-sage-50), var(--color-warm-white)) !important;
+  background: var(--color-paper2) !important;
+}
+
+/* Signature bars (§05, §11): red 40 / teal 60 on top, inverted at the foot */
+.site-top-bar,
+.site-bottom-bar {
+  height: 6px;
+  width: 100%;
+}
+.site-top-bar {
+  background: linear-gradient(90deg, var(--color-red) 0 40%, var(--color-teal) 40% 100%);
+}
+.site-bottom-bar {
+  background: linear-gradient(90deg, var(--color-teal) 0 60%, var(--color-red) 60% 100%);
+}
+
+/* Eyebrow / kicker label (§04, §11) */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+/* Specialized vocabulary: Cormorant italic, terra cotta, slightly larger */
+.term {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.08em;
+  color: var(--color-red);
+}
+
+/* Body links inside prose stay underlined; teal → terra cotta on hover */
+.prose a,
+article a:not([class]) {
+  color: var(--color-teal-dk);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.prose a:hover,
+article a:not([class]):hover {
+  color: var(--color-red);
 }
 
 /* Deco strip — hidden when empty, shown when JS injects emojis */

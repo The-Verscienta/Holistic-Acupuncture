@@ -85,10 +85,10 @@ const mobileNav: { name: string; href: string }[] = [
         </button>
 
         <!-- Inline Contact + Book CTAs (hidden on smallest screens; hamburger menu still carries them as backup) -->
-        <Button variant="tertiary" size="sm" icon="mail" href="/contact" class="hidden sm:inline-flex flex-shrink-0">
+        <Button variant="tertiary" size="sm" icon="mail" href="/contact" class="max-sm:hidden flex-shrink-0">
           Contact Us
         </Button>
-        <Button variant="primary" size="sm" icon="calendar" href={BOOK_PATH} class="hidden sm:inline-flex flex-shrink-0">
+        <Button variant="primary" size="sm" icon="calendar" href={BOOK_PATH} class="max-sm:hidden flex-shrink-0">
           <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
         </Button>
 

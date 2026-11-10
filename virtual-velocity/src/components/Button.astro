@@ -30,14 +30,15 @@ const {
 } = Astro.props;
 
 // Base styles
-const baseStyles = 'inline-flex items-center justify-center gap-3 font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+const baseStyles = 'inline-flex items-center justify-center gap-3 min-h-11 font-medium tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red focus-visible:ring-offset-2';
 
 // Variant styles
 const variantStyles = {
-  primary: 'bg-sage-600 text-white hover:bg-sage-700 hover:scale-105 shadow-lg hover:shadow-xl focus:ring-sage-500 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100',
-  secondary: 'bg-earth-orange text-white hover:bg-earth-terracotta hover:scale-105 shadow-lg hover:shadow-xl focus:ring-earth-orange disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:scale-100',
-  tertiary: 'bg-white text-sage-700 hover:bg-sage-50 border-2 border-sage-300 hover:border-sage-600 focus:ring-sage-500 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed',
-  outline: 'bg-transparent border-2 border-white text-white hover:bg-white/10 focus:ring-white disabled:border-gray-400 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent',
+  // Style guide §11: primary = solid Teal Dark + white (AAA); secondary = outlined.
+  primary: 'bg-teal-dk text-white hover:bg-sage-700 disabled:bg-gray-400 disabled:cursor-not-allowed',
+  secondary: 'bg-red text-white hover:bg-tcm-red-dark disabled:bg-gray-400 disabled:cursor-not-allowed',
+  tertiary: 'bg-white text-teal-dk border-2 border-teal-dk hover:bg-paper3 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed',
+  outline: 'bg-transparent border-2 border-white text-white hover:bg-white/10 focus-visible:ring-white disabled:border-gray-400 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:bg-transparent',
 };
 
 // Size styles

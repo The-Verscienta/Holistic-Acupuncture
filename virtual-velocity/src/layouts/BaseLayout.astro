@@ -163,7 +163,7 @@ const twitterHandle = SOCIAL.twitter;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#657a52" />
+    <meta name="theme-color" content="#1d5a54" />
 
     <!-- Fonts loaded via Google Fonts (rewritten by Cloudflare Fonts at the edge) -->
     <!-- Preconnect to font origins so the async stylesheet swap is fast -->
@@ -172,14 +172,14 @@ const twitterHandle = SOCIAL.twitter;
     <!-- Non-blocking stylesheet load: print -> onload swap to all -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap"
       />
     </noscript>
 
@@ -200,11 +200,13 @@ const twitterHandle = SOCIAL.twitter;
       Skip to main content
     </a>
 
+    <div class="site-top-bar" aria-hidden="true"></div>
     <Header />
     <main id="main-content" class="flex-1" data-pagefind-body>
       <slot />
     </main>
     <Footer />
+    <div class="site-bottom-bar" aria-hidden="true"></div>
     <CookieConsent />
 
     <!-- GA conversion tracking: fire when a "Book Appointment" link is clicked.
