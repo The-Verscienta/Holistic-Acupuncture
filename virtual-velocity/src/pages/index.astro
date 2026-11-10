@@ -11,6 +11,7 @@ import { BOOK_PATH, REVIEW_STATS, GOOGLE_REVIEWS_URL } from '../lib/config';
 import SectionHeader from '../components/SectionHeader.astro';
 import CTASection from '../components/CTASection.astro';
 import NewPatientSpecial from '../components/NewPatientSpecial.astro';
+import { NEW_PATIENT_FAQS } from '../data/newPatientFaqs';
 
 // Fetch featured testimonials from Sanity
 const testimonials = await getRandomTestimonials(3);
@@ -24,20 +25,7 @@ const conditions = [
   { name: 'Women\'s Health', description: 'Support women\'s health through all life stages with specialized acupuncture care and treatment.', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', anchor: 'womens-health' },
 ];
 
-const faqTeasers = [
-  {
-    question: 'Does acupuncture hurt?',
-    answer: 'Most people feel little to nothing. Acupuncture needles are hair-thin — far finer than the needles used for injections or blood draws. You may notice a slight pinch or a warm, dull sensation, and many patients find treatment deeply relaxing.',
-  },
-  {
-    question: 'How many sessions will I need?',
-    answer: 'It depends on your condition. Acute issues may resolve in 3–5 sessions, while chronic conditions often take 8–12 or more. Many patients notice improvement after just a few visits — we create a personalized plan and adjust it as you progress.',
-  },
-  {
-    question: 'Is acupuncture covered by insurance?',
-    answer: 'Many plans now cover acupuncture, especially for pain management. We do not bill insurance directly, but we are happy to provide a superbill (detailed receipt) that you can submit to your insurance for possible reimbursement. Contact your insurance provider to check your acupuncture benefits.',
-  },
-];
+const faqTeasers = NEW_PATIENT_FAQS.slice(0, 3);
 ---
 
 <BaseLayout
