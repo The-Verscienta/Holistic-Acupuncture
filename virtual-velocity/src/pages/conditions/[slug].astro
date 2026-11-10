@@ -43,20 +43,27 @@ const metaDescription = condition.seo?.metaDescription || `${condition.descripti
 const contentHtml = condition.contentHtml || '';
 const categoryLabel = conditionCategories[condition.category] || condition.category;
 
+// Condition name for use mid-sentence: lowercase ordinary words but keep
+// acronyms (IBS, GERD) and proper names (Bell's) as written.
+const nameInline = condition.name
+  .split(' ')
+  .map((w) => (/^[A-Z]{2,}/.test(w) || /^[A-Z][a-z]*'s$/.test(w) ? w : w.toLowerCase()))
+  .join(' ');
+
 // Generated, condition-specific FAQ (used for both on-page UI and JSON-LD).
 const conditionFaqs = [
   {
-    question: `Can acupuncture help with ${condition.name.toLowerCase()} in Milwaukee?`,
-    answer: `Yes. Our licensed acupuncturists in Glendale, WI regularly treat ${condition.name.toLowerCase()} for patients across the Milwaukee area, using acupuncture and traditional Chinese medicine to address both symptoms and root causes.`,
+    question: `Can acupuncture help with ${nameInline} in Milwaukee?`,
+    answer: `Many patients come to us for ${nameInline}. Our licensed acupuncturists in Glendale, WI look at your whole health picture to find the underlying cause, then build a plan around you. At your first visit we'll talk honestly about whether acupuncture is a good fit.`,
   },
   {
-    question: `How many acupuncture sessions are needed for ${condition.name.toLowerCase()}?`,
+    question: `How many acupuncture sessions are needed for ${nameInline}?`,
     answer: condition.treatmentDuration
       ? `Most patients follow a course of ${condition.treatmentDuration}. We create a personalized plan at your first visit and adjust it based on your progress.`
       : `It varies by individual. Acute issues may improve in 3-6 sessions, while chronic conditions often need 8-12. We create a personalized plan at your first visit.`,
   },
   {
-    question: `Is acupuncture for ${condition.name.toLowerCase()} covered by insurance in Wisconsin?`,
+    question: `Is acupuncture for ${nameInline} covered by insurance in Wisconsin?`,
     answer: `Many Wisconsin insurance plans cover acupuncture, especially for pain-related conditions. We do not bill insurance directly, but we can provide a superbill for you to submit to your insurance for possible reimbursement. Check with your provider about your acupuncture benefits before you book.`,
   },
 ];
@@ -74,7 +81,14 @@ const matching = usable.find((t) => [...keyWords(t.condition)].some((w) => condi
 const fuller = usable.filter((t) => t.quote.length >= 80);
 const pool = fuller.length > 0 ? fuller : usable;
 const slugHash = [...condition.slug.current].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 0);
-const testimonial = matching ?? usable.find((t) => t.featured) ?? pool[slugHash % Math.max(pool.length, 1)];
+// Never fall back to a review tagged with a *different* condition (a back-pain
+// story on the anxiety page reads as a mismatch); use untagged reviews instead.
+const untagged = pool.filter((t) => !t.condition);
+const fallbackPool = untagged.length > 0 ? untagged : pool;
+const testimonial =
+  matching ??
+  fallbackPool.find((t) => t.featured) ??
+  fallbackPool[slugHash % Math.max(fallbackPool.length, 1)];
 
 const conditionFaqSchema = {
   "@context": "https://schema.org",
@@ -132,10 +146,9 @@ const conditionFaqSchema = {
             Why Milwaukee &amp; Glendale Patients Choose Acupuncture for {condition.name}
           </h2>
           <p class="text-gray-700 leading-relaxed mb-4">
-            At Acupuncture &amp; Holistic Health Associates in Glendale, WI, we help patients
-            throughout the Milwaukee area find natural relief from {condition.name.toLowerCase()}.
-            Our licensed acupuncturists combine acupuncture with traditional Chinese medicine to
-            treat the root cause — not just the symptoms.
+            Patients from across the Milwaukee area come to our Glendale clinic for {nameInline}.
+            Our licensed acupuncturists combine acupuncture with East Asian Medicine to look for
+            the underlying cause, not just the symptoms, and shape a plan around you.
           </p>
           <p class="text-gray-700 leading-relaxed">
             We welcome patients from {SERVICE_AREAS.filter((a) => a !== 'Milwaukee').join(', ')} and across greater Milwaukee.
@@ -195,10 +208,10 @@ const conditionFaqSchema = {
   <section class="py-12 md:py-16 bg-sage-50">
     <Container class="text-center">
       <h2 class="text-2xl font-heading font-bold text-charcoal mb-4">
-        Ready to explore treatment for {condition.name}?
+        Considering acupuncture for {nameInline}?
       </h2>
       <p class="text-gray-600 mb-6 max-w-xl mx-auto">
-        New patients get a full consultation and first treatment for just ${NEW_PATIENT_SPECIAL.price}.
+        Your first visit is an unhurried consultation plus your first treatment &mdash; ${NEW_PATIENT_SPECIAL.price} for new patients.
       </p>
       {testimonial && (
         <div class="max-w-2xl mx-auto mb-8 text-left">

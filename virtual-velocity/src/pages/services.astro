@@ -20,14 +20,14 @@ const services = [
   {
     name: 'Initial Consultation & Treatment',
     description: 'Comprehensive health assessment, diagnosis, and your first acupuncture treatment. Includes detailed health history review and personalized treatment plan.',
-    duration: '90-120 minutes',
+    duration: '60-90 minutes',
     price: 350,
     popular: true,
     badgeLabel: 'Most Popular',
     bookOnline: true,
     includes: [
       'Complete health history review',
-      'Traditional Chinese medicine diagnosis',
+      'East Asian Medicine diagnosis',
       {
         label: 'Personalized treatment plan',
         info: 'Your acupuncturist will suggest a series of treatments to see how your body responds to acupuncture.'
@@ -65,7 +65,7 @@ const services = [
   },
   {
     name: 'Herbal Consultation',
-    description: 'Personalized Chinese herbal medicine consultation. Custom formula created based on your specific health needs.',
+    description: 'A personalized consultation for a customized herbal formula, made for your specific health needs.',
     duration: '15 minutes',
     price: 60,
     popular: false,
@@ -121,13 +121,13 @@ const packages = [
         label: 'Personalized treatment plan',
         info: 'Your acupuncturist will suggest a series of treatments to see how your body responds to acupuncture.'
       },
-      'Limited time offer'
+      'New patients, this month'
     ],
     limitations: []
   },
   {
     name: '5-Session Package',
-    description: 'Ideal for acute conditions or those starting their healing journey.',
+    description: 'Ideal for acute conditions or for getting started with a treatment plan.',
     sessions: '5 follow-up sessions',
     price: 410,
     originalPrice: 450,
@@ -140,13 +140,13 @@ const packages = [
       'Valid for 3 months'
     ],
     limitations: [
-      'Re-exams are not included, so progress is not formally charted',
-      'Point prescription stays the same for every session'
+      'Sessions follow your current treatment plan',
+      'Add a re-exam ($100) anytime to chart progress and adjust the plan'
     ]
   },
   {
     name: '10-Session Package',
-    description: 'Best value for chronic conditions requiring ongoing treatment. Best for those whose schedule is always changing.',
+    description: 'Best value for chronic conditions and ongoing care — six months of validity leaves room when your schedule shifts.',
     sessions: '10 follow-up sessions',
     price: 800,
     originalPrice: 900,
@@ -159,8 +159,8 @@ const packages = [
       'Valid for 6 months'
     ],
     limitations: [
-      'Re-exams are not included, so progress is not formally charted',
-      'Point prescription stays the same for every session'
+      'Sessions follow your current treatment plan',
+      'Add a re-exam ($100) anytime to chart progress and adjust the plan'
     ]
   }
 ];
@@ -221,7 +221,7 @@ const startGuide = [
         <div class="aspect-[3/2] rounded-2xl overflow-hidden">
           <CloudflareImage
             imageId="wp-14454"
-            alt="Chinese herbal medicine bottles"
+            alt="Bottles of customized herbal formulas"
             width={600}
             height={400}
             fit="cover"
@@ -590,8 +590,8 @@ const startGuide = [
 
   <!-- CTA Section -->
   <CTASection
-    heading="Ready to Start Your Healing Journey?"
-    description="Book your appointment today and take the first step towards better health."
+    heading="Questions about cost or coverage?"
+    description="Call and we’ll walk you through pricing, packages, and how to use a superbill with your insurance — or book your first visit online."
     primaryButton={{ label: 'Book Appointment', href: BOOK_PATH }}
     secondaryButton={{ label: 'Contact Us', href: '/contact', icon: 'mail', variant: 'outline' }}
   />

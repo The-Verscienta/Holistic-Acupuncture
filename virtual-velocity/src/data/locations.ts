@@ -28,7 +28,7 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Glendale',
     metaTitle: 'Acupuncture in Glendale, WI',
     metaDescription: 'Acupuncture in Glendale, WI — our clinic is right here in your community. Pain, stress, fertility & wellness care from licensed acupuncturists. Book today.',
-    intro: 'Your local acupuncture clinic in Glendale, WI — acupuncture and traditional Chinese medicine for pain, stress, and whole-person wellness.',
+    intro: 'Your local acupuncture clinic in Glendale, WI — acupuncture and East Asian Medicine for pain, stress, and whole-person wellness.',
     driveTime: 'Right here in Glendale',
     localParagraphs: [
       "If you live in Glendale, you don't have to travel for expert acupuncture — our clinic is part of your community, located at 500 W Silver Spring Dr near the I-43 interchange, just minutes from Bayshore.",
@@ -45,7 +45,7 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Whitefish Bay',
     metaTitle: 'Acupuncture in Whitefish Bay, WI',
     metaDescription: 'Acupuncture for Whitefish Bay, WI residents at our nearby Glendale clinic. Drug-free relief for pain, stress, headaches, fertility & more. Book today.',
-    intro: 'Trusted acupuncture and Chinese medicine for Whitefish Bay, WI — whole-person care for pain, stress, sleep, and wellness, close to home.',
+    intro: 'Trusted acupuncture and East Asian Medicine for Whitefish Bay, WI — whole-person care for pain, stress, sleep, and wellness, close to home.',
     driveTime: 'About 5 minutes',
     localParagraphs: [
       'If you live in Whitefish Bay, our clinic may be the closest established acupuncture practice to your front door. We are located on Silver Spring Drive — the same street that runs through the heart of the village — just a few minutes west of the shops and restaurants of the Silver Spring District.',
@@ -62,12 +62,12 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Shorewood',
     metaTitle: 'Acupuncture in Shorewood, WI',
     metaDescription: 'Looking for acupuncture in Shorewood, WI? Our Glendale clinic is minutes away — pain relief, stress, fertility & more. Book your first visit today.',
-    intro: 'Acupuncture and traditional Chinese medicine for Shorewood, WI residents — natural relief from pain, stress, and chronic conditions, just minutes from the village.',
+    intro: 'Acupuncture and East Asian Medicine for Shorewood, WI residents — natural relief from pain, stress, and chronic conditions, just minutes from the village.',
     driveTime: 'About 10 minutes',
     localParagraphs: [
       'Shorewood sits just a few minutes south of our Glendale clinic, and we have cared for Shorewood residents — students, professors, young professionals, and longtime villagers alike — for more than two decades.',
       'A lot of Shorewood life happens at a desk or on the move, and we see it in the treatment room. We regularly help UWM students and staff manage stress, anxiety, and poor sleep through demanding semesters; runners and cyclists from the Oak Leaf Trail with knee, hip, and IT band complaints; and professionals with tension headaches and low back pain from commutes and screen time. Acupuncture offers a drug-free way to address these issues at their source rather than masking them.',
-      'Depending on your needs, your plan may combine acupuncture with Chinese herbal medicine, cupping therapy, and practical lifestyle guidance — a whole-person approach refined over 25+ years and 380,000+ treatments.',
+      'Depending on your needs, your plan may combine acupuncture with customized herbal formulas, cupping therapy, and practical lifestyle guidance — a whole-person approach refined over 25+ years and 380,000+ treatments.',
     ],
     directionsParagraphs: [
       'The most direct route is north on Oakland Avenue into Whitefish Bay, then west on Silver Spring Drive to the clinic at 500 W Silver Spring Dr, Suite K205. You can also take I-43 north and exit at Silver Spring Drive. Either way, most Shorewood patients arrive in about ten minutes.',
@@ -79,12 +79,12 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Mequon',
     metaTitle: 'Acupuncture near Mequon, WI',
     metaDescription: 'Acupuncture near Mequon, WI at our Glendale clinic — licensed acupuncturists treating pain, stress, fertility & more. Free parking. Book your visit.',
-    intro: 'Acupuncture and traditional Chinese medicine for Mequon, WI residents — natural, lasting relief at our nearby Glendale clinic.',
+    intro: 'Acupuncture and East Asian Medicine for Mequon, WI residents — natural, lasting relief at our nearby Glendale clinic.',
     driveTime: '10–15 minutes',
     localParagraphs: [
       "For Mequon and Thiensville residents, our Glendale clinic is a straight shot down I-43 — usually a 10-to-15-minute drive — making us one of the most convenient full-time acupuncture practices for southern Ozaukee County.",
       "Mequon patients often come to us with chronic low back and joint pain, golf and tennis injuries, and the wear and tear that comes with long commutes and large, yard-heavy properties. We also see many patients for women's health — from fertility support through perimenopause — and for the stress, sleep, and healthy-aging concerns that matter to adults who intend to stay active for decades to come.",
-      'Because traditional Chinese medicine looks at the whole person, your plan may pair acupuncture with herbal consultations, cupping, and lifestyle guidance. Pricing is transparent, and treatment packages make ongoing care straightforward.',
+      'Because East Asian Medicine looks at the whole person, your plan may pair acupuncture with herbal consultations, cupping, and lifestyle guidance. Pricing is transparent, and treatment packages make ongoing care straightforward.',
     ],
     directionsParagraphs: [
       'Take I-43 south and exit at Silver Spring Drive. The clinic is at 500 W Silver Spring Dr, Suite K205, just off the interchange and minutes from Bayshore. From most of Mequon the drive takes 10 to 15 minutes, running opposite the heaviest rush-hour traffic.',
@@ -96,7 +96,7 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Fox Point',
     metaTitle: 'Acupuncture near Fox Point, WI',
     metaDescription: 'Acupuncture near Fox Point, WI at our Glendale clinic — pain, stress, sleep & fertility care from licensed acupuncturists. Free parking. Book today.',
-    intro: 'Acupuncture and traditional Chinese medicine for Fox Point, WI — natural, lasting relief close to home.',
+    intro: 'Acupuncture and East Asian Medicine for Fox Point, WI — natural, lasting relief close to home.',
     driveTime: 'About 5 minutes',
     localParagraphs: [
       'Fox Point is one of the closest communities to our clinic — most patients head down Port Washington Road or I-43 and arrive in about five minutes, often faster than the drive to a downtown appointment.',
@@ -113,12 +113,12 @@ export const LOCATIONS: LocationEntry[] = [
     name: 'Bayside',
     metaTitle: 'Acupuncture near Bayside, WI',
     metaDescription: 'Acupuncture near Bayside, WI at our Glendale clinic. Drug-free relief for chronic pain, stress, headaches & more from licensed acupuncturists. Book today.',
-    intro: 'Acupuncture and Chinese medicine for Bayside, WI residents — natural relief and whole-person care at our nearby Glendale clinic.',
+    intro: 'Acupuncture and East Asian Medicine for Bayside, WI residents — natural relief and whole-person care at our nearby Glendale clinic.',
     driveTime: '5–7 minutes',
     localParagraphs: [
       'Bayside sits at the quiet north end of the North Shore, yet our Glendale clinic is still only a five-to-seven-minute drive away — close enough that regular care never feels like a project.',
       'Many Bayside patients first visit for one stubborn issue — a shoulder that never quite healed, migraines that follow a stressful week, or the hip and knee pain that makes long walks less enjoyable — and stay for the whole-person benefits they notice along the way: sounder sleep, a calmer stress response, and steadier energy. Others come specifically for seasonal allergy relief, digestive complaints, or support through fertility and menopause.',
-      'Depending on your needs, your plan may combine acupuncture with Chinese herbal medicine and cupping therapy, always built around a thorough consultation of your health history and goals.',
+      'Depending on your needs, your plan may combine acupuncture with customized herbal formulas and cupping therapy, always built around a thorough consultation of your health history and goals.',
     ],
     directionsParagraphs: [
       'Take I-43 south to the Silver Spring Drive exit, or follow Port Washington Road south through Fox Point. The clinic is at 500 W Silver Spring Dr, Suite K205 in Glendale, minutes from Bayshore — most Bayside patients arrive in five to seven minutes.',

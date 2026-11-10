@@ -26,7 +26,8 @@ export function formatRelativeDate(dateString: string): string {
   if (diffDays < 7) return `${diffDays} days ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
   if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-  return `${Math.floor(diffDays / 365)} years ago`;
+  const years = Math.floor(diffDays / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
 }
 
 // Decode HTML entities from WordPress content

@@ -26,7 +26,7 @@ const teamMembers = await getAllTeamMembers();
   <!-- Hero Section -->
   <PageHero
     title="About Our Practice"
-    description="For over 25 years, we've been dedicated to providing exceptional acupuncture and holistic health care to the Milwaukee community, helping over 380,000 patients find natural healing and wellness."
+    description="For over 25 years, we've been dedicated to providing exceptional acupuncture and holistic health care to the Milwaukee community, with more than 380,000 treatments given."
   >
     <Fragment slot="badge">
       <Badge variant="default" size="md" class="mb-6">Est. 1999</Badge>
@@ -58,7 +58,7 @@ const teamMembers = await getAllTeamMembers();
           </h2>
           <div class="space-y-4 text-gray-700 leading-relaxed">
             <p>
-              At Acupuncture & Holistic Health Associates, we believe in the body's innate ability to heal itself. Our mission is to facilitate that healing through time-tested traditional Chinese medicine practices combined with modern clinical expertise.
+              At Acupuncture & Holistic Health Associates, we believe in the body's innate ability to heal itself. Our mission is to facilitate that healing through time-tested East Asian Medicine practices combined with modern clinical expertise.
             </p>
             <p>
               We take a whole-person approach to health care, addressing not just symptoms but the root causes of illness. Through individualized treatment plans, we help our patients achieve lasting wellness and optimal health.
@@ -87,7 +87,7 @@ const teamMembers = await getAllTeamMembers();
           <FeatureCard
             layout="horizontal"
             title="Compassionate Healing"
-            description="We treat you with the care and respect you deserve on your healing journey."
+            description="We listen first, explain what we find, and leave every decision about your care with you."
             icon="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
           />
         </div>
@@ -98,13 +98,13 @@ const teamMembers = await getAllTeamMembers();
   <!-- Stats Section -->
   <section class="py-16 md:py-20 lg:py-24 bg-sage-50">
     <Container>
-      <SectionHeader title="Experience You Can Trust" subtitle="Proven results backed by decades of clinical excellence" />
+      <SectionHeader title="Experience You Can Trust" subtitle="A quarter century of care for Milwaukee and the North Shore" />
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <StatCard value="25+" label="Years in Practice" description="Serving Milwaukee since 1999" />
-        <StatCard value="380K+" label="Treatments" description="Successful patient visits" />
+        <StatCard value="380K+" label="Treatments" description="Patient visits since 1999" />
         <StatCard value={String(REVIEW_STATS.rating)} label="Patient Rating" description={`Based on ${REVIEW_STATS.count} Google reviews`} />
-        <StatCard value="95%" label="Satisfaction Rate" description="Patients highly satisfied" />
+        <StatCard value="2×" label="Community Choice" description="Award winner, 2024 &amp; 2025" />
       </div>
     </Container>
   </section>
@@ -173,7 +173,7 @@ const teamMembers = await getAllTeamMembers();
                 </div>
 
                 {/* Short bio */}
-                {member.shortBio && (
+                {member.shortBio && !/coming soon/i.test(member.shortBio) && (
                   <p class="text-gray-600 leading-relaxed mb-6">
                     {member.shortBio}
                   </p>
@@ -255,7 +255,7 @@ const teamMembers = await getAllTeamMembers();
             />
           </div>
           <h3 class="font-semibold text-charcoal mb-2">Award Winner</h3>
-          <p class="text-sm text-gray-600">Milwaukee's Best Acupuncture 2020-2025</p>
+          <p class="text-sm text-gray-600">Community Choice Award, 2024 &amp; 2025</p>
         </Card>
       </div>
     </Container>
@@ -263,8 +263,8 @@ const teamMembers = await getAllTeamMembers();
 
   <!-- CTA Section -->
   <CTASection
-    heading="Ready to Start Your Healing Journey?"
-    description="Experience the difference that expert care and personalized treatment can make in your life."
+    heading="Come meet us."
+    description="Your first visit starts with a conversation about your health and what you hope to change. We’ll take it from there, together."
     primaryButton={{ label: 'Schedule Consultation', href: '/contact' }}
     secondaryButton={{ label: `Call ${CONTACT.phone}`, href: `tel:+1${CONTACT.phone.replace(/\D/g, '')}`, icon: 'phone' }}
   />

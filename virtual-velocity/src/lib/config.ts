@@ -76,7 +76,6 @@ export const SERVICE_AREAS = [
 export const REVIEW_STATS = {
   rating: 4.8,
   count: 171,
-  recommendPct: 98,
 };
 
 // New patient special offer pricing

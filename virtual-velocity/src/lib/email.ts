@@ -634,7 +634,7 @@ export async function sendNewsletterWelcomeEmail(to: string, env?: EmailEnv): Pr
           <div class="highlight">
             <ul>
               <li>Health tips and wellness advice</li>
-              <li>Information about acupuncture and Traditional Chinese Medicine</li>
+              <li>Information about acupuncture and East Asian Medicine</li>
               <li>Special offers and promotions</li>
               <li>Updates on our services and practice</li>
             </ul>
@@ -674,7 +674,7 @@ Thank you for subscribing to the Acupuncture & Holistic Health Associates newsle
 
 You'll now receive:
 - Health tips and wellness advice
-- Information about acupuncture and Traditional Chinese Medicine
+- Information about acupuncture and East Asian Medicine
 - Special offers and promotions
 - Updates on our services and practice
 

@@ -128,14 +128,14 @@ const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 
             Acupuncture &amp; Holistic<br class="md:hidden" /> Health Associates
           </span>
         </a>
-        <a href={telHref} class="text-right group" aria-label={`Call ${CONTACT.phone} now to schedule`}>
+        <a href={telHref} class="text-right group" aria-label={`Call ${CONTACT.phone} to schedule`}>
           <span class="flex items-center justify-end gap-2 font-heading font-bold text-xl sm:text-2xl text-sage-700 group-hover:text-sage-600 whitespace-nowrap">
             <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
             </svg>
             {CONTACT.phone}
           </span>
-          <span class="block text-xs text-gray-600">Call now to schedule</span>
+          <span class="block text-xs text-gray-600">Call to schedule</span>
         </a>
       </div>
     </header>
@@ -204,7 +204,7 @@ const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div class="bg-white rounded-[var(--radius-2xl)] shadow-[var(--shadow-soft)] border-2 border-earth-orange p-8 md:p-12 text-center">
             <div class="inline-block px-4 py-2 bg-earth-orange text-white font-semibold rounded-[var(--radius-button)] text-sm mb-6">
-              New Patient Special &ndash; Limited Time
+              New Patient Special
             </div>
             <div class="font-heading font-bold text-tcm-red text-6xl md:text-7xl mb-3">
               ${NEW_PATIENT_SPECIAL.price}
@@ -216,7 +216,7 @@ const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 
             <ul class="text-left max-w-md mx-auto space-y-2 text-gray-700 mb-4">
               <li class="flex items-start gap-2">
                 <span class="text-sage-600 font-bold" aria-hidden="true">&check;</span>
-                Full health history and TCM diagnosis
+                Full health history and East Asian Medicine assessment
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-sage-600 font-bold" aria-hidden="true">&check;</span>
@@ -237,7 +237,7 @@ const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 
               <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={phoneIconPath}></path>
               </svg>
-              Call {CONTACT.phone} to claim this offer
+              Call {CONTACT.phone} to book
             </a>
           </div>
         </div>
@@ -329,10 +329,10 @@ const phoneIconPath = 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 
       <section class="py-16 md:py-24 bg-sage-700">
         <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
           <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-4">
-            Ready to Feel Better Naturally?
+            We&rsquo;d be happy to talk.
           </h2>
           <p class="text-lg text-sage-100 mb-8">
-            Call now and secure your new patient appointment while the ${NEW_PATIENT_SPECIAL.price} special is still available.
+            Call with any questions, or to book your first visit &mdash; ${NEW_PATIENT_SPECIAL.price} for new patients this month.
           </p>
           <a
             href={telHref}
