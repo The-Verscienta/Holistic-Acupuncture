@@ -1,0 +1,56 @@
+---
+/**
+ * "Your first visit in 3 steps" — sets expectations for new patients.
+ * `compact` renders a stacked list for use inside a card (e.g. /book);
+ * the default renders three columns for a full-width page section.
+ */
+interface Props {
+  compact?: boolean;
+  class?: string;
+}
+
+const { compact = false, class: className = '' } = Astro.props;
+
+const steps = [
+  {
+    title: 'Book your visit',
+    text: 'Pick a time in our secure online scheduler, or give us a call if you prefer to book by phone.',
+  },
+  {
+    title: 'Consultation & first treatment',
+    text: 'Plan for 90–120 minutes: a full health history, pulse and tongue diagnosis, then your first acupuncture treatment.',
+  },
+  {
+    title: 'Your treatment plan',
+    text: 'Your acupuncturist will suggest a series of treatments to see how your body responds, and adjust the plan as you progress.',
+  },
+];
+---
+
+{compact ? (
+  <ol class={`space-y-4 max-w-md mx-auto text-left ${className}`}>
+    {steps.map((step, i) => (
+      <li class="flex items-start gap-3">
+        <span class="w-7 h-7 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-sm" aria-hidden="true">{i + 1}</span>
+        <div>
+          <p class="font-semibold text-charcoal text-sm">{step.title}</p>
+          <p class="text-sm text-gray-600">{step.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+) : (
+  <ol class={`grid md:grid-cols-3 gap-6 md:gap-8 ${className}`}>
+    {steps.map((step, i) => (
+      <li class="flex md:flex-col items-start gap-4 md:gap-0">
+        <span class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-sage-600 text-white flex items-center justify-center flex-shrink-0 font-heading font-bold text-lg md:text-xl md:mb-4" aria-hidden="true">{i + 1}</span>
+        <div>
+          <h3 class="text-lg font-heading font-semibold text-charcoal mb-1 md:mb-2">
+            <span class="sr-only">Step {i + 1}: </span>{step.title}
+          </h3>
+          <p class="text-gray-600 text-sm leading-relaxed">{step.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+)}

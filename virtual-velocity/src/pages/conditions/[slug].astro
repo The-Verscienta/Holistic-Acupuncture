@@ -4,8 +4,9 @@ import Container from '../../components/Container.astro';
 import Card from '../../components/Card.astro';
 import Button from '../../components/Button.astro';
 import Badge from '../../components/Badge.astro';
-import { getAllConditions, getConditionBySlug } from '../../lib/kilnQueries';
-import { CONTACT, SERVICE_AREAS } from '../../lib/config';
+import TestimonialCard from '../../components/TestimonialCard.astro';
+import { getAllConditions, getConditionBySlug, getAllTestimonials } from '../../lib/kilnQueries';
+import { BOOK_PATH, CONTACT, SERVICE_AREAS, NEW_PATIENT_SPECIAL } from '../../lib/config';
 import { conditionCategories } from '../../types/content';
 export async function getStaticPaths() {
   const conditions = await getAllConditions();
@@ -59,6 +60,21 @@ const conditionFaqs = [
     answer: `Many Wisconsin insurance plans cover acupuncture, especially for pain-related conditions. We do not bill insurance directly, but we can provide a superbill for you to submit to your insurance for possible reimbursement. Check with your provider about your acupuncture benefits before you book.`,
   },
 ];
+
+// One patient review for social proof next to the booking CTA. Prefer a review
+// whose "condition treated" shares a key word with this condition (e.g. "Chronic
+// Back Pain" ↔ "Back & Neck Pain"), then a featured review, then a fuller review
+// picked by slug so different condition pages don't all show the same one.
+const GENERIC_WORDS = new Set(['pain', 'issues', 'symptoms', 'support', 'disorders', 'chronic', 'and']);
+const keyWords = (text: string) =>
+  new Set(text.toLowerCase().split(/[^a-z']+/).filter((w) => w.length > 2 && !GENERIC_WORDS.has(w)));
+const conditionWords = keyWords(condition.name);
+const usable = (await getAllTestimonials()).filter((t) => t.quote);
+const matching = usable.find((t) => [...keyWords(t.condition)].some((w) => conditionWords.has(w)));
+const fuller = usable.filter((t) => t.quote.length >= 80);
+const pool = fuller.length > 0 ? fuller : usable;
+const slugHash = [...condition.slug.current].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 0);
+const testimonial = matching ?? usable.find((t) => t.featured) ?? pool[slugHash % Math.max(pool.length, 1)];
 
 const conditionFaqSchema = {
   "@context": "https://schema.org",
@@ -182,16 +198,29 @@ const conditionFaqSchema = {
         Ready to explore treatment for {condition.name}?
       </h2>
       <p class="text-gray-600 mb-6 max-w-xl mx-auto">
-        Schedule a consultation to discuss how acupuncture can help you.
+        New patients get a full consultation and first treatment for just ${NEW_PATIENT_SPECIAL.price}.
       </p>
+      {testimonial && (
+        <div class="max-w-2xl mx-auto mb-8 text-left">
+          <TestimonialCard
+            quote={testimonial.quote}
+            author={testimonial.author}
+            condition={testimonial.condition}
+            rating={testimonial.rating}
+          />
+        </div>
+      )}
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button variant="primary" size="lg" href="/contact">
-          Contact Us
+        <Button variant="primary" size="lg" icon="calendar" href={BOOK_PATH}>
+          Book Your ${NEW_PATIENT_SPECIAL.price} First Visit
         </Button>
         <Button variant="tertiary" size="lg" icon="phone" href={`tel:${CONTACT.phoneRaw}`}>
           Call {CONTACT.phone}
         </Button>
       </div>
+      <p class="text-sm text-gray-600 mt-4">
+        Have a question first? <a href="/contact" class="text-sage-700 underline underline-offset-2 hover:text-sage-900">Send us a message</a>.
+      </p>
     </Container>
   </section>
 </BaseLayout>
