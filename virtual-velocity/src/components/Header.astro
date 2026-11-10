@@ -33,12 +33,12 @@ const mobileNav: { name: string; href: string }[] = [
       <!-- Logo/Brand -->
       <a
         href="/"
-        class="flex items-center gap-2 shrink-0 text-sm sm:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
+        class="flex items-center gap-2 min-w-0 text-[13px] leading-tight min-[400px]:text-sm lg:text-base font-heading font-bold text-sage-700 hover:text-sage-600 transition-colors"
       >
         <img src="/logo.webp" alt="Acupuncture & Holistic Health Associates logo" width="40" height="40" class="h-10 w-auto shrink-0" loading="eager" />
-        <span id="holiday-emoji" aria-hidden="true"></span>
-        <span class="hidden 3xl:inline leading-tight">Acupuncture &<br/>Holistic Health Associates</span>
-        <span class="3xl:hidden">AHH Associates</span>
+        <span id="holiday-emoji" class="shrink-0" aria-hidden="true"></span>
+        <!-- Full clinic name at every width (the "AHH" abbreviation confused visitors); wraps to two lines. -->
+        <span class="min-w-0">Acupuncture &amp;<br/>Holistic Health Associates</span>
       </a>
 
       <!-- Desktop Navigation (shown at 3xl+ only — at smaller widths the hamburger takes over) -->
@@ -85,12 +85,17 @@ const mobileNav: { name: string; href: string }[] = [
         </button>
 
         <!-- Inline Contact + Book CTAs (hidden on smallest screens; hamburger menu still carries them as backup) -->
-        <Button variant="tertiary" size="sm" icon="mail" href="/contact" class="hidden sm:inline-flex flex-shrink-0">
-          Contact Us
-        </Button>
-        <Button variant="primary" size="sm" icon="calendar" href={BOOK_PATH} class="hidden sm:inline-flex flex-shrink-0">
-          <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
-        </Button>
+        <!-- Wrapper does the hiding: Button's own `inline-flex` overrides a `hidden` class passed to it. -->
+        <div class="hidden sm:flex items-center gap-2 flex-shrink-0">
+          <span class="hidden lg:inline-flex flex-shrink-0">
+            <Button variant="tertiary" size="sm" icon="mail" href="/contact">
+              Contact Us
+            </Button>
+          </span>
+          <Button variant="primary" size="sm" icon="calendar" href={BOOK_PATH} class="flex-shrink-0">
+            <span class="holiday-btn-emoji" aria-hidden="true"></span>Book Appointment
+          </Button>
+        </div>
 
         <button
           id="mobile-menu-toggle"
