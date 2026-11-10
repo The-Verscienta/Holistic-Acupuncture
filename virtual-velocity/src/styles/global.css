@@ -123,7 +123,17 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 500;
   line-height: 1.2;
-  color: var(--color-teal-dk);
+}
+
+/* Heading color lives in the base layer so color utilities (text-white etc.)
+   win, and headings inside light-on-dark sections inherit the section color. */
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-teal-dk);
+  }
+  .text-white :is(h1, h2, h3, h4, h5, h6) {
+    color: inherit;
+  }
 }
 
 #footer h1, #footer h2, #footer h3, #footer h4, #footer h5, #footer h6 {
