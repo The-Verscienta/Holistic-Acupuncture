@@ -20,22 +20,21 @@ function nthMonday(year, month, n) {
   return firstMonday + (n - 1) * 7;
 }
 
-function inWindow(y, m, d, wy, wm, wd, days) {
+function inWindow(y, m, d, wy, wm, wd, daysBefore) {
   function toInt(yy, mm, dd) { return yy * 10000 + mm * 100 + dd; }
   var target = new Date(wy, wm - 1, wd);
-  var lo = new Date(target); lo.setDate(target.getDate() - days);
-  var hi = new Date(target); hi.setDate(target.getDate() + days);
+  var lo = new Date(target); lo.setDate(target.getDate() - daysBefore);
   var check = toInt(y, m, d);
   return check >= toInt(lo.getFullYear(), lo.getMonth()+1, lo.getDate())
-      && check <= toInt(hi.getFullYear(), hi.getMonth()+1, hi.getDate());
+      && check <= toInt(wy, wm, wd);
 }
 
 function detect(y, m, d) {
-  // Christmas: Dec 11 – Jan 1 (asymmetric: 14 days before Dec 25, 7 days after)
-  if ((m === 12 && d >= 11) || (m === 1 && d === 1)) return 'christmas';
   var mlk  = nthMonday(y, 1, 3);
   var cnyd = cny[y];
-  if (m === 10 && d >= 24)                                  return 'halloween';
+  if (inWindow(y,m,d, y,12,25, 14))                         return 'christmas';
+  if ((m === 12 && d >= 26) || (m === 1 && d === 1))        return 'new-years';
+  if (inWindow(y,m,d, y,10,31, 7))                          return 'halloween';
   if (cnyd && inWindow(y,m,d, y,cnyd[0],cnyd[1], 3))        return 'chinese-new-year';
   if (inWindow(y,m,d, y,2,14,  7))                          return 'valentines';
   if (inWindow(y,m,d, y,3,17,  7))                          return 'st-patricks';
@@ -68,14 +67,21 @@ expect('MLK 2025 = Jan 20', nthMonday(2025, 1, 3), 20);
 // Jan 2024: starts Monday (dow=1). First Monday = 1. 3rd Monday = 15.
 expect('MLK 2024 = Jan 15', nthMonday(2024, 1, 3), 15);
 
+// Every window: lead-in days before the holiday, ending ON the holiday.
+// The day after each holiday must return null.
+
 // ── Christmas ────────────────────────────────────────────────────────────────
-console.log('\nChristmas (Dec 11 – Jan 1):');
+console.log('\nChristmas (Dec 11 – Dec 25):');
 expect('Dec 11 = christmas',  detect(2025, 12, 11), 'christmas');
 expect('Dec 25 = christmas',  detect(2025, 12, 25), 'christmas');
-expect('Dec 31 = christmas',  detect(2025, 12, 31), 'christmas');
-expect('Jan 1  = christmas',  detect(2026, 1,  1),  'christmas');
-expect('Jan 2  = null',       detect(2026, 1,  2),  null);
 expect('Dec 10 = null',       detect(2025, 12, 10), null);
+
+// ── New Year's ───────────────────────────────────────────────────────────────
+console.log('\nNew Year\'s (Dec 26 – Jan 1):');
+expect('Dec 26 = new-years',  detect(2025, 12, 26), 'new-years');
+expect('Dec 31 = new-years',  detect(2025, 12, 31), 'new-years');
+expect('Jan 1  = new-years',  detect(2026, 1,  1),  'new-years');
+expect('Jan 2  = null',       detect(2026, 1,  2),  null);
 
 // ── Halloween ────────────────────────────────────────────────────────────────
 console.log('\nHalloween (Oct 24 – Oct 31):');
@@ -83,60 +89,53 @@ expect('Oct 24 = halloween',  detect(2025, 10, 24), 'halloween');
 expect('Oct 31 = halloween',  detect(2025, 10, 31), 'halloween');
 expect('Oct 23 = null',       detect(2025, 10, 23), null);
 expect('Nov 1  = null',       detect(2025, 11, 1),  null);
-expect('Nov 3  = null',       detect(2026, 11, 3),  null);
 
 // ── Veterans Day ─────────────────────────────────────────────────────────────
-console.log('\nVeterans Day (Nov 4 – Nov 18):');
+console.log('\nVeterans Day (Nov 4 – Nov 11):');
 expect('Nov 4  = veterans',  detect(2025, 11, 4),  'veterans');
 expect('Nov 11 = veterans',  detect(2025, 11, 11), 'veterans');
-expect('Nov 18 = veterans',  detect(2025, 11, 18), 'veterans');
-expect('Nov 19 = null',      detect(2025, 11, 19), null);
+expect('Nov 3  = null',      detect(2025, 11, 3),  null);
+expect('Nov 12 = null',      detect(2026, 11, 12), null);
 
 // ── Chinese New Year ─────────────────────────────────────────────────────────
-console.log('\nChinese New Year:');
-// 2026: Feb 17 ±3 → Feb 14–20
+console.log('\nChinese New Year (3 days before – day of):');
+// 2026: Feb 17 → Feb 14–17
 expect('CNY 2026 Feb 14 = chinese-new-year', detect(2026, 2, 14), 'chinese-new-year');
 expect('CNY 2026 Feb 17 = chinese-new-year', detect(2026, 2, 17), 'chinese-new-year');
-expect('CNY 2026 Feb 20 = chinese-new-year', detect(2026, 2, 20), 'chinese-new-year');
-// Note: Feb 14 is also Valentine's Day — CNY takes priority
-expect('CNY wins over valentines on Feb 14 2026', detect(2026, 2, 14), 'chinese-new-year');
+expect('CNY 2026 Feb 18 = null',             detect(2026, 2, 18), null);
+// Feb 14 is also Valentine's Day — CNY takes priority
 expect('CNY 2026 Feb 13 = valentines (outside CNY window)', detect(2026, 2, 13), 'valentines');
-// Unknown year: no CNY
 // 2023 is intentionally absent from the cny table (table starts at 2024)
-expect('CNY 2023 = null (year intentionally absent from table)', detect(2023, 2, 5), null);
+expect('CNY 2023 = null (year intentionally absent from table)', detect(2023, 1, 22), null);
 
 // ── Valentine's Day ──────────────────────────────────────────────────────────
-console.log('\nValentine\'s Day (Feb 7 – Feb 21):');
+console.log('\nValentine\'s Day (Feb 7 – Feb 14):');
 expect('Feb 7  = valentines', detect(2025, 2, 7),  'valentines');
 expect('Feb 14 = valentines', detect(2025, 2, 14), 'valentines');
-expect('Feb 21 = valentines', detect(2025, 2, 21), 'valentines');
 expect('Feb 6  = null',       detect(2025, 2, 6),  null);
-expect('Feb 22 = null',       detect(2025, 2, 22), null);
+expect('Feb 15 = null',       detect(2025, 2, 15), null);
 
 // ── St. Patrick's Day ────────────────────────────────────────────────────────
-console.log('\nSt. Patrick\'s Day (Mar 10 – Mar 24):');
+console.log('\nSt. Patrick\'s Day (Mar 10 – Mar 17):');
 expect('Mar 10 = st-patricks', detect(2025, 3, 10), 'st-patricks');
 expect('Mar 17 = st-patricks', detect(2025, 3, 17), 'st-patricks');
-expect('Mar 24 = st-patricks', detect(2025, 3, 24), 'st-patricks');
 expect('Mar 9  = null',        detect(2025, 3, 9),  null);
-expect('Mar 25 = null',        detect(2025, 3, 25), null);
+expect('Mar 18 = null',        detect(2025, 3, 18), null);
 
 // ── 4th of July ──────────────────────────────────────────────────────────────
-console.log('\n4th of July (Jun 27 – Jul 11):');
+console.log('\n4th of July (Jun 27 – Jul 4):');
 expect('Jun 27 = july-4th', detect(2025, 6, 27), 'july-4th');
 expect('Jul 4  = july-4th', detect(2025, 7, 4),  'july-4th');
-expect('Jul 11 = july-4th', detect(2025, 7, 11), 'july-4th');
 expect('Jun 26 = null',     detect(2025, 6, 26), null);
-expect('Jul 12 = null',     detect(2025, 7, 12), null);
+expect('Jul 5  = null',     detect(2025, 7, 5),  null);
 
 // ── MLK Day ──────────────────────────────────────────────────────────────────
-console.log('\nMLK Day (3rd Monday of January ±3 days):');
-// 2026: 3rd Monday = Jan 19. Window: Jan 16–22.
-expect('MLK 2026 Jan 16 = mlk', detect(2026, 1, 16), 'mlk');
-expect('MLK 2026 Jan 19 = mlk', detect(2026, 1, 19), 'mlk');
-expect('MLK 2026 Jan 22 = mlk', detect(2026, 1, 22), 'mlk');
+console.log('\nMLK Day (3 days before 3rd Monday of January – day of):');
+// 2026: 3rd Monday = Jan 19. Window: Jan 16–19.
+expect('MLK 2026 Jan 16 = mlk',  detect(2026, 1, 16), 'mlk');
+expect('MLK 2026 Jan 19 = mlk',  detect(2026, 1, 19), 'mlk');
 expect('MLK 2026 Jan 15 = null', detect(2026, 1, 15), null);
-expect('MLK 2026 Jan 23 = null', detect(2026, 1, 23), null);
+expect('MLK 2026 Jan 20 = null', detect(2026, 1, 20), null);
 
 // ── Off-season dates ─────────────────────────────────────────────────────────
 console.log('\nOff-season (no holiday):');

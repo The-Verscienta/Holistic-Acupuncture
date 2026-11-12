@@ -14,20 +14,23 @@ Holiday detection runs client-side using the visitor's local clock, via a synchr
 
 | Holiday | Window | Date logic |
 |---------|--------|------------|
-| Christmas | Dec 11 – Jan 1 | Explicit date range (year-boundary safe) |
-| Halloween | Oct 24 – Oct 31 | week leading up to Oct 31 |
-| 4th of July | Jun 27 – Jul 11 | ±7 days around Jul 4 |
-| St. Patrick's Day | Mar 10 – Mar 24 | ±7 days around Mar 17 |
-| Valentine's Day | Feb 7 – Feb 21 | ±7 days around Feb 14 |
-| Veterans Day | Nov 4 – Nov 18 | ±7 days around Nov 11 |
-| MLK Day | 3rd Monday of January ±3 days | Calculated |
-| Chinese New Year | Lunar new year date ±3 days | Lookup table 2024–2040 |
+| Christmas | Dec 11 – Dec 25 | 14 days before Dec 25 |
+| New Year's | Dec 26 – Jan 1 | Explicit range (crosses year boundary) |
+| Halloween | Oct 24 – Oct 31 | 7 days before Oct 31 |
+| 4th of July | Jun 27 – Jul 4 | 7 days before Jul 4 |
+| St. Patrick's Day | Mar 10 – Mar 17 | 7 days before Mar 17 |
+| Valentine's Day | Feb 7 – Feb 14 | 7 days before Feb 14 |
+| Veterans Day | Nov 4 – Nov 11 | 7 days before Nov 11 |
+| MLK Day | 3 days before 3rd Monday of January – day of | Calculated |
+| Chinese New Year | 3 days before lunar new year – day of | Lookup table 2024–2040 |
+
+Every window ends on the holiday itself; decorations come down the next day.
 
 **Overlap rule (priority order, highest first):**
-Christmas → Halloween → Chinese New Year → Valentine's Day → St. Patrick's Day → 4th of July → MLK Day → Veterans Day
+Christmas → New Year's → Halloween → Chinese New Year → Valentine's Day → St. Patrick's Day → 4th of July → MLK Day → Veterans Day
 
-- Halloween (Oct 24–31) and Veterans Day (Nov 4–Nov 18) do not overlap.
-- MLK Day (earliest start: Jan 12 — the 3rd Monday is Jan 15 at earliest, minus 3 days) never overlaps Christmas (ends Jan 1).
+- Halloween (Oct 24–31) and Veterans Day (Nov 4–11) do not overlap.
+- MLK Day (earliest start: Jan 12 — the 3rd Monday is Jan 15 at earliest, minus 3 days) never overlaps Christmas (ends Dec 25).
 - Years outside the Chinese New Year lookup table silently produce no CNY theming — acceptable.
 - Detection uses the visitor's local clock (client-side `new Date()`). No server-side timezone normalisation is applied.
 

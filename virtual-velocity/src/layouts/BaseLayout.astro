@@ -51,6 +51,7 @@ const twitterHandle = SOCIAL.twitter;
       // Emoji data stored in JS (not CSS) for reliable cross-browser access
       window.__holidayEmojis = {
         'christmas':        { logo: '🎄 ', deco: '🎄 ⛄ 🎁 ❄️' },
+        'new-years':        { logo: '🥂 ', deco: '🎉 🥂 ✨ 🎆' },
         'halloween':        { logo: '🎃 ', deco: '🎃 🕸️ 🦇' },
         'july-4th':         { logo: '🇺🇸 ', deco: '🎆 🇺🇸 🎇 ⭐' },
         'st-patricks':      { logo: '☘️ ',  deco: '☘️ 🍀 🌟 🎶' },
@@ -71,32 +72,28 @@ const twitterHandle = SOCIAL.twitter;
       }
 
       // DST-safe date window check using YYYYMMDD integer comparison.
-      // NOTE: not safe across year boundaries — Christmas uses an explicit
-      // range instead (see detect() below).
-      function inWindow(y, m, d, wy, wm, wd, days) {
+      // Window runs from `daysBefore` days ahead of the holiday through the
+      // holiday itself — decorations come down the day after.
+      function inWindow(y, m, d, wy, wm, wd, daysBefore) {
         function toInt(yy, mm, dd) { return yy * 10000 + mm * 100 + dd; }
         var target = new Date(wy, wm - 1, wd);
-        var lo = new Date(target); lo.setDate(target.getDate() - days);
-        var hi = new Date(target); hi.setDate(target.getDate() + days);
+        var lo = new Date(target); lo.setDate(target.getDate() - daysBefore);
         var check = toInt(y, m, d);
         return check >= toInt(lo.getFullYear(), lo.getMonth() + 1, lo.getDate())
-            && check <= toInt(hi.getFullYear(), hi.getMonth() + 1, hi.getDate());
+            && check <= toInt(wy, wm, wd);
       }
 
       function detect(y, m, d) {
-        // Christmas window: Dec 11 – Jan 1 (intentionally asymmetric: 14 days
-        // before Dec 25, 7 days after). Uses explicit range instead of inWindow()
-        // because the window crosses a year boundary.
-        if ((m === 12 && d >= 11) || (m === 1 && d === 1)) return 'christmas';
-
         var mlk  = nthMonday(y, 1, 3);
         var cnyd = cny[y];
 
-        // Halloween window: Oct 24 – Oct 31 (week leading up, ends on the day —
-        // decorations shouldn't linger into November).
-        if (m === 10 && d >= 24)                                  return 'halloween';
-
-        // Priority order (highest first after Christmas/Halloween):
+        // Each window: N days of lead-in, ending on the holiday itself.
+        // Priority order (highest first):
+        if (inWindow(y, m, d, y, 12, 25, 14))                     return 'christmas';
+        // New Year's: Dec 26 – Jan 1. Explicit range because it crosses the
+        // year boundary (inWindow can't).
+        if ((m === 12 && d >= 26) || (m === 1 && d === 1))        return 'new-years';
+        if (inWindow(y, m, d, y, 10, 31, 7))                      return 'halloween';
         if (cnyd && inWindow(y, m, d, y, cnyd[0], cnyd[1], 3))    return 'chinese-new-year';
         if (inWindow(y, m, d, y, 2,  14, 7))                      return 'valentines';
         if (inWindow(y, m, d, y, 3,  17, 7))                      return 'st-patricks';
@@ -289,6 +286,18 @@ const twitterHandle = SOCIAL.twitter;
                 drift: (Math.random() - 0.5) * 0.6, ticks: 500 });
             if (Date.now() < end) requestAnimationFrame(snow);
           })();
+
+        } else if (h === 'new-years') {
+          // Midnight fireworks: five staggered gold/silver bursts
+          var nyBursts = 5;
+          function nyBurst() {
+            c({ particleCount: 70, startVelocity: 38, spread: 360,
+                origin: { x: 0.15 + Math.random() * 0.7, y: 0.15 + Math.random() * 0.3 },
+                colors: ['#ffd700', '#f5e6a8', '#c0c0c0', '#ffffff', '#b8860b'],
+                shapes: ['circle', 'square'], ticks: 90, gravity: 0.8 });
+            if (--nyBursts > 0) setTimeout(nyBurst, 300);
+          }
+          nyBurst();
 
         } else if (h === 'halloween') {
           c({ particleCount: 100, spread: 120, origin: { y: 0.65 },
