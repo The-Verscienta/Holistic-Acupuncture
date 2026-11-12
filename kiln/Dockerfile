@@ -27,12 +27,40 @@ ARG DEBIAN_VERSION=bookworm-20261005-slim
 # the official node image instead of Debian's `apt install nodejs` (Node 18 on
 # bookworm); the `node` stage's codename must match the builder's (bookworm).
 ARG NODE_VERSION=22.23.3
-ARG RUNNER_DEBIAN_VERSION=trixie-20261005-slim
+# The dated tag is only the base; the runner's `apt-get upgrade` below is what
+# keeps shipped packages current (kiln_cms v1.6, see upstream/Dockerfile).
+ARG RUNNER_DEBIAN_VERSION=trixie-20261020-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${RUNNER_DEBIAN_VERSION}"
 
 FROM node:${NODE_VERSION}-bookworm-slim AS node
+
+# ---- rclone: the in-app backup's off-site copy (kiln_cms v1.9, #2482) ----
+# Mirrors upstream/Dockerfile's `rclone` stage exactly: upstream's release zip,
+# pinned and SHA-256 verified (see that file for how to bump the digests).
+# With BACKUP_RCLONE_REMOTE set, an image without rclone fails every in-app
+# backup. ARGs are KILN_-prefixed because rclone reads RCLONE_* env as flags.
+FROM debian:${RUNNER_DEBIAN_VERSION} AS rclone
+ARG TARGETARCH
+ARG KILN_RCLONE_VERSION=1.76.0
+ARG KILN_RCLONE_SHA256_AMD64=b00f00b3266c3764413afe599d3ec316f6f43b3e0ea8a0bc1d186d2133e46df7
+ARG KILN_RCLONE_SHA256_ARM64=ee169016675e23a69d77240565133ff7dbc9b33d16fa8f7053d4af39f1eaeb78
+RUN set -eu; \
+  arch="${TARGETARCH:-$(dpkg --print-architecture)}"; \
+  case "$arch" in \
+    amd64) sha="$KILN_RCLONE_SHA256_AMD64" ;; \
+    arm64) sha="$KILN_RCLONE_SHA256_ARM64" ;; \
+    *) echo "no pinned rclone for architecture $arch" >&2; exit 1 ;; \
+  esac; \
+  apt-get update -y \
+  && apt-get install -y --no-install-recommends ca-certificates curl unzip \
+  && curl -fsSLo /tmp/rclone.zip \
+     "https://downloads.rclone.org/v${KILN_RCLONE_VERSION}/rclone-v${KILN_RCLONE_VERSION}-linux-${arch}.zip" \
+  && echo "${sha}  /tmp/rclone.zip" | sha256sum -c - \
+  && unzip -j /tmp/rclone.zip "rclone-v${KILN_RCLONE_VERSION}-linux-${arch}/rclone" -d /usr/local/bin \
+  && chmod 0755 /usr/local/bin/rclone \
+  && /usr/local/bin/rclone version
 
 # ---- Build stage ----
 FROM ${BUILDER_IMAGE} AS builder
@@ -98,7 +126,11 @@ RUN if [ -d deps/bumblebee ]; then \
   complex nx nx_image nx_signal polaris axon safetensors unpickler \
   rustler_precompiled unzip tokenizers bumblebee; \
   fi
-RUN ERL_FLAGS="+S 2:2" mix deps.compile
+# OTP 29 deprecation warnings in third-party Erlang deps (yamerl, gproc,
+# gen_smtp, chatterbox) — same suppression as upstream/Dockerfile (v1.6+).
+RUN ERL_FLAGS="+S 2:2" \
+  ERL_COMPILER_OPTIONS='[nowarn_deprecated_catch,nowarn_export_var_subexpr,{nowarn_deprecated_function,[{lists,zf,2}]}]' \
+  mix deps.compile
 
 COPY upstream/priv priv
 COPY upstream/lib lib
@@ -123,14 +155,14 @@ COPY priv/resource_snapshots/repo/ priv/resource_snapshots/repo/
 COPY projects/acupuncture projects/acupuncture
 
 # Install JS dependencies (TipTap, etc.) before bundling.
-RUN npm --prefix assets ci
+RUN npm --prefix assets ci --no-update-notifier --no-fund
 
 # Compile first so Phoenix generates the colocated JS/CSS manifest that
 # assets/css/app.css and assets/js/app.js import; otherwise tailwind/esbuild
 # can't resolve it. Same 2-scheduler cap as upstream (Ash resources are
 # memory-heavy, and this pass now also expands the four acupuncture
 # resources' KilnCMS.CMS.Content macros).
-RUN ERL_FLAGS="+S 2:2" mix compile
+RUN ERL_FLAGS="+S 2:2" mix compile --long-compilation-threshold 600
 RUN mix assets.deploy
 
 # `config/runtime/` holds the per-concern fragments runtime.exs imports
@@ -179,13 +211,16 @@ RUN elixir -e ' \
   IO.puts("release wiring verified: API routers + acupuncture overlay present in .app :modules")'
 
 # ---- Runtime stage ----
-FROM ${RUNNER_IMAGE}
+FROM ${RUNNER_IMAGE} AS runner
 
 # See upstream/Dockerfile for the full rationale behind every package here
 # (curl for the HEALTHCHECK, postgresql-client-17 pinned to the server major
 # for pg_dump/pg_restore, qpdf for PDF metadata stripping, the trixie package
 # renames). This runtime stage mirrors it exactly; diff on every pin bump.
+# `apt-get upgrade` first: the base image's own packages are as old as its
+# dated tag, and installing new packages does not move them (upstream v1.6).
 RUN apt-get update -y \
+  && apt-get upgrade -y --no-install-recommends \
   && apt-get install -y --no-install-recommends \
      libstdc++6 openssl libncurses6 locales ca-certificates libvips42t64 curl gnupg qpdf \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
@@ -200,6 +235,9 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
   && apt-get purge -y gnupg && apt-get autoremove -y \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 SHELL ["/bin/sh", "-c"]
+
+# Pinned and checksum-verified in the `rclone` stage above (#2482).
+COPY --from=rclone /usr/local/bin/rclone /usr/local/bin/rclone
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
