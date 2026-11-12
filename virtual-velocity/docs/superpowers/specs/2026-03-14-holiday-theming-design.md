@@ -15,6 +15,7 @@ Holiday detection runs client-side using the visitor's local clock, via a synchr
 | Holiday | Window | Date logic |
 |---------|--------|------------|
 | Christmas | Dec 11 – Dec 25 | 14 days before Dec 25 |
+| New Year's | Dec 26 – Jan 1 | Explicit range (crosses year boundary) |
 | Halloween | Oct 24 – Oct 31 | 7 days before Oct 31 |
 | 4th of July | Jun 27 – Jul 4 | 7 days before Jul 4 |
 | St. Patrick's Day | Mar 10 – Mar 17 | 7 days before Mar 17 |
@@ -26,7 +27,7 @@ Holiday detection runs client-side using the visitor's local clock, via a synchr
 Every window ends on the holiday itself; decorations come down the next day.
 
 **Overlap rule (priority order, highest first):**
-Christmas → Halloween → Chinese New Year → Valentine's Day → St. Patrick's Day → 4th of July → MLK Day → Veterans Day
+Christmas → New Year's → Halloween → Chinese New Year → Valentine's Day → St. Patrick's Day → 4th of July → MLK Day → Veterans Day
 
 - Halloween (Oct 24–31) and Veterans Day (Nov 4–11) do not overlap.
 - MLK Day (earliest start: Jan 12 — the 3rd Monday is Jan 15 at earliest, minus 3 days) never overlaps Christmas (ends Dec 25).

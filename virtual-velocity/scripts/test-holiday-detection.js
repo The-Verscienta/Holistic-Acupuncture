@@ -33,6 +33,7 @@ function detect(y, m, d) {
   var mlk  = nthMonday(y, 1, 3);
   var cnyd = cny[y];
   if (inWindow(y,m,d, y,12,25, 14))                         return 'christmas';
+  if ((m === 12 && d >= 26) || (m === 1 && d === 1))        return 'new-years';
   if (inWindow(y,m,d, y,10,31, 7))                          return 'halloween';
   if (cnyd && inWindow(y,m,d, y,cnyd[0],cnyd[1], 3))        return 'chinese-new-year';
   if (inWindow(y,m,d, y,2,14,  7))                          return 'valentines';
@@ -74,8 +75,13 @@ console.log('\nChristmas (Dec 11 – Dec 25):');
 expect('Dec 11 = christmas',  detect(2025, 12, 11), 'christmas');
 expect('Dec 25 = christmas',  detect(2025, 12, 25), 'christmas');
 expect('Dec 10 = null',       detect(2025, 12, 10), null);
-expect('Dec 26 = null',       detect(2025, 12, 26), null);
-expect('Jan 1  = null',       detect(2026, 1,  1),  null);
+
+// ── New Year's ───────────────────────────────────────────────────────────────
+console.log('\nNew Year\'s (Dec 26 – Jan 1):');
+expect('Dec 26 = new-years',  detect(2025, 12, 26), 'new-years');
+expect('Dec 31 = new-years',  detect(2025, 12, 31), 'new-years');
+expect('Jan 1  = new-years',  detect(2026, 1,  1),  'new-years');
+expect('Jan 2  = null',       detect(2026, 1,  2),  null);
 
 // ── Halloween ────────────────────────────────────────────────────────────────
 console.log('\nHalloween (Oct 24 – Oct 31):');
