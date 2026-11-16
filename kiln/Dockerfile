@@ -26,7 +26,7 @@ ARG DEBIAN_VERSION=bookworm-20261005-slim
 # Node builds the assets. Since kiln_cms v1.2.0 upstream copies the binary from
 # the official node image instead of Debian's `apt install nodejs` (Node 18 on
 # bookworm); the `node` stage's codename must match the builder's (bookworm).
-ARG NODE_VERSION=22.23.3
+ARG NODE_VERSION=22.23.5
 # The dated tag is only the base; the runner's `apt-get upgrade` below is what
 # keeps shipped packages current (kiln_cms v1.6, see upstream/Dockerfile).
 ARG RUNNER_DEBIAN_VERSION=trixie-20261020-slim
@@ -90,6 +90,13 @@ RUN set -eu; \
   mkdir -p /opt/httpc-stock && cp "$beam" /opt/httpc-stock/httpc.beam; \
   escript /opt/httpc_header_limit.escript
 
+# Retry a release-asset download that failed (kiln_cms v1.10.0, #2462):
+# tailwind's/esbuild's binaries and the ML stack's precompiled NIFs come from
+# GitHub's release CDN, whose 504s used to fail the image build. The wrapper
+# re-runs a step after 15, 30, 60 and 120 s, only when its output carries a
+# download error. Mirrors upstream/Dockerfile; removed with the httpc patch.
+COPY upstream/rel/docker/retry_download.sh /opt/retry_download.sh
+
 RUN mix local.hex --force && mix local.rebar --force
 
 ENV MIX_ENV="prod"
@@ -122,7 +129,7 @@ COPY upstream/config/config.exs upstream/config/${MIX_ENV}.exs config/
 # the two lists synced. Guarded because `mix deps.compile <name>` on an absent
 # dep is an error, and without KILN_ML the stack is absent.
 RUN if [ -d deps/bumblebee ]; then \
-  ERL_FLAGS="+S 2:2" mix deps.compile \
+  ERL_FLAGS="+S 2:2" sh /opt/retry_download.sh mix deps.compile \
   complex nx nx_image nx_signal polaris axon safetensors unpickler \
   rustler_precompiled unzip tokenizers bumblebee; \
   fi
@@ -130,7 +137,12 @@ RUN if [ -d deps/bumblebee ]; then \
 # gen_smtp, chatterbox) — same suppression as upstream/Dockerfile (v1.6+).
 RUN ERL_FLAGS="+S 2:2" \
   ERL_COMPILER_OPTIONS='[nowarn_deprecated_catch,nowarn_export_var_subexpr,{nowarn_deprecated_function,[{lists,zf,2}]}]' \
-  mix deps.compile
+  sh /opt/retry_download.sh mix deps.compile
+
+# Fetch the tailwind and esbuild binaries in their own retried, cached step
+# rather than inside `mix assets.deploy` (upstream v1.10.0, #2462).
+RUN sh /opt/retry_download.sh mix tailwind.install --if-missing \
+  && sh /opt/retry_download.sh mix esbuild.install --if-missing
 
 COPY upstream/priv priv
 COPY upstream/lib lib
@@ -179,11 +191,12 @@ COPY upstream/rel rel
 RUN mix sentry.package_source_code
 
 # Put back the stock `httpc` patched in above: nothing downloads from here
-# on, and the release copies OTP's apps into the image.
+# on, and the release copies OTP's apps into the image. The download retry
+# wrapper goes with it, for the same reason.
 RUN set -eu; \
   beam="$(erl -noshell -eval 'io:format("~s", [code:which(httpc)]), halt().')"; \
   cp /opt/httpc-stock/httpc.beam "$beam"; \
-  rm -rf /opt/httpc-stock /opt/httpc_header_limit.escript
+  rm -rf /opt/httpc-stock /opt/httpc_header_limit.escript /opt/retry_download.sh
 
 RUN mix release
 
