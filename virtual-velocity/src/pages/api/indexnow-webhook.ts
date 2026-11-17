@@ -46,13 +46,53 @@ function timingSafeEqualHex(a: string, b: string): boolean {
   return diff === 0;
 }
 
+// Kiln signs every delivery with
+//   x-kilncms-webhook-signature: t=<unix seconds>,v1=<hex HMAC-SHA256 of "<t>.<raw body>">
+// keyed by the endpoint's signing secret (Kiln admin → Webhooks). Several v1
+// entries may be present while a secret is rolled; any one matching is enough.
+// (The old body-only x-kilncms-signature header stopped being sent in Kiln
+// 0.12, which is why this endpoint returned 401 to every delivery.)
+// Mirrors KilnCMS.Webhooks.verify/4.
+const SIGNATURE_HEADER = 'x-kilncms-webhook-signature';
+const SIGNATURE_TOLERANCE_SECONDS = 300;
+
+async function hmacHex(secret: string, data: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const mac = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(data));
+  return [...new Uint8Array(mac)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verifySignature(
+  secret: string,
+  raw: string,
+  header: string | null
+): Promise<'ok' | 'malformed' | 'expired' | 'mismatch'> {
+  if (!header) return 'malformed';
+  const pairs = header.split(',').map((part) => {
+    const i = part.indexOf('=');
+    return i === -1 ? [part.trim(), ''] : [part.slice(0, i).trim(), part.slice(i + 1).trim()];
+  });
+  const timestamps = pairs.filter(([k]) => k === 't').map(([, v]) => v);
+  const candidates = pairs.filter(([k, v]) => k === 'v1' && v).map(([, v]) => v.toLowerCase());
+  if (timestamps.length !== 1 || !/^\d+$/.test(timestamps[0]) || candidates.length === 0) {
+    return 'malformed';
+  }
+  const t = Number(timestamps[0]);
+  if (Math.abs(Math.floor(Date.now() / 1000) - t) > SIGNATURE_TOLERANCE_SECONDS) return 'expired';
+  const expected = await hmacHex(secret, `${t}.${raw}`);
+  return candidates.some((c) => timingSafeEqualHex(expected, c)) ? 'ok' : 'mismatch';
+}
+
 export const POST: APIRoute = async ({ request }) => {
-  // Verify Kiln's webhook signature: HMAC-SHA256 of the raw body, hex-encoded
-  // in x-kilncms-signature, keyed by the endpoint's signing secret (shown in
-  // Kiln admin → Webhooks). Set INDEXNOW_WEBHOOK_SECRET to that signing
-  // secret in the Worker's runtime secrets.
-  // Fail-closed: if the secret env var is unset, refuse all requests rather
-  // than accepting any caller.
+  // Set INDEXNOW_WEBHOOK_SECRET to the endpoint's signing secret in the
+  // Worker's runtime secrets. Fail-closed: if it is unset, refuse all requests
+  // rather than accepting any caller.
   const secret = runtimeEnv.INDEXNOW_WEBHOOK_SECRET;
   if (!secret) {
     console.error('INDEXNOW_WEBHOOK_SECRET is not configured; rejecting webhook');
@@ -64,18 +104,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (tooBig) return tooBig;
 
   const raw = await request.text();
-  const signature = request.headers.get('x-kilncms-signature') || '';
-  const key = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign']
-  );
-  const mac = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(raw));
-  const expected = [...new Uint8Array(mac)].map((b) => b.toString(16).padStart(2, '0')).join('');
-  if (!timingSafeEqualHex(expected, signature.toLowerCase())) {
-    return new Response('Unauthorized', { status: 401 });
+  const verdict = await verifySignature(secret, raw, request.headers.get(SIGNATURE_HEADER));
+  if (verdict !== 'ok') {
+    console.error(`IndexNow webhook signature rejected: ${verdict}`);
+    return new Response(`Unauthorized (${verdict})`, { status: 401 });
   }
 
   let body: Record<string, unknown>;
@@ -85,10 +117,19 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response('Bad Request: invalid JSON', { status: 400 });
   }
 
-  // Kiln webhook body: { event: "post.published", data: <serialized content> }
-  // (KilnCMS.Webhooks.DeliveryWorker encodes %{event: event, data: payload};
-  // the serialized content carries a top-level slug).
+  // Kiln webhook body: { event: "post.published", data: <serialized content>, delivery_id }
+  // (KilnCMS.Webhooks.DeliveryWorker; the serialized content carries a top-level slug).
   const event = body?.event as string | undefined;
+
+  // Admin "Ping" sends { event: "ping", data: { message, ... } } with no page.
+  // Answer 200 so a correctly configured endpoint shows healthy in Kiln.
+  if (event === 'ping') {
+    return new Response(JSON.stringify({ ok: true, ping: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const type = event?.split('.')[0];
   const slug = (body?.data as { slug?: string } | undefined)?.slug;
 
