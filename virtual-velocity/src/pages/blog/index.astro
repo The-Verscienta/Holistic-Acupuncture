@@ -6,6 +6,7 @@ import Card from '../../components/Card.astro';
 import Badge from '../../components/Badge.astro';
 import KilnImage from '../../components/KilnImage.astro';
 import { getAllBlogPosts } from '../../lib/kilnQueries';
+import { runtimeEnv } from '../../lib/env';
 import { formatDate, decodeHtmlEntities } from '../../lib/format';
 import { categoryLabels } from '../../types/content';
 
@@ -20,8 +21,8 @@ const url = new URL(Astro.request.url);
 const currentPage = parseInt(url.searchParams.get('page') || '1');
 const categoryFilter = url.searchParams.get('category') || 'All';
 
-// Fetch all blog posts from Kiln (runtime env carries the base URL on Cloudflare)
-const kilnUrl = (Astro.locals as any).runtime?.env?.KILN_API_URL;
+// Fetch all blog posts from Kiln (the Worker's runtime env carries the base URL)
+const kilnUrl = runtimeEnv.KILN_API_URL;
 const allPosts = await getAllBlogPosts(kilnUrl);
 
 // Filter posts by category if needed

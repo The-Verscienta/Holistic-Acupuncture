@@ -1,11 +1,11 @@
 /**
  * Builds the Pagefind search index, then removes the prerendered blog shadow
- * pages from dist so they never deploy.
+ * pages from the static output so they never deploy.
  *
  * /blog/[slug] is SSR, so its HTML isn't in dist for Pagefind to find.
  * src/pages/search-index/blog/[slug].astro prerenders the same page under
  * /search-index/blog/; this script indexes those files under their real
- * /blog/<slug>/ URL and deletes dist/search-index.
+ * /blog/<slug>/ URL and deletes dist/client/search-index.
  *
  * Run after `astro build`: postbuild in package.json.
  */
@@ -15,7 +15,10 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const distDir = join(__dirname, '..', 'dist');
+// @astrojs/cloudflare v13+ writes static assets to dist/client (the Worker's
+// assets directory) and the Worker itself to dist/server.
+const distDir = join(__dirname, '..', 'dist', 'client');
+if (!existsSync(distDir)) throw new Error(`build-search-index: ${distDir} not found; run astro build first`);
 const shadowDir = join(distDir, 'search-index', 'blog');
 
 // Read the shadow pages, then drop them from dist before indexing the rest

@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { runtimeEnv } from '../../lib/env';
 import { getAllBlogPosts, getAllConditions } from '../../lib/kilnQueries';
 import type { BlogPost, Condition } from '../../types/content';
 
@@ -78,7 +79,7 @@ interface SearchResult {
  *
  * Searches through blog posts and conditions for matching content.
  */
-export const GET: APIRoute = async ({ request, url, locals }) => {
+export const GET: APIRoute = async ({ request, url }) => {
   try {
     const clientIp = getClientIp(request);
     if (!checkRateLimit(clientIp)) {
@@ -108,7 +109,7 @@ export const GET: APIRoute = async ({ request, url, locals }) => {
     }
 
     // Fetch all searchable content (cached in-isolate for CORPUS_TTL_MS)
-    const kilnUrl = (locals as any)?.runtime?.env?.KILN_API_URL;
+    const kilnUrl = runtimeEnv.KILN_API_URL;
     const { blogPosts, conditions } = await getCorpus(kilnUrl);
 
     const results: SearchResult[] = [];

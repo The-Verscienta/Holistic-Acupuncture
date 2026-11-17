@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# wrangler / workerd local state and secrets
+.wrangler/
+.dev.vars*
+!.dev.vars.example

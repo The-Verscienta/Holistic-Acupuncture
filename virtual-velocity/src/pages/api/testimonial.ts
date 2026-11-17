@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { runtimeEnv } from '../../lib/env';
 import { sendTestimonialNotification, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
@@ -45,13 +46,11 @@ function getClientIp(request: Request): string {
  * No database storage - for testimonial management, integrate with
  * Sanity CMS or add them manually.
  */
-export const POST: APIRoute = async ({ request, locals }) => {
-  // Cloudflare Pages passes secrets via locals.runtime.env (runtime); import.meta.env is build-time only.
-  const runtimeEnv = (locals as any).runtime?.env ?? {};
+export const POST: APIRoute = async ({ request }) => {
   const emailEnv: EmailEnv = {
-    resendApiKey: runtimeEnv.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY,
-    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
-    resendFromName: runtimeEnv.RESEND_FROM_NAME ?? import.meta.env.RESEND_FROM_NAME,
+    resendApiKey: runtimeEnv.RESEND_API_KEY,
+    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL,
+    resendFromName: runtimeEnv.RESEND_FROM_NAME,
     adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
   };
 

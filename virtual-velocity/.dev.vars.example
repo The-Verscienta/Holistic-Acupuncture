@@ -1,0 +1,11 @@
+# Runtime variables/secrets for local `astro dev` / `astro preview` (workerd).
+# Copy to .dev.vars (gitignored) and fill in TEST values only.
+# In production these are Worker variables/secrets (see src/lib/env.ts).
+KILN_API_URL=https://api.verscienta.com
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+RESEND_FROM_NAME=
+PUBLIC_ADMIN_EMAIL=
+META_CONVERSIONS_API_TOKEN=
+META_DATASET_ID=
+INDEXNOW_WEBHOOK_SECRET=

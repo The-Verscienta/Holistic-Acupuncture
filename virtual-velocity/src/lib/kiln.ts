@@ -9,8 +9,9 @@
  *    final Cloudflare Images URL).
  *
  * Base URL comes from KILN_API_URL. At build time (SSG) import.meta.env is
- * used; runtime endpoints on Cloudflare pass the env value explicitly via
- * `baseUrl` since worker env vars live on locals.runtime.env.
+ * used (inlined into the bundle — fine, it's a URL, not a secret); runtime
+ * endpoints on Cloudflare pass the Worker's env value explicitly via
+ * `baseUrl` (see src/lib/env.ts).
  */
 
 const DEFAULT_KILN_URL = 'http://localhost:4000';
@@ -23,7 +24,7 @@ export function kilnBaseUrl(override?: string): string {
     if (import.meta.env.DEV) return DEFAULT_KILN_URL;
     throw new Error(
       'KILN_API_URL is not set. Configure it in the build environment ' +
-        '(and as a Cloudflare Pages runtime variable for SSR endpoints).'
+        '(and as a Cloudflare Worker runtime variable for SSR endpoints).'
     );
   }
   // Tolerate a bare host ("api.example.com") — fetch needs an absolute URL,
