@@ -12,6 +12,12 @@
   // Keep plain-text variables set in the dashboard. Without this, every
   // `wrangler deploy` (Workers Builds on main) deletes them; secrets survive either way.
   "keep_vars": true,
+  // The site lives on holisticacupuncture.net (custom domain on this Worker).
+  // Turn off the public <name>.<account>.workers.dev copy so search engines
+  // don't see a duplicate site. Per-branch preview URLs stay on explicitly:
+  // when workers_dev is false they default to off (wrangler >= 4.44).
+  "workers_dev": false,
+  "preview_urls": true,
   // Cost guards — do NOT add:
   //   assets.run_worker_first: true  → every static request becomes a billable Worker request
   //   assets.not_found_handling      → "404-page" would shadow SSR /blog/<new-slug>/ routes
