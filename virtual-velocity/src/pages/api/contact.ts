@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { runtimeEnv } from '../../lib/env';
 import { sendContactFormNotification, sendConfirmationEmail, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
@@ -52,14 +53,12 @@ function getClientUserAgent(request: Request): string {
  * Handles contact form submissions and sends email notifications.
  * No database storage - emails only.
  */
-export const POST: APIRoute = async ({ request, locals }) => {
-  // Cloudflare Pages passes secrets via locals.runtime.env (runtime); import.meta.env is build-time only.
-  const runtimeEnv = (locals as any).runtime?.env ?? {};
-  const resendApiKey = runtimeEnv.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
+export const POST: APIRoute = async ({ request }) => {
+  const resendApiKey = runtimeEnv.RESEND_API_KEY;
   const emailEnv: EmailEnv = {
     resendApiKey,
-    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL,
-    resendFromName: runtimeEnv.RESEND_FROM_NAME ?? import.meta.env.RESEND_FROM_NAME,
+    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL,
+    resendFromName: runtimeEnv.RESEND_FROM_NAME,
     adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
   };
 
@@ -182,8 +181,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     // above); CMS record-keeping ended with the Sanity migration.
 
     // Track contact form submission as conversion event to Meta (non-critical)
-    const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN ?? import.meta.env.META_CONVERSIONS_API_TOKEN;
-    const metaDatasetId = runtimeEnv.META_DATASET_ID ?? import.meta.env.META_DATASET_ID;
+    const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN;
+    const metaDatasetId = runtimeEnv.META_DATASET_ID;
     if (metaAccessToken && metaDatasetId) {
       try {
         console.log('[Meta] Sending conversion event', { metaDatasetId, email, hasPhone: !!data.phone });

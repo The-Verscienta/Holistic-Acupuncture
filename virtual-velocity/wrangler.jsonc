@@ -1,0 +1,16 @@
+// Cloudflare Workers config (static assets + a Worker for SSR routes).
+// The Astro adapter merges this into dist/server/wrangler.json at build time,
+// filling in `main` and the `assets` binding/directory.
+// See docs/ASTRO-7-WORKERS-MIGRATION.md.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "holistic-acupuncture",
+  "compatibility_date": "2026-11-10",
+  // Resend SDK and other npm deps may reach for Node built-ins.
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  // Cost guards — do NOT add:
+  //   assets.run_worker_first: true  → every static request becomes a billable Worker request
+  //   assets.not_found_handling      → "404-page" would shadow SSR /blog/<new-slug>/ routes
+  //   cache / Workers Cache          → bills every request, including free static ones
+}

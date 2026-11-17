@@ -33,6 +33,25 @@ Files reading `locals.runtime.env`:
 
 ---
 
+## Progress log
+
+**2026-11-16 — Phases 0.1, 1, 2 and 3 done in code** (Cloudflare setup, Phases 4+, not started):
+- Baseline recorded: `scripts/baseline-urls.json` (717 URLs from prod) + `scripts/check-urls.js record|compare`. Note: >3 concurrent SSR requests made the Kiln backend return spurious 500s, so the script defaults to concurrency 3 and retries 5xx.
+- Installed astro 7.4.12, @astrojs/cloudflare 14.4.8, Vite 8.3, Tailwind 4.3.5, wrangler 4.163. Dropped `@astrojs/node`, the Linux binary pins (the lockfile carries them now), `netlify.toml`, `vercel.json`. Added `.nvmrc` (22) and `engines`.
+- Confirmed: static output is `dist/client/`; the adapter writes `dist/server/wrangler.json` and `.wrangler/deploy/config.json` so a plain `wrangler deploy` picks it up.
+- The adapter turns on sessions by default with a `SESSION` KV binding, which wrangler would auto-provision. Set `session: false` since sessions are unused.
+- `wrangler.jsonc`: name `holistic-acupuncture`, `nodejs_compat`, observability on.
+- Env: `src/lib/env.ts` (`runtimeEnv` from `cloudflare:workers`). All `locals.runtime.env` reads and secret `import.meta.env` fallbacks removed. Locally the build copies `.dev.vars` (or `.env`) into `dist/server/.dev.vars`, so **rebuild after editing `.dev.vars`** before `astro preview`.
+- Rust compiler: 2 errors fixed (HTML comment inside a JSX expression in `CookieConsent.astro`, unclosed `<div>` in `Header.astro`). Normalised HTML diff of all 316 prerendered pages vs the Astro 5 build: no structural changes (only `&`→`&amp;` in attributes, whitespace, and the random testimonial picks).
+- Local `check-urls compare` vs prod. The differences that matter:
+  - **Trailing-slash redirects:** Workers' `html_handling` redirects `/acid-reflux` → `/acid-reflux/` with a 307 (temporary) where Pages used 308. Fixed by `scripts/finalize-redirects.js` (postbuild), which writes explicit `/dir /dir/ 301` rules.
+  - **`_redirects` was mostly not loading, on Pages too.** Cloudflare treats every rule after the first wildcard as dynamic and silently skips everything past the 100th dynamic rule. `public/_redirects` has its first wildcard on rule 15, so about 160 exact-path rules never loaded. `finalize-redirects.js` moves static rules ahead of wildcards, which matches how the runtime already prioritises them. It also fails the build if a Workers limit (2000 static / 100 dynamic) would be exceeded.
+  - Some of those dormant rules point at posts that were never migrated. Where a rule's target isn't a built page or sitemap URL, the script uses the destination of the meta-refresh page at the same path instead, and it warns about any rule with no fallback (currently none).
+  - Result vs prod, following every baseline URL's full chain: every redirect is now a single permanent hop. `/3d-still-showing-sciatica-nerve` and `/blog/page/*` no longer 404. 11 legacy slugs (e.g. `/acupuncture-for-allergies`, `/athletes-tendon-ligament-injuries`) now land on their matching blog post instead of `/conditions`. Everything else ends where it does today.
+  - `/blog/page/*` now 301s to `/blog` (the existing `_redirects` rule) where Pages returned 404.
+  - Cosmetic: redirect responses have no `content-type`; `robots.txt` is `max-age=0` instead of 4h.
+- Unmatched paths (404s, bot probes) now reach the Worker (billable request) instead of Pages' free static 404. Expected to be negligible at this traffic level.
+
 ## Phase 0: Preparation (no code changes)
 
 1. **Record current behaviour as a baseline**, to diff against after the move:

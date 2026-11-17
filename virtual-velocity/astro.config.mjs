@@ -2,18 +2,7 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import node from '@astrojs/node';
-
-// Conditionally import Cloudflare adapter
-// On Windows ARM64, workerd is not supported, so we use Node adapter for local builds
-// Cloudflare Pages will use the correct adapter when deploying (via wrangler.toml)
-let cloudflare;
-try {
-  cloudflare = (await import('@astrojs/cloudflare')).default;
-} catch {
-  console.warn('Cloudflare adapter not available (expected on Windows ARM64). Using Node adapter for local builds.');
-  cloudflare = null;
-}
+import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
@@ -29,16 +18,13 @@ export default defineConfig({
     }),
   ],
   output: 'static', // Static by default, use prerender = false for SSR routes
-  adapter: cloudflare
-    ? cloudflare({
-        platformProxy: {
-          enabled: false,
-        },
-        imageService: 'compile', // Optimize images at build time (sharp not available at runtime)
-      })
-    : node({
-        mode: 'standalone',
-      }),
+  // Cloudflare Workers (static assets + Worker for SSR routes).
+  // Keep imageService 'compile': the v14 default 'cloudflare-binding' bills
+  // Cloudflare Images transformations.
+  adapter: cloudflare({ imageService: 'compile' }),
+  // Sessions are unused. Without this the adapter wires up a SESSION KV
+  // binding and wrangler auto-provisions a KV namespace on deploy.
+  session: false,
   vite: {
     plugins: [tailwindcss()],
     build: {

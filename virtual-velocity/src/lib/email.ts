@@ -5,9 +5,9 @@
  * https://resend.com/docs/send-with-astro
  *
  * Setup: create API key at https://resend.com/api-keys, verify domain.
- * - Local dev: set RESEND_API_KEY in .env (import.meta.env).
- * - Cloudflare Pages: set RESEND_API_KEY in the dashboard; API routes pass it
- *   via the optional apiKey argument (locals.runtime.env is runtime, import.meta.env is build-time only).
+ * - Local dev: set RESEND_API_KEY in .dev.vars.
+ * - Cloudflare Workers: set RESEND_API_KEY as a Worker secret; API routes read
+ *   it from the runtime env (src/lib/env.ts) and pass it in via EmailEnv.
  */
 
 import { Resend } from 'resend';
@@ -30,9 +30,9 @@ export interface EmailOptions {
 }
 
 /**
- * Runtime email config. On Cloudflare Pages, `import.meta.env` only sees
- * variables present at build time. Secrets/config set in the CF dashboard are
- * delivered at runtime via `locals.runtime.env` and must be passed in here.
+ * Runtime email config, read by callers from the Worker's runtime env
+ * (src/lib/env.ts). Not read from `import.meta.env` here: Astro inlines
+ * non-public `import.meta.env` values into the bundle at build time.
  */
 export interface EmailEnv {
   resendApiKey?: string;
@@ -61,15 +61,15 @@ export interface TestimonialData {
  * Send email using Resend SDK (https://resend.com/docs/send-with-astro)
  */
 export async function sendEmail(options: EmailOptions, env?: EmailEnv): Promise<boolean> {
-  const resolvedApiKey = env?.resendApiKey ?? import.meta.env.RESEND_API_KEY;
+  const resolvedApiKey = env?.resendApiKey;
 
   if (!resolvedApiKey) {
     console.error('RESEND_API_KEY not configured');
     return false;
   }
 
-  const fromEmail = env?.resendFromEmail ?? import.meta.env.RESEND_FROM_EMAIL ?? 'info@milwaukeeacu.com';
-  const fromName = env?.resendFromName ?? import.meta.env.RESEND_FROM_NAME ?? 'Milwaukee Acupuncture';
+  const fromEmail = env?.resendFromEmail ?? 'info@milwaukeeacu.com';
+  const fromName = env?.resendFromName ?? 'Milwaukee Acupuncture';
   const from = `${fromName} <${fromEmail}>`;
 
   const to = Array.isArray(options.to) ? options.to : [options.to];

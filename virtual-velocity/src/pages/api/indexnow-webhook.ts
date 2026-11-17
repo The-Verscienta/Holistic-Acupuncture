@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { runtimeEnv } from '../../lib/env';
 import { checkBodySize } from '../../lib/sanitize';
 
 export const prerender = false;
@@ -45,15 +46,14 @@ function timingSafeEqualHex(a: string, b: string): boolean {
   return diff === 0;
 }
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   // Verify Kiln's webhook signature: HMAC-SHA256 of the raw body, hex-encoded
   // in x-kilncms-signature, keyed by the endpoint's signing secret (shown in
   // Kiln admin → Webhooks). Set INDEXNOW_WEBHOOK_SECRET to that signing
-  // secret in the Cloudflare Pages runtime env.
+  // secret in the Worker's runtime secrets.
   // Fail-closed: if the secret env var is unset, refuse all requests rather
   // than accepting any caller.
-  const runtimeEnv = (locals as any).runtime?.env ?? {};
-  const secret = runtimeEnv.INDEXNOW_WEBHOOK_SECRET ?? import.meta.env.INDEXNOW_WEBHOOK_SECRET;
+  const secret = runtimeEnv.INDEXNOW_WEBHOOK_SECRET;
   if (!secret) {
     console.error('INDEXNOW_WEBHOOK_SECRET is not configured; rejecting webhook');
     return new Response('Service not configured', { status: 503 });
