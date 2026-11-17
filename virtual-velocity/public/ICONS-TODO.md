@@ -71,11 +71,11 @@ After generating icons, test on:
 ## File Checklist
 
 - [ ] favicon.svg ✅ (Already created)
-- [ ] favicon.ico (32x32, multi-size)
-- [ ] icon-192.png (192x192)
-- [ ] icon-512.png (512x512)
-- [ ] apple-touch-icon.png (180x180)
-- [ ] site.webmanifest ✅ (Already created)
+- [x] favicon-48.png (used as rel=icon; favicon.svg is a 225 KB trace, too heavy to serve)
+- [x] icon-192.png (192x192)
+- [x] icon-512.png (512x512)
+- [x] apple-touch-icon.png (180x180)
+- [x] site.webmanifest (not linked from pages yet)
 
 ## Notes
 

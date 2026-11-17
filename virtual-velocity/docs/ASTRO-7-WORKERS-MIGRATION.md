@@ -52,6 +52,14 @@ Files reading `locals.runtime.env`:
   - Cosmetic: redirect responses have no `content-type`; `robots.txt` is `max-age=0` instead of 4h.
 - Unmatched paths (404s, bot probes) now reach the Worker (billable request) instead of Pages' free static 404. Expected to be negligible at this traffic level.
 
+**2026-11-17 — Phase 4 done, Phase 5 mostly done.** The Worker `holistic-acupuncture` is connected to the repo (root `virtual-velocity`) and is running this branch's build at https://holistic-acupuncture.pf3.workers.dev. We're testing there rather than on a `demo.` subdomain.
+- The build needs `KILN_API_URL` set as a **build** variable, because the static pages fetch from Kiln during the build. Every build of `main` fails until this branch merges: `main` has no `wrangler.jsonc`, so it reports "Missing entry-point". These failures are expected and harmless.
+- `check-urls` and a full redirect-chain comparison against production give the same results as the local preview. Every redirect is a single permanent hop. `/3d-still-showing-sciatica-nerve` and `/blog/page/*` are fixed, and 13 URLs for legacy slugs now land on their matching blog post instead of `/conditions`. Nothing ends up worse than on production.
+- Verified on the Worker: a post published in Kiln appeared without a rebuild; the indexnow webhook returns 401 for a bad signature (so the secret is set); search, Pagefind and CSP work; canonical URLs point at `holisticacupuncture.net`.
+- Also verified on the Worker: the contact form delivers real email quickly, and the Meta CAPI phone-click event works.
+- Lighthouse on `/contact/` (mobile, Worker): Performance 90, Accessibility 96, Best Practices 73, SEO 100. Server response is 55 ms, TBT 0, CLS 0. The Best Practices deductions come from the Google Maps embed's third-party cookies and a browser extension blocking GTM, not from the migration. Security headers match production, except Referrer-Policy: production returns `same-origin` (probably a zone-level rule, which should also apply once the Worker serves the real domain) where `_headers` sets `strict-origin-when-cross-origin`.
+- Still to check before Phase 6: the Worker dashboard for errors and CPU time. Plain dashboard variables are deleted by every `wrangler deploy`; only secrets survive.
+
 ## Phase 0: Preparation (no code changes)
 
 1. **Record current behaviour as a baseline**, to diff against after the move:
