@@ -9,6 +9,9 @@
   // Resend SDK and other npm deps may reach for Node built-ins.
   "compatibility_flags": ["nodejs_compat"],
   "observability": { "enabled": true },
+  // Keep plain-text variables set in the dashboard. Without this, every
+  // `wrangler deploy` (Workers Builds on main) deletes them; secrets survive either way.
+  "keep_vars": true,
   // Cost guards — do NOT add:
   //   assets.run_worker_first: true  → every static request becomes a billable Worker request
   //   assets.not_found_handling      → "404-page" would shadow SSR /blog/<new-slug>/ routes
