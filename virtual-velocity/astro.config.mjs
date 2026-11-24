@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, envField, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
@@ -45,6 +45,29 @@ export default defineConfig({
       PUBLIC_APP_URL: envField.string({ context: 'client', access: 'public', url: true, optional: true }),
     },
   },
+  // Brand fonts, self-hosted from the build (Astro Fonts API). Rendered and
+  // preloaded by src/components/SiteFonts.astro. Fallbacks ending in a generic
+  // family get metric-matched (size-adjust/ascent/descent) fallback faces.
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'Jost',
+      cssVariable: '--font-jost',
+      weights: ['300 600'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['system-ui', 'sans-serif'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Cormorant Garamond',
+      cssVariable: '--font-cormorant',
+      weights: ['400 700'],
+      styles: ['normal', 'italic'],
+      subsets: ['latin'],
+      fallbacks: ['Georgia', 'serif'],
+    },
+  ],
   output: 'static', // Static by default, use prerender = false for SSR routes
   // Cloudflare Workers (static assets + Worker for SSR routes).
   // Keep imageService 'compile': the v14 default 'cloudflare-binding' bills
