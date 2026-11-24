@@ -50,9 +50,11 @@
 
   /* Typography — two typefaces only (§04): Cormorant Garamond for display,
      Jost for utility/body. */
-  --font-sans: Jost, 'Jost-fallback', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Cormorant Garamond', 'Cormorant-fallback', Georgia, serif;
-  --font-serif: 'Cormorant Garamond', 'Cormorant-fallback', Georgia, serif;
+  /* --font-jost / --font-cormorant come from <SiteFonts /> (Astro Fonts API) and
+     include the generated metric-matched fallbacks and generic families. */
+  --font-sans: var(--font-jost);
+  --font-heading: var(--font-cormorant);
+  --font-serif: var(--font-cormorant);
 
   /* Fluid Typography Scale */
   --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -81,22 +83,6 @@
   /* Animations */
   --animate-fade-up: fadeUp 0.6s ease forwards;
   --animate-fade-in: fadeIn 0.4s ease forwards;
-}
-
-/* Metrics-approximate fallbacks: reduce layout shift while web fonts load */
-@font-face {
-  font-family: 'Cormorant-fallback';
-  size-adjust: 92%;
-  ascent-override: 95%;
-  descent-override: 30%;
-  src: local('Georgia');
-}
-@font-face {
-  font-family: 'Jost-fallback';
-  size-adjust: 98%;
-  ascent-override: 106%;
-  descent-override: 37%;
-  src: local('Arial');
 }
 
 /* Base Styles */

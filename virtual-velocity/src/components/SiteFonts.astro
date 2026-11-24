@@ -1,0 +1,13 @@
+---
+/**
+ * Self-hosted brand fonts (Astro Fonts API; families declared in astro.config.mjs).
+ * Emits the @font-face rules, the metric-matched fallback faces and the
+ * --font-jost / --font-cormorant variables that global.css builds on.
+ * Preloads only the faces used above the fold: Jost 400 (body/hero copy) and
+ * Cormorant 700 (hero H1, font-bold). Other weights load on demand.
+ */
+import { Font } from 'astro:assets';
+---
+
+<Font cssVariable="--font-jost" preload={[{ weight: 400, style: 'normal' }]} />
+<Font cssVariable="--font-cormorant" preload={[{ weight: 700, style: 'normal' }]} />
