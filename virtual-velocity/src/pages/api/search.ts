@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { runtimeEnv } from '../../lib/env';
 import { getAllBlogPosts, getAllConditions } from '../../lib/kilnQueries';
 import type { BlogPost, Condition } from '../../types/content';
 
@@ -109,8 +108,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // Fetch all searchable content (cached in-isolate for CORPUS_TTL_MS)
-    const kilnUrl = runtimeEnv.KILN_API_URL;
-    const { blogPosts, conditions } = await getCorpus(kilnUrl);
+    const { blogPosts, conditions } = await getCorpus();
 
     const results: SearchResult[] = [];
 

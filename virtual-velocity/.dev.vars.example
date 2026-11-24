@@ -1,7 +1,8 @@
 # Runtime variables/secrets for local `astro dev` / `astro preview` (workerd).
 # Copy to .dev.vars (gitignored) and fill in TEST values only.
-# In production these are Worker variables/secrets (see src/lib/env.ts).
-KILN_API_URL=https://api.verscienta.com
+# In production these are Worker variables/secrets, declared in the `env.schema`
+# of astro.config.mjs and read via `astro:env/server`.
+# (KILN_API_URL is a build-time variable: put it in .env, not here.)
 RESEND_API_KEY=
 RESEND_FROM_EMAIL=
 RESEND_FROM_NAME=

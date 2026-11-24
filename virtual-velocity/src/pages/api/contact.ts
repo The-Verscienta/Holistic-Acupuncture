@@ -1,5 +1,12 @@
 import type { APIRoute } from 'astro';
-import { runtimeEnv } from '../../lib/env';
+import {
+  RESEND_API_KEY,
+  RESEND_FROM_EMAIL,
+  RESEND_FROM_NAME,
+  PUBLIC_ADMIN_EMAIL,
+  META_CONVERSIONS_API_TOKEN,
+  META_DATASET_ID,
+} from 'astro:env/server';
 import { sendContactFormNotification, sendConfirmationEmail, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
@@ -54,12 +61,12 @@ function getClientUserAgent(request: Request): string {
  * No database storage - emails only.
  */
 export const POST: APIRoute = async ({ request }) => {
-  const resendApiKey = runtimeEnv.RESEND_API_KEY;
+  const resendApiKey = RESEND_API_KEY;
   const emailEnv: EmailEnv = {
     resendApiKey,
-    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL,
-    resendFromName: runtimeEnv.RESEND_FROM_NAME,
-    adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
+    resendFromEmail: RESEND_FROM_EMAIL,
+    resendFromName: RESEND_FROM_NAME,
+    adminEmail: PUBLIC_ADMIN_EMAIL,
   };
 
   try {
@@ -181,8 +188,8 @@ export const POST: APIRoute = async ({ request }) => {
     // above); CMS record-keeping ended with the Sanity migration.
 
     // Track contact form submission as conversion event to Meta (non-critical)
-    const metaAccessToken = runtimeEnv.META_CONVERSIONS_API_TOKEN;
-    const metaDatasetId = runtimeEnv.META_DATASET_ID;
+    const metaAccessToken = META_CONVERSIONS_API_TOKEN;
+    const metaDatasetId = META_DATASET_ID;
     if (metaAccessToken && metaDatasetId) {
       try {
         console.log('[Meta] Sending conversion event', { metaDatasetId, email, hasPhone: !!data.phone });

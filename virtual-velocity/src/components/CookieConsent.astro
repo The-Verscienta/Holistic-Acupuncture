@@ -1,4 +1,6 @@
 ---
+import { PUBLIC_GA_MEASUREMENT_ID } from 'astro:env/client';
+
 /**
  * Cookie Consent Banner
  *
@@ -7,8 +9,9 @@
  * Consent preference is stored in a cookie for 365 days.
  */
 // GA Measurement IDs are public (shipped to every browser), so we default to the
-// site's real ID and let the env var override it for staging/other properties.
-const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-18D0JDVT23';
+// site's real ID (default in astro.config.mjs) and let the env var override it
+// for staging/other properties.
+const gaId = PUBLIC_GA_MEASUREMENT_ID;
 
 // role="region" instead of "dialog": this banner is non-blocking — users can
 // keep interacting with the page while it's visible — so a modal-dialog role

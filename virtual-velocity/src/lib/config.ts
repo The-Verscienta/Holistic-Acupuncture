@@ -4,8 +4,10 @@
  * Centralized configuration for site-wide settings
  */
 
-// Jane App booking URL - configurable via environment variable
-export const JANE_BOOKING_URL = import.meta.env.PUBLIC_JANE_BOOKING_URL || 'https://ahha.janeapp.com';
+import { PUBLIC_JANE_BOOKING_URL, PUBLIC_APP_URL } from 'astro:env/client';
+
+// Jane App booking URL (PUBLIC_JANE_BOOKING_URL; default set in astro.config.mjs)
+export const JANE_BOOKING_URL = PUBLIC_JANE_BOOKING_URL;
 
 // Internal booking interstitial. All in-site "Book" CTAs point here; the /book
 // page itself is the only place that links out to JANE_BOOKING_URL (new tab).
@@ -19,7 +21,7 @@ export const DEFAULT_OG_IMAGE = '/images/default-og.jpg';
 /** Allowed origins for API CSRF check (production + optional preview, e.g. Cloudflare Pages) */
 export const ALLOWED_ORIGINS: string[] = [
   SITE_URL,
-  import.meta.env.PUBLIC_APP_URL,
+  PUBLIC_APP_URL,
 ].filter(Boolean) as string[];
 
 /** Allowed origins including request origin so same-origin works on any deployment (pages.dev, localhost, etc.) */

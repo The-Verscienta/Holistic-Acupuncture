@@ -41,7 +41,7 @@ Files reading `locals.runtime.env`:
 - Confirmed: static output is `dist/client/`; the adapter writes `dist/server/wrangler.json` and `.wrangler/deploy/config.json` so a plain `wrangler deploy` picks it up.
 - The adapter turns on sessions by default with a `SESSION` KV binding, which wrangler would auto-provision. Set `session: false` since sessions are unused.
 - `wrangler.jsonc`: name `holistic-acupuncture`, `nodejs_compat`, observability on.
-- Env: `src/lib/env.ts` (`runtimeEnv` from `cloudflare:workers`). All `locals.runtime.env` reads and secret `import.meta.env` fallbacks removed. Locally the build copies `.dev.vars` (or `.env`) into `dist/server/.dev.vars`, so **rebuild after editing `.dev.vars`** before `astro preview`.
+- Env: originally `src/lib/env.ts` (`runtimeEnv` from `cloudflare:workers`); since #57 replaced by `astro:env` (`env.schema` in `astro.config.mjs`). All `locals.runtime.env` reads and secret `import.meta.env` fallbacks removed. Locally the build copies `.dev.vars` (or `.env`) into `dist/server/.dev.vars`, so **rebuild after editing `.dev.vars`** before `astro preview`.
 - Rust compiler: 2 errors fixed (HTML comment inside a JSX expression in `CookieConsent.astro`, unclosed `<div>` in `Header.astro`). Normalised HTML diff of all 316 prerendered pages vs the Astro 5 build: no structural changes (only `&`→`&amp;` in attributes, whitespace, and the random testimonial picks).
 - Local `check-urls compare` vs prod. The differences that matter:
   - **Trailing-slash redirects:** Workers' `html_handling` redirects `/acid-reflux` → `/acid-reflux/` with a 307 (temporary) where Pages used 308. Fixed by `scripts/finalize-redirects.js` (postbuild), which writes explicit `/dir /dir/ 301` rules.

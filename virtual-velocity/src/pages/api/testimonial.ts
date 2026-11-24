@@ -1,5 +1,10 @@
 import type { APIRoute } from 'astro';
-import { runtimeEnv } from '../../lib/env';
+import {
+  RESEND_API_KEY,
+  RESEND_FROM_EMAIL,
+  RESEND_FROM_NAME,
+  PUBLIC_ADMIN_EMAIL,
+} from 'astro:env/server';
 import { sendTestimonialNotification, type EmailEnv } from '../../lib/email';
 import { validateOriginList, checkBodySize } from '../../lib/sanitize';
 import { getAllowedOrigins } from '../../lib/config';
@@ -48,10 +53,10 @@ function getClientIp(request: Request): string {
  */
 export const POST: APIRoute = async ({ request }) => {
   const emailEnv: EmailEnv = {
-    resendApiKey: runtimeEnv.RESEND_API_KEY,
-    resendFromEmail: runtimeEnv.RESEND_FROM_EMAIL,
-    resendFromName: runtimeEnv.RESEND_FROM_NAME,
-    adminEmail: runtimeEnv.PUBLIC_ADMIN_EMAIL ?? import.meta.env.PUBLIC_ADMIN_EMAIL,
+    resendApiKey: RESEND_API_KEY,
+    resendFromEmail: RESEND_FROM_EMAIL,
+    resendFromName: RESEND_FROM_NAME,
+    adminEmail: PUBLIC_ADMIN_EMAIL,
   };
 
   try {

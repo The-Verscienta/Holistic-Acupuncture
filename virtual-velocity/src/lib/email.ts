@@ -7,7 +7,7 @@
  * Setup: create API key at https://resend.com/api-keys, verify domain.
  * - Local dev: set RESEND_API_KEY in .dev.vars.
  * - Cloudflare Workers: set RESEND_API_KEY as a Worker secret; API routes read
- *   it from the runtime env (src/lib/env.ts) and pass it in via EmailEnv.
+ *   it from `astro:env/server` and pass it in via EmailEnv.
  */
 
 import { Resend } from 'resend';
@@ -30,9 +30,8 @@ export interface EmailOptions {
 }
 
 /**
- * Runtime email config, read by callers from the Worker's runtime env
- * (src/lib/env.ts). Not read from `import.meta.env` here: Astro inlines
- * non-public `import.meta.env` values into the bundle at build time.
+ * Runtime email config, read by callers from `astro:env/server` (secrets are
+ * resolved per request from the Worker's env and never inlined at build time).
  */
 export interface EmailEnv {
   resendApiKey?: string;
@@ -102,7 +101,7 @@ export async function sendEmail(options: EmailOptions, env?: EmailEnv): Promise<
  * Send contact form notification email
  */
 export async function sendContactFormNotification(data: ContactFormData, env?: EmailEnv): Promise<boolean> {
-  const adminEmail = env?.adminEmail ?? import.meta.env.PUBLIC_ADMIN_EMAIL ?? 'info@milwaukeeacu.com';
+  const adminEmail = env?.adminEmail ?? 'info@milwaukeeacu.com';
 
   const html = `
     <!DOCTYPE html>
@@ -256,7 +255,7 @@ Reply to this email to respond to ${data.name}
  * Send testimonial submission notification email
  */
 export async function sendTestimonialNotification(data: TestimonialData, env?: EmailEnv): Promise<boolean> {
-  const adminEmail = env?.adminEmail ?? import.meta.env.PUBLIC_ADMIN_EMAIL ?? 'info@milwaukeeacu.com';
+  const adminEmail = env?.adminEmail ?? 'info@milwaukeeacu.com';
 
   const stars = '⭐'.repeat(data.rating);
 
