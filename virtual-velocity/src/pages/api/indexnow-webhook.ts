@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { runtimeEnv } from '../../lib/env';
+import { INDEXNOW_WEBHOOK_SECRET } from 'astro:env/server';
 import { checkBodySize } from '../../lib/sanitize';
 
 export const prerender = false;
@@ -93,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
   // Set INDEXNOW_WEBHOOK_SECRET to the endpoint's signing secret in the
   // Worker's runtime secrets. Fail-closed: if it is unset, refuse all requests
   // rather than accepting any caller.
-  const secret = runtimeEnv.INDEXNOW_WEBHOOK_SECRET;
+  const secret = INDEXNOW_WEBHOOK_SECRET;
   if (!secret) {
     console.error('INDEXNOW_WEBHOOK_SECRET is not configured; rejecting webhook');
     return new Response('Service not configured', { status: 503 });

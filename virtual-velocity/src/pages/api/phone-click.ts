@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { runtimeEnv } from '../../lib/env';
+import { META_CONVERSIONS_API_TOKEN, META_DATASET_ID } from 'astro:env/server';
 import { sendPhoneCallConversion } from '../../lib/meta';
 import { checkBodySize } from '../../lib/sanitize';
 
@@ -50,8 +50,8 @@ function getClientIp(request: Request): string {
  * Receives phone click events from JavaScript and sends them to Meta
  */
 export const POST: APIRoute = async ({ request }) => {
-  const metaToken = runtimeEnv.META_CONVERSIONS_API_TOKEN;
-  const metaDatasetId = runtimeEnv.META_DATASET_ID;
+  const metaToken = META_CONVERSIONS_API_TOKEN;
+  const metaDatasetId = META_DATASET_ID;
 
   try {
     // Reject oversized bodies before reading them

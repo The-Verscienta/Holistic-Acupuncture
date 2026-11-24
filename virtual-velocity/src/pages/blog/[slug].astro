@@ -1,7 +1,6 @@
 ---
 import BlogPostPage from '../../components/BlogPostPage.astro';
 import { getBlogPostBySlug, getRelatedBlogPosts } from '../../lib/kilnQueries';
-import { runtimeEnv } from '../../lib/env';
 
 // Rendered on demand so a post works the moment it is published in Kiln: the
 // /blog index is SSR, so a prerendered post page would 404 from publish until
@@ -9,16 +8,14 @@ import { runtimeEnv } from '../../lib/env';
 // the prerendered shadow copy in src/pages/search-index/blog/[slug].astro.
 export const prerender = false;
 
-// Runtime env carries the Kiln base URL on Cloudflare
-const kilnUrl = runtimeEnv.KILN_API_URL;
 const slug = Astro.params.slug!;
 
-const post = await getBlogPostBySlug(slug, kilnUrl);
+const post = await getBlogPostBySlug(slug);
 if (!post) {
   // Empty 404 response makes Astro serve the prerendered 404 page
   return new Response(null, { status: 404 });
 }
-const relatedPosts = await getRelatedBlogPosts(slug, post.category, 3, kilnUrl);
+const relatedPosts = await getRelatedBlogPosts(slug, post.category, 3);
 ---
 
 <BlogPostPage post={post} relatedPosts={relatedPosts} />

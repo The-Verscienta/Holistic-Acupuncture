@@ -8,25 +8,15 @@
  *    block tree (rich_text bodies are Portable Text; image blocks carry the
  *    final Cloudflare Images URL).
  *
- * Base URL comes from KILN_API_URL. At build time (SSG) import.meta.env is
- * used (inlined into the bundle — fine, it's a URL, not a secret); runtime
- * endpoints on Cloudflare pass the Worker's env value explicitly via
- * `baseUrl` (see src/lib/env.ts).
+ * Base URL comes from KILN_API_URL (astro:env, public server var): validated
+ * and inlined at build time — a build without it fails. It's a URL, not a
+ * secret, and SSR routes use the same value.
  */
 
-const DEFAULT_KILN_URL = 'http://localhost:4000';
+import { KILN_API_URL } from 'astro:env/server';
 
 export function kilnBaseUrl(override?: string): string {
-  const url = override || import.meta.env.KILN_API_URL || import.meta.env.PUBLIC_KILN_URL;
-  if (!url) {
-    // Fall back to the local dev server only in dev — a production build
-    // without the env var should fail loudly, not dial localhost in CI.
-    if (import.meta.env.DEV) return DEFAULT_KILN_URL;
-    throw new Error(
-      'KILN_API_URL is not set. Configure it in the build environment ' +
-        '(and as a Cloudflare Worker runtime variable for SSR endpoints).'
-    );
-  }
+  const url = override || KILN_API_URL;
   // Tolerate a bare host ("api.example.com") — fetch needs an absolute URL,
   // and a scheme-less env var otherwise fails with an opaque "Invalid URL".
   const withScheme = /^https?:\/\//.test(url) ? url : `https://${url}`;
