@@ -1,4 +1,6 @@
 ---
+import { prefetchAttr } from '../lib/prefetch';
+
 export interface Props {
   variant?: 'default' | 'bordered' | 'elevated' | 'flat';
   padding?: 'none' | 'sm' | 'md' | 'lg';
@@ -44,7 +46,7 @@ const combinedClasses = `${baseStyles} ${variantStyles[variant]} ${paddingStyles
 ---
 
 {href ? (
-  <a href={href} class={combinedClasses}>
+  <a href={href} data-astro-prefetch={prefetchAttr(href)} class={combinedClasses}>
     <slot />
   </a>
 ) : (
