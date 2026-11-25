@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { INDEXNOW_WEBHOOK_SECRET } from 'astro:env/server';
 import { checkBodySize } from '../../lib/sanitize';
+import { clearListCache } from '../../lib/kilnQueries';
 
 export const prerender = false;
 
@@ -89,7 +90,7 @@ async function verifySignature(
   return candidates.some((c) => timingSafeEqualHex(expected, c)) ? 'ok' : 'mismatch';
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, cache }) => {
   // Set INDEXNOW_WEBHOOK_SECRET to the endpoint's signing secret in the
   // Worker's runtime secrets. Fail-closed: if it is unset, refuse all requests
   // rather than accepting any caller.
@@ -135,6 +136,21 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (!type || !slug) {
     return new Response('Bad Request: missing event or data.slug', { status: 400 });
+  }
+
+  // Any post event (publish, update, unpublish) can change /blog and the post
+  // page, so drop this isolate's cached copies before anything else. Failures
+  // are logged, not returned: entries still expire on their own (maxAge), and
+  // a non-2xx would make Kiln retry the IndexNow submission too.
+  if (type === 'post') {
+    clearListCache();
+    if (cache.enabled) {
+      try {
+        await cache.invalidate({ tags: ['blog'] });
+      } catch (err) {
+        console.error(`Blog route cache invalidation failed: ${err}`);
+      }
+    }
   }
 
   // Whitelist document type before doing anything with the slug
