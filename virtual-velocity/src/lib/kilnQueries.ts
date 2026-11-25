@@ -31,6 +31,11 @@ function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
   return data;
 }
 
+/** Forget every cached list in this isolate (called on Kiln publish). */
+export function clearListCache(): void {
+  listCache.clear();
+}
+
 // Drops a cached list older than MIN_REFRESH_MS so the next read refetches.
 // Lets an SSR detail page find a record published after its isolate cached
 // the list, while bounding refetches when bots probe nonexistent slugs.

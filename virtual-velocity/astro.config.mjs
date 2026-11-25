@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from 'astro/config';
+import { defineConfig, envField, fontProviders, memoryCache } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
@@ -68,6 +68,24 @@ export default defineConfig({
       fallbacks: ['Georgia', 'serif'],
     },
   ],
+  // Route caching for the SSR blog (issue #55). Per-isolate memory cache, not
+  // the adapter's cacheCloudflare(): that turns on Workers Cache, which bills
+  // every request including today-free static assets (see wrangler.jsonc).
+  // Trade-off: /api/indexnow-webhook can only clear the isolate that receives
+  // the publish; other isolates catch up within maxAge. No `swr`: the memory
+  // provider revalidates in an unawaited promise, which Workers may cancel
+  // once the response is sent.
+  // Only `page` and `category` change the rendered output, so they are the
+  // only query params in the key (tracking params can't fragment the cache).
+  cache: {
+    provider: memoryCache({ max: 200, query: { include: ['page', 'category'] } }),
+  },
+  routeRules: {
+    // Same 5 min as the post-list cache in src/lib/kilnQueries.ts.
+    '/blog': { maxAge: 300, tags: ['blog'] },
+    // Shorter: post bodies were fetched fresh per request before this.
+    '/blog/[slug]': { maxAge: 120, tags: ['blog'] },
+  },
   output: 'static', // Static by default, use prerender = false for SSR routes
   // Cloudflare Workers (static assets + Worker for SSR routes).
   // Keep imageService 'compile': the v14 default 'cloudflare-binding' bills
